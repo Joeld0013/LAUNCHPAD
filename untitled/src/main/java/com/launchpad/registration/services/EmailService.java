@@ -28,7 +28,7 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Launchpad - Registration Received");
-        message.setText("Thanks for registering. Your documents are under review. We'll notify you when approved.");
+        message.setText("Thank for registering. Your documents are under review. We'll notify you when approved.");
         mailSender.send(message);
     }
 }
