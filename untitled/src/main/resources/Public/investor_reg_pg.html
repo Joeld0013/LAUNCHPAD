@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad - Investor Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f7f2;
+            color: #2b3446;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f8f7f2"/><path d="M0 0L200 200" stroke="%232b344610" stroke-width="1"/><path d="M200 0L0 200" stroke="%232b344610" stroke-width="1"/></svg>'),
+                radial-gradient(circle at 20% 80%, rgba(43, 52, 70, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(237, 185, 111, 0.08) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .shape-1 {
+            width: 150px;
+            height: 150px;
+            background: rgba(237, 185, 111, 0.1);
+            top: 10%;
+            left: 5%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .shape-2 {
+            width: 100px;
+            height: 100px;
+            background: rgba(43, 52, 70, 0.1);
+            bottom: 15%;
+            right: 10%;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+
+        .shape-3 {
+            width: 80px;
+            height: 80px;
+            background: rgba(237, 185, 111, 0.15);
+            top: 50%;
+            right: 15%;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-radius: 18px;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            background: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+        }
+
+        .left-panel {
+            flex: 1;
+            background:
+                linear-gradient(135deg, rgba(43, 52, 70, 0.95) 0%, rgba(26, 34, 56, 0.95) 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232b3446"/><path d="M0 0L100 100" stroke="%23edb96f20" stroke-width="1"/><path d="M100 0L0 100" stroke="%23edb96f20" stroke-width="1"/></svg>');
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23edb96f15" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #edb96f;
+            z-index: 1;
+            letter-spacing: 0.5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: #edb96f;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .logo:hover::after {
+            width: 100%;
+        }
+
+        .left-panel h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            z-index: 1;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .left-panel p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            z-index: 1;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 30px;
+            z-index: 1;
+        }
+
+        .features li {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .features li:hover {
+            transform: translateX(5px);
+        }
+
+        .features i {
+            color: #edb96f;
+            margin-right: 12px;
+            font-size: 20px;
+            background: rgba(237, 185, 111, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .features li:hover i {
+            background: rgba(237, 185, 111, 0.2);
+            transform: scale(1.1);
+        }
+
+        .right-panel {
+            flex: 1.5;
+            background: white;
+            padding: 45px;
+            overflow-y: auto;
+            max-height: 95vh;
+        }
+
+        .right-panel h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            color: #2b3446;
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .right-panel h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #f8f7f2, #edb96f, #f8f7f2);
+            border-radius: 2px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #f0f0f0;
+            z-index: 1;
+            border-radius: 3px;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 0;
+            width: 33%;
+            height: 5px;
+            background: linear-gradient(to right, #2b3446, #3a4663);
+            z-index: 2;
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .step {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 3;
+            transition: all 0.4s ease;
+        }
+
+        .step.active {
+            background: #2b3446;
+            color: white;
+            border-color: #2b3446;
+            box-shadow: 0 5px 15px rgba(43, 52, 70, 0.3);
+            transform: scale(1.1);
+        }
+
+        .step-label {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            white-space: nowrap;
+            color: #2b3446;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .step.active .step-label {
+            opacity: 1;
+            color: #2b3446;
+            font-weight: 600;
+        }
+
+        .form-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .form-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #2b3446;
+            font-size: 15px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fcfcfc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2b3446;
+            outline: none;
+            box-shadow: 0 5px 15px rgba(43, 52, 70, 0.1);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 25px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .investor-type-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .investor-type-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .investor-type-option input {
+            display: none;
+        }
+
+        .investor-type-option label {
+            display: block;
+            padding: 15px;
+            background: #f8f7f2;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .investor-type-option input:checked + label {
+            background: #2b3446;
+            color: white;
+            border-color: #2b3446;
+            box-shadow: 0 5px 15px rgba(43, 52, 70, 0.2);
+        }
+
+        .investor-type-option label:hover {
+            border-color: #2b3446;
+            transform: translateY(-3px);
+        }
+
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fcfcfc;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload:hover {
+            border-color: #2b3446;
+            background: #f5f5f7;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 38px;
+            color: #2b3446;
+            margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .file-upload:hover i {
+            transform: translateY(-5px);
+        }
+
+        .file-upload p {
+            font-size: 15px;
+            color: #777;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f7f2;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            animation: slideIn 0.4s ease;
+            border-left: 3px solid #2b3446;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .file-item .file-name {
+            display: flex;
+            align-items: center;
+        }
+
+        .file-item .file-name i {
+            margin-right: 10px;
+            color: #2b3446;
+        }
+
+        .file-item .file-remove {
+            color: #ff6b6b;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .file-item .file-remove:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+        }
+
+        button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(30, 30);
+                opacity: 0;
+            }
+        }
+
+        .btn-prev {
+            background: #f8f7f2;
+            color: #2b3446;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-next, .btn-submit {
+            background: linear-gradient(to right, #2b3446, #3a4663);
+            color: white;
+            box-shadow: 0 5px 15px rgba(43, 52, 70, 0.3);
+        }
+
+        .btn-prev:hover {
+            background: #e8e6df;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-next:hover, .btn-submit:hover {
+            background: linear-gradient(to right, #3a4663, #2b3446);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(43, 52, 70, 0.4);
+        }
+
+        .terms {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .terms a {
+            color: #2b3446;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .terms a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #2b3446;
+            transition: width 0.3s ease;
+        }
+
+        .terms a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                padding: 35px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .investor-type-options {
+                flex-direction: column;
+            }
+
+            .right-panel {
+                padding: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="floating-shape shape-1"></div>
+<div class="floating-shape shape-2"></div>
+<div class="floating-shape shape-3"></div>
+
+<div class="container">
+    <div class="left-panel">
+        <div class="logo">LaunchPad</div>
+        <h1>Invest in Tomorrow's Innovations</h1>
+        <p>Join our exclusive network of investors to discover promising startups, diversify your portfolio, and fuel the next generation of entrepreneurs.</p>
+
+        <ul class="features">
+            <li><i class="fas fa-chart-line"></i> Access curated startup opportunities</li>
+            <li><i class="fas fa-handshake"></i> Direct connections with founders</li>
+            <li><i class="fas fa-search-dollar"></i> Advanced due diligence tools</li>
+            <li><i class="fas fa-network-wired"></i> Exclusive investor networking events</li>
+        </ul>
+    </div>
+
+    <div class="right-panel">
+        <h2>Investor Registration</h2>
+
+        <div class="progress-bar">
+            <div class="step active">1<span class="step-label">Personal Info</span></div>
+            <div class="step">2<span class="step-label">Professional Details</span></div>
+            <div class="step">3<span class="step-label">Documents</span></div>
+        </div>
+
+        <form id="registration-form">
+            <!-- Section 1: Personal Information -->
+            <div class="form-section active" id="section-1">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password *</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <div></div> <!-- Empty div for spacing -->
+                    <button type="button" class="btn-next" onclick="showSection(2)">Next</button>
+                </div>
+            </div>
+
+            <!-- Section 2: Professional Details -->
+            <div class="form-section" id="section-2">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select Country</option>
+                            <option value="USA">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="India">India</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Australia">Australia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="organization">Organization</label>
+                        <input type="text" id="organization" name="organization">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Investor Type *</label>
+                    <div class="investor-type-options">
+                        <div class="investor-type-option">
+                            <input type="radio" id="angel" name="investor_type" value="angel" required>
+                            <label for="angel">Angel Investor</label>
+                        </div>
+                        <div class="investor-type-option">
+                            <input type="radio" id="vc" name="investor_type" value="vc">
+                            <label for="vc">Venture Capital</label>
+                        </div>
+                        <div class="investor-type-option">
+                            <input type="radio" id="institutional" name="investor_type" value="institutional">
+                            <label for="institutional">Institutional</label>
+                        </div>
+                        <div class="investor-type-option">
+                            <input type="radio" id="other" name="investor_type" value="other">
+                            <label for="other">Other</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="preferences">Investment Preferences</label>
+                    <textarea id="preferences" name="preferences" rows="4" placeholder="Industries, sectors, or types of startups you're interested in..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="showSection(1)">Previous</button>
+                    <button type="button" class="btn-next" onclick="showSection(3)">Next</button>
+                </div>
+            </div>
+
+            <!-- Section 3: Documents -->
+            <div class="form-section" id="section-3">
+                <div class="form-group">
+                    <label>Upload Required Documents *</label>
+                    <div class="file-upload" id="doc-dropzone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop files here or click to browse</p>
+                        <input type="file" id="file-input" multiple style="display: none;">
+                    </div>
+
+                    <div class="file-list" id="file-list">
+                        <!-- Files will be listed here -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="doc-type">Document Type *</label>
+                    <select id="doc-type" name="doc-type" required>
+                        <option value="">Select Document Type</option>
+                        <option value="identity_proof">Identity Proof</option>
+                        <option value="accreditation">Accreditation Certificate</option>
+                        <option value="tax_cert">Tax Certificate</option>
+                        <option value="financial">Financial Statement</option>
+                        <option value="other">Other Document</option>
+                    </select>
+                </div>
+
+                <div class="terms">
+                    <p>By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Your accreditation status will be verified before approval.</p>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="showSection(2)">Previous</button>
+                    <button type="submit" class="btn-submit">Submit Registration</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Show/hide form sections
+    function showSection(sectionNumber) {
+        // Hide all sections
+        document.querySelectorAll('.form-section').forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // Show the selected section
+        document.getElementById(`section-${sectionNumber}`).classList.add('active');
+
+        // Update progress bar
+        document.querySelectorAll('.step').forEach((step, index) => {
+            if (index < sectionNumber) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+
+        // Update progress line
+        const progressWidth = (sectionNumber - 1) * 33;
+        document.querySelector('.progress-bar').style.setProperty('--progress-width', `${progressWidth}%`);
+    }
+
+    // File upload functionality
+    const dropZone = document.getElementById('doc-dropzone');
+    const fileInput = document.getElementById('file-input');
+    const fileList = document.getElementById('file-list');
+
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', handleFileSelect);
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#2b3446';
+        dropZone.style.backgroundColor = '#f5f5f7';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#ddd';
+        dropZone.style.backgroundColor = '#fcfcfc';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#ddd';
+        dropZone.style.backgroundColor = '#fcfcfc';
+
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+    function handleFileSelect(e) {
+        const files = e.target.files;
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        for (const file of files) {
+            addFileToList(file);
+        }
+    }
+
+    function addFileToList(file) {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+
+        fileItem.innerHTML = `
+            <div class="file-name">
+                <i class="fas fa-file-pdf"></i>
+                <span>${file.name}</span>
+            </div>
+            <div class="file-remove" onclick="removeFile(this)">
+                <i class="fas fa-times"></i>
+            </div>
+        `;
+
+        fileList.appendChild(fileItem);
+    }
+
+    function removeFile(element) {
+        const fileItem = element.closest('.file-item');
+        fileList.removeChild(fileItem);
+    }
+
+    // Form submission
+    document.getElementById('registration-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Registration submitted! Your accreditation will be verified by our team. You will receive an email with login credentials once approved.');
+    });
+</script>
+</body>
+</html>

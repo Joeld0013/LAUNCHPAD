@@ -1,6 +1,5 @@
 package com.launchpad.shared.config;
 
-import com.launchpad.login.services.LoginJwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private LoginJwtService jwtService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,7 +49,7 @@ public class SecurityConfig {
                 // Everything else requires authentication
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+                ;
 
         return http.build();
     }
