@@ -2,7 +2,7 @@
 package com.launchpad.admin.controller;
 
 import com.launchpad.admin.dto.AdminLoginRequest;
-import com.launchpad.dto.AdminLoginResponse;
+import com.launchpad.admin.dto.AdminLoginResponse;
 import com.launchpad.admin.services.AdminLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

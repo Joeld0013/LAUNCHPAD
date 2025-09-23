@@ -1,4 +1,4 @@
-package com.launchpad.dto;
+package com.launchpad.admin.dto;
 
 public class AdminLoginResponse {
 
