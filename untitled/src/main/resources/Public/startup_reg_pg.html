@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad - Startup Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/startup_reg_pg.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">LaunchPad</div>
+            <h1>Start Your Journey With Us</h1>
+            <p>Join our platform to connect with investors, showcase your startup, and secure funding to bring your vision to life.</p>
+            
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> Connect with verified investors</li>
+                <li><i class="fas fa-check-circle"></i> Showcase your startup to a global audience</li>
+                <li><i class="fas fa-check-circle"></i> Secure funding for growth and expansion</li>
+                <li><i class="fas fa-check-circle"></i> Get valuable mentorship and guidance</li>
+            </ul>
+        </div>
+        
+        <div class="right-panel">
+            <h2>Startup Registration</h2>
+            
+            <div class="progress-bar">
+                <div class="step active">1<span class="step-label">Basic Info</span></div>
+                <div class="step">2<span class="step-label">Company Details</span></div>
+                <div class="step">3<span class="step-label">Documents</span></div>
+            </div>
+            
+            <form id="registration-form">
+                <!-- Section 1: Basic Information -->
+                <div class="form-section active" id="section-1">
+                    <div class="form-group">
+                        <label for="name">Startup Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password *</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <div></div> <!-- Empty div for spacing -->
+                        <button type="button" class="btn-next" onclick="showSection(2)">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Company Details -->
+                <div class="form-section" id="section-2">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="USA">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="India">India</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Australia">Australia</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="industry">Industry *</label>
+                            <select id="industry" name="industry" required>
+                                <option value="">Select Industry</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Education">Education</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stage">Development Stage *</label>
+                        <select id="stage" name="stage" required>
+                            <option value="">Select Stage</option>
+                            <option value="idea">Idea Stage</option>
+                            <option value="early">Early Stage</option>
+                            <option value="growth">Growth Stage</option>
+                            <option value="mature">Mature Stage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Company Description *</label>
+                        <textarea id="description" name="description" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="website">Website (optional)</label>
+                        <input type="url" id="website" name="website" placeholder="https://">
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="btn-prev" onclick="showSection(1)">Previous</button>
+                        <button type="button" class="btn-next" onclick="showSection(3)">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Documents -->
+                <div class="form-section" id="section-3">
+                    <div class="form-group">
+                        <label>Upload Required Documents *</label>
+                        <div class="file-upload" id="doc-dropzone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop files here or click to browse</p>
+                            <input type="file" id="file-input" multiple style="display: none;">
+                        </div>
+                        
+                        <div class="file-list" id="file-list">
+                            <!-- Files will be listed here -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doc-type">Document Type *</label>
+                        <select id="doc-type" name="doc-type" required>
+                            <option value="">Select Document Type</option>
+                            <option value="business_reg">Business Registration</option>
+                            <option value="tax_cert">Tax Certificate</option>
+                            <option value="aadhaar">Aadhaar Card</option>
+                            <option value="identity_proof">Identity Proof</option>
+                            <option value="other">Other Document</option>
+                        </select>
+                    </div>
+                    
+                    <div class="terms">
+                        <p>By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Your documents will be verified by our admin team before approval.</p>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="btn-prev" onclick="showSection(2)">Previous</button>
+                        <button type="submit" class="btn-submit">Submit Registration</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<script src="js/auth.js"></script>
+<script src="js/startup_reg_pg.js"></script>
+</body>
+</html>

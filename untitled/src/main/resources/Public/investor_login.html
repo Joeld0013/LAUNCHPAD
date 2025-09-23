@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad - Investor Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Launch<span>Pad</span></div>
+        
+        <div class="login-card">
+            <h2>Investor Login</h2>
+            <form id="investor-login">
+                <div class="form-group">
+                    <label for="investor-email">Email Address</label>
+                    <input type="email" id="investor-email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+    <label for="startup-password">Password</label>
+    <div class="password-wrapper">
+        <input type="password" id="startup-password" placeholder="Enter your password" required>
+        <span class="toggle-password" onclick="togglePassword('startup-password')">👁️</span>
+    </div>
+</div>
+                <div class="options">
+                    <div class="remember">
+                        <input type="checkbox" id="investor-remember">
+                        <label for="investor-remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="login-btn">LOG IN</button>
+            </form>
+            <div class="signup-link">
+                Not a member yet? <a href="#">Sign Up Now</a>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">&larr; Back to Home</a> | <a href="startup_login.html">Startup Login</a>
+        </div>
+    </div>
+
+    
+<!-- Background shapes element (needs to be added to your HTML) -->
+<div class="background-shapes">
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+<script src="js/investorlogin.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

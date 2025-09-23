@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad - Startup Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Launch<span>Pad</span></div>
+        
+        <div class="login-card">
+            <h2>Startup Login</h2>
+            <form id="startup-login">
+                <div class="form-group">
+                    <label for="startup-email">Email Address</label>
+                    <input type="email" id="startup-email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+    <label for="startup-password">Password</label>
+    <div class="password-wrapper">
+        <input type="password" id="startup-password" placeholder="Enter your password" required>
+        <span class="toggle-password" onclick="togglePassword('startup-password')">👁️</span>
+    </div>
+</div>
+                <div class="options">
+                    <div class="remember">
+                        <input type="checkbox" id="startup-remember">
+                        <label for="startup-remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="login-btn">LOG IN</button>
+            </form>
+            <div class="signup-link">
+                Not a member yet? <a href="startup_reg_pg.html">Sign Up Now</a>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">&larr; Back to Home</a> | <a href="investor_login.html">Investor Login</a>
+        </div>
+    </div>
+    <!-- Background shapes element (needs to be added to your HTML) -->
+<div class="background-shapes">
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+<script src="js/startuplogin.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
