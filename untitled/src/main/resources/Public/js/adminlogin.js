@@ -51,7 +51,7 @@ document.getElementById('admin-login').addEventListener('submit', async function
             btn.textContent = 'ACCESS GRANTED ✅';
 
             setTimeout(() => {
-                window.location.href = 'admin_dashboard.html'; // Redirect after login
+                window.location.href = 'admindashboard.html'; // Redirect after login
             }, 1200);
         } else {
             const error = await response.text();
