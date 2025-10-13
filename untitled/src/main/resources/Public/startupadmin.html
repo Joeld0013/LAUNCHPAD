@@ -54,7 +54,7 @@
             <div class="user-actions">
                 <div class="notification">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge">0</span>
                 </div>
                 <div class="user-profile">
                     <div class="user-avatar">AJ</div>
@@ -86,260 +86,69 @@
                         <i class="fas fa-sync-alt"></i> Reset Filters
                     </button>
                 </div>
+                <!-- Fix filter controls - add proper identifiers -->
                 <div class="filter-controls">
                     <div class="filter-group">
                         <label class="filter-label">Category</label>
-                        <select class="filter-select">
+                        <select class="filter-select" id="filter-industry">
                             <option value="">All Categories</option>
-                            <option value="tech">Technology</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="finance">Finance</option>
-                            <option value="education">Education</option>
-                            <option value="ecommerce">E-commerce</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Education">Education</option>
+                            <option value="E-commerce">E-commerce</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Funding Stage</label>
-                        <select class="filter-select">
+                        <select class="filter-select" id="filter-stage">
                             <option value="">All Stages</option>
                             <option value="seed">Seed</option>
                             <option value="series-a">Series A</option>
                             <option value="series-b">Series B</option>
                             <option value="growth">Growth</option>
+                            <option value="mature">Mature</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Country</label>
-                        <select class="filter-select">
+                        <select class="filter-select" id="filter-country">
                             <option value="">All Countries</option>
-                            <option value="us">United States</option>
-                            <option value="uk">United Kingdom</option>
-                            <option value="ca">Canada</option>
-                            <option value="au">Australia</option>
-                            <option value="in">India</option>
+                            <option value="United States">United States</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Australia">Australia</option>
+                            <option value="India">India</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Industry</label>
-                        <select class="filter-select">
+                        <select class="filter-select" id="filter-industry2">
                             <option value="">All Industries</option>
-                            <option value="fintech">Fintech</option>
-                            <option value="healthtech">Healthtech</option>
-                            <option value="edtech">Edtech</option>
-                            <option value="saas">SaaS</option>
-                            <option value="ai">Artificial Intelligence</option>
+                            <option value="Fintech">Fintech</option>
+                            <option value="Healthtech">Healthtech</option>
+                            <option value="Edtech">Edtech</option>
+                            <option value="SaaS">SaaS</option>
+                            <option value="AI">Artificial Intelligence</option>
                         </select>
                     </div>
+                </div>
                 </div>
             </div>
 
             <!-- Startup Cards Grid -->
             <div class="startups-section">
                 <h2 class="section-title">Startup Requests (Pending Approval)</h2>
-                <div class="startups-grid">
-                    <!-- Startup Card 1 -->
-                    <div class="startup-card">
-                        <div class="startup-header">
-                            <div class="startup-logo">TN</div>
-                            <div class="startup-info">
-                                <h3 class="startup-name">TechNova</h3>
-                                <span class="startup-category">Technology</span>
-                            </div>
-                        </div>
-                        <div class="startup-body">
-                            <p class="startup-description">AI-powered analytics platform for e-commerce businesses to optimize customer engagement and sales.</p>
-                            <div class="startup-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">San Francisco, CA</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Stage</span>
-                                    <span class="detail-value">Series A</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Founded</span>
-                                    <span class="detail-value">2021</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="startup-footer">
-                            <span class="status-badge status-pending">Pending Review</span>
-                            <div class="action-buttons">
-                                <div class="btn-icon btn-view" onclick="openStartupModal('TechNova')">
-                                    <i class="fas fa-eye"></i>
-                                </div>
-                                <div class="btn-icon btn-approve">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="btn-icon btn-reject">
-                                    <i class="fas fa-times"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Startup Card 2 -->
-                    <div class="startup-card">
-                        <div class="startup-header">
-                            <div class="startup-logo">GS</div>
-                            <div class="startup-info">
-                                <h3 class="startup-name">GreenSolutions</h3>
-                                <span class="startup-category">Sustainability</span>
-                            </div>
-                        </div>
-                        <div class="startup-body">
-                            <p class="startup-description">Developing innovative recycling technologies to convert plastic waste into reusable materials.</p>
-                            <div class="startup-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Austin, TX</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Stage</span>
-                                    <span class="detail-value">Seed</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Founded</span>
-                                    <span class="detail-value">2022</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="startup-footer">
-                            <span class="status-badge status-pending">Pending Review</span>
-                            <div class="action-buttons">
-                                <div class="btn-icon btn-view" onclick="openStartupModal('GreenSolutions')">
-                                    <i class="fas fa-eye"></i>
-                                </div>
-                                <div class="btn-icon btn-approve">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="btn-icon btn-reject">
-                                    <i class="fas fa-times"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Startup Card 3 -->
-                    <div class="startup-card">
-                        <div class="startup-header">
-                            <div class="startup-logo">HC</div>
-                            <div class="startup-info">
-                                <h3 class="startup-name">HealthConnect</h3>
-                                <span class="startup-category">Healthcare</span>
-                            </div>
-                        </div>
-                        <div class="startup-body">
-                            <p class="startup-description">Telemedicine platform connecting patients with specialists for remote consultations and diagnostics.</p>
-                            <div class="startup-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Boston, MA</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Stage</span>
-                                    <span class="detail-value">Series B</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Founded</span>
-                                    <span class="detail-value">2020</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="startup-footer">
-                            <span class="status-badge status-pending">Pending Review</span>
-                            <div class="action-buttons">
-                                <div class="btn-icon btn-view" onclick="openStartupModal('HealthConnect')">
-                                    <i class="fas fa-eye"></i>
-                                </div>
-                                <div class="btn-icon btn-approve">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="btn-icon btn-reject">
-                                    <i class="fas fa-times"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="startups-grid" id="pending-startups">
+                    <!-- Startup cards will be dynamically populated here -->
                 </div>
             </div>
 
             <!-- Approved Startups Section -->
             <div class="startups-section">
                 <h2 class="section-title">Approved Startups</h2>
-                <div class="startups-grid">
-                    <!-- Startup Card 4 -->
-                    <div class="startup-card">
-                        <div class="startup-header">
-                            <div class="startup-logo">FD</div>
-                            <div class="startup-info">
-                                <h3 class="startup-name">Finova Digital</h3>
-                                <span class="startup-category">Fintech</span>
-                            </div>
-                        </div>
-                        <div class="startup-body">
-                            <p class="startup-description">Digital banking solutions for SMEs with integrated accounting and payment processing.</p>
-                            <div class="startup-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">New York, NY</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Stage</span>
-                                    <span class="detail-value">Growth</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Founded</span>
-                                    <span class="detail-value">2019</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="startup-footer">
-                            <span class="status-badge status-approved">Approved</span>
-                            <div class="action-buttons">
-                                <div class="btn-icon btn-view" onclick="openStartupModal('Finova Digital')">
-                                    <i class="fas fa-eye"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Startup Card 5 -->
-                    <div class="startup-card">
-                        <div class="startup-header">
-                            <div class="startup-logo">ET</div>
-                            <div class="startup-info">
-                                <h3 class="startup-name">EduTech Pro</h3>
-                                <span class="startup-category">Education</span>
-                            </div>
-                        </div>
-                        <div class="startup-body">
-                            <p class="startup-description">Interactive learning platform with personalized curriculum and progress tracking for K-12 students.</p>
-                            <div class="startup-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Chicago, IL</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Stage</span>
-                                    <span class="detail-value">Series A</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Founded</span>
-                                    <span class="detail-value">2021</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="startup-footer">
-                            <span class="status-badge status-approved">Approved</span>
-                            <div class="action-buttons">
-                                <div class="btn-icon btn-view" onclick="openStartupModal('EduTech Pro')">
-                                    <i class="fas fa-eye"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="startups-grid" id="approved-startups">
+                    <!-- Startup cards will be dynamically populated here -->
                 </div>
             </div>
 
@@ -375,35 +184,35 @@
                 <div class="detail-grid">
                     <div class="detail-field">
                         <div class="detail-label">Startup Name</div>
-                        <div class="detail-value" id="modal-name">TechNova</div>
+                        <div class="detail-value" id="modal-name"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Category</div>
-                        <div class="detail-value" id="modal-category">Technology</div>
+                        <div class="detail-value" id="modal-category"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Industry</div>
-                        <div class="detail-value" id="modal-industry">Artificial Intelligence</div>
+                        <div class="detail-value" id="modal-industry"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Founded Date</div>
-                        <div class="detail-value" id="modal-founded">March 2021</div>
+                        <div class="detail-value" id="modal-founded"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Location</div>
-                        <div class="detail-value" id="modal-location">San Francisco, CA</div>
+                        <div class="detail-value" id="modal-location"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Funding Stage</div>
-                        <div class="detail-value" id="modal-stage">Series A</div>
+                        <div class="detail-value" id="modal-stage"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Team Size</div>
-                        <div class="detail-value" id="modal-team">15</div>
+                        <div class="detail-value" id="modal-team"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Website</div>
-                        <div class="detail-value" id="modal-website">www.technova.ai</div>
+                        <div class="detail-value" id="modal-website"></div>
                     </div>
                 </div>
             </div>
@@ -411,66 +220,21 @@
             <div class="startup-detail-section">
                 <h3 class="detail-section-title">Business Description</h3>
                 <div class="detail-field">
-                    <div class="detail-value" id="modal-description" style="min-height: 80px;">
-                        AI-powered analytics platform for e-commerce businesses to optimize customer engagement and sales. Our proprietary algorithms analyze customer behavior patterns and provide actionable insights to increase conversion rates by an average of 23%.
-                    </div>
+                    <div class="detail-value" id="modal-description" style="min-height: 80px;"></div>
                 </div>
             </div>
 
             <div class="startup-detail-section">
                 <h3 class="detail-section-title">Business Plan</h3>
                 <div class="detail-field">
-                    <div class="detail-value" id="modal-plan" style="min-height: 100px;">
-                        Our business model is based on a SaaS subscription with tiered pricing. We target mid-sized e-commerce businesses with annual revenues between $1M-$10M. Our go-to-market strategy includes content marketing, strategic partnerships with e-commerce platforms, and targeted digital advertising. We project to reach 500 customers by the end of year 2 with an ARR of $2.5M.
-                    </div>
+                    <div class="detail-value" id="modal-plan" style="min-height: 100px;"></div>
                 </div>
             </div>
 
             <div class="startup-detail-section">
                 <h3 class="detail-section-title">Documents</h3>
-                <div class="document-list">
-                    <div class="document-item">
-                        <div class="document-name">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Business Plan.pdf</span>
-                        </div>
-                        <div class="document-actions">
-                            <button class="btn-icon btn-view">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn-icon btn-view">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="document-item">
-                        <div class="document-name">
-                            <i class="fas fa-file-image"></i>
-                            <span>Pitch Deck.pptx</span>
-                        </div>
-                        <div class="document-actions">
-                            <button class="btn-icon btn-view">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn-icon btn-view">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="document-item">
-                        <div class="document-name">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Financial Projections.xlsx</span>
-                        </div>
-                        <div class="document-actions">
-                            <button class="btn-icon btn-view">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn-icon btn-view">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
+                <div class="document-list" id="modal-documents">
+                    <!-- Documents will be dynamically populated here -->
                 </div>
             </div>
 
@@ -479,15 +243,15 @@
                 <div class="detail-grid">
                     <div class="detail-field">
                         <div class="detail-label">Contact Person</div>
-                        <div class="detail-value" id="modal-contact">Sarah Johnson</div>
+                        <div class="detail-value" id="modal-contact"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Email</div>
-                        <div class="detail-value" id="modal-email">sarah@technova.ai</div>
+                        <div class="detail-value" id="modal-email"></div>
                     </div>
                     <div class="detail-field">
                         <div class="detail-label">Phone</div>
-                        <div class="detail-value" id="modal-phone">+1 (415) 555-7890</div>
+                        <div class="detail-value" id="modal-phone"></div>
                     </div>
                 </div>
             </div>
@@ -505,7 +269,6 @@
         </div>
     </div>
 </div>
-<script src="js/auth.js"></script>
 <script src="js/startupadmin.js"></script>
 </body>
 </html>

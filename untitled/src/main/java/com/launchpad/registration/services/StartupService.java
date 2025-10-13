@@ -4,7 +4,6 @@ import com.launchpad.registration.dto.StartupRegistrationRequest;
 import com.launchpad.registration.model.DocumentFile;
 import com.launchpad.registration.model.DocType;
 import com.launchpad.registration.model.DocumentStatus;
-import com.launchpad.registration.model.RegistrationStatus;
 import com.launchpad.registration.model.Startup;
 import com.launchpad.registration.repository.DocumentRepository;
 import com.launchpad.registration.repository.StartupRepository;
@@ -58,10 +57,10 @@ public class StartupService {
         s.setIndustry(req.getIndustry());
         s.setStage(req.getStage());
         s.setDescription(req.getDescription());
-        s.setWebsite(req.getWebsite()); // ✅ Set website
-        s.setRegistrationStatus(RegistrationStatus.PENDING);
+        s.setWebsite(req.getWebsite());
+        s.setRegistrationStatus("PENDING"); // String, not enum
 
-        // ✅ Hash and store password immediately during registration
+        // Hash and store password immediately during registration
         if (req.getPassword() != null && !req.getPassword().trim().isEmpty()) {
             String hashedPassword = passwordEncoder.encode(req.getPassword());
             s.setPasswordHash(hashedPassword);
@@ -75,7 +74,7 @@ public class StartupService {
             Path base = Paths.get(uploadDir, "startups", saved.getId());
             Files.createDirectories(base);
 
-            // ✅ Parse docType from request
+            // Parse docType from request
             DocType docTypeEnum = parseDocType(req.getDocType());
 
             for (MultipartFile file : documents) {
@@ -88,7 +87,7 @@ public class StartupService {
 
                 DocumentFile doc = new DocumentFile();
                 doc.setStartupId(saved.getId());
-                doc.setDocType(docTypeEnum); // ✅ Use parsed doc type
+                doc.setDocType(docTypeEnum);
                 doc.setFilePath(target.toString());
                 doc.setStatus(DocumentStatus.PENDING);
                 DocumentFile savedDoc = documentRepository.save(doc);
@@ -109,7 +108,7 @@ public class StartupService {
         return saved;
     }
 
-    // ✅ Helper method to parse document type
+    // Helper method to parse document type
     private DocType parseDocType(String docTypeStr) {
         if (docTypeStr == null || docTypeStr.trim().isEmpty()) {
             return DocType.OTHER;
@@ -133,28 +132,27 @@ public class StartupService {
         }
     }
 
-    // ✅ Modified: Don't generate new password if one already exists
+    // Modified: Don't generate new password if one already exists
     public Startup approveStartup(String startupId) {
         Startup s = startupRepository.findById(startupId)
                 .orElseThrow(() -> new IllegalArgumentException("Startup not found"));
-        if (s.getRegistrationStatus() == RegistrationStatus.APPROVED) {
+        if ("APPROVED".equalsIgnoreCase(s.getRegistrationStatus())) {
             return s;
         }
 
-        // ✅ Only generate password if none exists (backward compatibility)
         String rawPassword = null;
         if (s.getPasswordHash() == null || s.getPasswordHash().trim().isEmpty()) {
             rawPassword = generateRandomPassword(12);
             String hashed = passwordEncoder.encode(rawPassword);
             s.setPasswordHash(hashed);
         } else {
-            // Use a temporary password for email (user should change it)
+            // Optionally, generate a temp password or just send info
             rawPassword = generateRandomPassword(12);
             String hashed = passwordEncoder.encode(rawPassword);
             s.setPasswordHash(hashed);
         }
 
-        s.setRegistrationStatus(RegistrationStatus.APPROVED);
+        s.setRegistrationStatus("APPROVED"); // String, not enum
         s.setVerified(true);
 
         Startup saved = startupRepository.save(s);
@@ -167,13 +165,13 @@ public class StartupService {
     public Startup rejectStartup(String startupId, String reason) {
         Startup s = startupRepository.findById(startupId)
                 .orElseThrow(() -> new IllegalArgumentException("Startup not found"));
-        s.setRegistrationStatus(RegistrationStatus.REJECTED);
+        s.setRegistrationStatus("REJECTED"); // String, not enum
         Startup saved = startupRepository.save(s);
         // optionally send rejection email (omitted here)
         return saved;
     }
 
-    // ✅ Add method to get all startups for admin
+    // Add method to get all startups for admin
     public List<Startup> getAllStartups() {
         return startupRepository.findAll();
     }

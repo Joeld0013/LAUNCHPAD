@@ -19,9 +19,10 @@ public class Startup {
     private String industry;
     private String stage;
     private String description;
-    private String website; // ✅ Add website field
+    private String website; // Website field
 
-    private RegistrationStatus registrationStatus = RegistrationStatus.PENDING;
+    // Change to String, not enum!
+    private String registrationStatus = "PENDING";
     private boolean isVerified = false;
 
     // stored as hashed password once approved by admin
@@ -32,7 +33,7 @@ public class Startup {
     // just store document IDs (or you can use DBRef)
     private List<String> documentIds;
 
-    // getters and setters
+    // Getters and setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
@@ -60,11 +61,11 @@ public class Startup {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getWebsite() { return website; } // ✅ Add getter
-    public void setWebsite(String website) { this.website = website; } // ✅ Add setter
+    public String getWebsite() { return website; }
+    public void setWebsite(String website) { this.website = website; }
 
-    public RegistrationStatus getRegistrationStatus() { return registrationStatus; }
-    public void setRegistrationStatus(RegistrationStatus registrationStatus) { this.registrationStatus = registrationStatus; }
+    public String getRegistrationStatus() { return registrationStatus; }
+    public void setRegistrationStatus(String registrationStatus) { this.registrationStatus = registrationStatus; }
 
     public boolean isVerified() { return isVerified; }
     public void setVerified(boolean verified) { isVerified = verified; }
@@ -77,4 +78,8 @@ public class Startup {
 
     public List<String> getDocumentIds() { return documentIds; }
     public void setDocumentIds(List<String> documentIds) { this.documentIds = documentIds; }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
 }

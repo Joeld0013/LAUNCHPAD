@@ -30,5 +30,23 @@ public class EmailService {
         message.setSubject("Launchpad - Registration Received");
         message.setText("Thanks for registering. Your documents are under review. We'll notify you when approved.");
         mailSender.send(message);
+
+
+    }
+    public void sendApprovedEmail(String to, String name) {
+        String subject = "Your Startup Is Approved!";
+        String body = "Dear " + name + ",\nYour registration is approved. You can now login.";
+        send(to, subject, body);
+    }
+
+    public void sendRejectedEmail(String to, String name, String comments) {
+        String subject = "Your Startup Registration Was Rejected";
+        String body = "Dear " + name + ",\nYour application was rejected. Reason: " + comments;
+        send(to, subject, body);
+    }
+
+    public void send(String to, String subject, String body) {
+        // TODO: Integrate with JavaMailSender or other email service.
+        System.out.println("[MAIL] To: " + to + "\nSUBJECT: " + subject + "\nBODY: " + body);
     }
 }
