@@ -11,6 +11,6 @@ public class Application {
 
 
 System.out.println("front rnd runs in : http://localhost:8080/index.html");
-       // System.out.println("front rnd runs in : http://localhost:8080/adminlogin.html");
+System.out.println("front rnd runs in : http://localhost:8080/adminlogin.html");
     }
 }

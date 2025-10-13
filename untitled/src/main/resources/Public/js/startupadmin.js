@@ -1,7 +1,6 @@
-
-// Admin Dashboard Navigation Script
+// startup.js - Combined navigation and modal functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Navigation elements
+    // ========== NAVIGATION FUNCTIONALITY ==========
     const navItems = document.querySelectorAll('.nav-item');
     const actionButtons = document.querySelectorAll('.action-btn');
 
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (route.startsWith('/')) {
             route = route.substring(1); // Remove leading slash
         }
-        
+
         // Check if we're already on the target page
         const currentPage = window.location.pathname.split('/').pop();
         if (currentPage === route) {
@@ -159,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateActiveNavItem(currentPage);
     }
 
-    // Initialize
+    // Initialize navigation
     setInitialActiveState();
 
     // Search functionality
@@ -189,6 +188,75 @@ document.addEventListener('DOMContentLoaded', function() {
     if (userProfile) {
         userProfile.addEventListener('click', function() {
             alert('User profile menu would appear here');
+        });
+    }
+
+    // ========== MODAL FUNCTIONALITY ==========
+    // Function to open the startup detail modal
+    function openStartupModal(startupName) {
+        document.getElementById('startupModal').style.display = 'flex';
+
+        // In a real application, you would fetch the startup data based on the name
+        // For this demo, we're just setting the name in the modal
+        document.getElementById('modal-name').textContent = startupName;
+    }
+
+    // Function to close the startup detail modal
+    function closeStartupModal() {
+        document.getElementById('startupModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('startupModal');
+        if (event.target === modal) {
+            closeStartupModal();
+        }
+    }
+
+    // Add event listeners for approve and reject buttons
+    const approveButtons = document.querySelectorAll('.btn-approve');
+    const rejectButtons = document.querySelectorAll('.btn-reject');
+
+    approveButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // In a real application, you would send an API request to approve the startup
+            alert('Startup approved! An email notification will be sent to the startup.');
+        });
+    });
+
+    rejectButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // In a real application, you would send an API request to reject the startup
+            alert('Startup rejected! An email notification will be sent to the startup.');
+        });
+    });
+
+    // Add event listeners for view buttons to open modal
+    const viewButtons = document.querySelectorAll('.btn-view');
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const startupCard = this.closest('.startup-card');
+            const startupName = startupCard.querySelector('.startup-name').textContent;
+            openStartupModal(startupName);
+        });
+    });
+
+    // Modal approve/reject buttons
+    const modalApproveBtn = document.querySelector('.modal-footer .btn-approve');
+    const modalRejectBtn = document.querySelector('.modal-footer .btn-reject');
+
+    if (modalApproveBtn) {
+        modalApproveBtn.addEventListener('click', function() {
+            alert('Startup approved from modal! An email notification will be sent to the startup.');
+            closeStartupModal();
+        });
+    }
+
+    if (modalRejectBtn) {
+        modalRejectBtn.addEventListener('click', function() {
+            alert('Startup rejected from modal! An email notification will be sent to the startup.');
+            closeStartupModal();
         });
     }
 });
