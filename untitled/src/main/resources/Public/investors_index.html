@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LaunchPad — Investor Home</title>
+    <link rel="stylesheet" href="css/invester_shared_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="site-wrap">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LP</div>
+                <div class="logo-text">LaunchPad</div>
+            </div>
+            <div class="nav-links">
+                <a href="investors_index.html">Home</a>
+                <a href="investors_posts.html">Posts</a>
+                <a href="investors_profile.html">Profile</a>
+                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-bar-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" placeholder="Search for startups, sectors, founders...">
+    </div>
+
+    <section id="investor-home">
+        <div class="grid home-grid">
+            <aside>
+                <div class="card investor-profile-preview">
+                    <div class="investor-profile-header"></div>
+                    <div class="investor-profile-avatar">VC</div>
+                    <a href="investors_profile.html" class="home-profile-name link">Stellar Ventures</a>
+                    <div class="home-profile-title">Venture Capital Firm</div>
+                    <div class="investor-stat">
+                        <span>Portfolio Companies</span>
+                        <strong>15</strong>
+                    </div>
+                    <a href="investors_profile.html" class="view-profile-btn">View Full Profile</a>
+                </div>
+
+                <div class="card">
+                    <div class="section-title">Investor Relations</div>
+                    <div class="investor-relations-info" style="margin-top: 0; padding-top: 0; border-top: none;">
+                        <p><i class="fas fa-envelope"></i> ir@launchpad.com</p>
+                        <p><i class="fas fa-phone"></i> +91 22 4000 5000</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title">Newsletter</div>
+                    <form class="newsletter-form" style="flex-direction: column;">
+                        <input type="email" placeholder="Enter your email" required style="margin-bottom: 10px;">
+                        <button type="submit" class="post-btn">Subscribe</button>
+                    </form>
+                </div>
+            </aside>
+
+            <main>
+                <div class="card value-prop-card">
+                    <div class="section-title">Our Unique Value Proposition</div>
+                    <div class="value-prop-grid">
+                        <div class="value-prop-item">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Curated Deal Flow</h3>
+                            <p>Access a pre-vetted pipeline of high-growth startups.</p>
+                        </div>
+                        <div class="value-prop-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Transparent Reporting</h3>
+                            <p>Gain full visibility into company performance with real-time data.</p>
+                        </div>
+                        <div class="value-prop-item">
+                            <i class="fas fa-users"></i>
+                            <h3>Expert Network</h3>
+                            <p>Leverage our network of industry experts for due diligence.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title">Financial Highlights (Q3 2025)</div>
+                    <div class="financials-grid">
+                        <div class="financial-metrics">
+                            <div class="metric-item">
+                                <span>Revenue Growth (QoQ)</span>
+                                <span class="metric-value positive">+18%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Net Profit Margin</span>
+                                <span class="metric-value">22%</span>
+                            </div>
+                        </div>
+                        <div class="financial-chart">
+                            <div class="chart-container">
+                                <div class="chart-bar" style="height: 50%;" data-label="Q1">$1.2M</div>
+                                <div class="chart-bar" style="height: 70%;" data-label="Q2">$1.8M</div>
+                                <div class="chart-bar" style="height: 85%;" data-label="Q3">$2.1M</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title">Top Companies in Portfolio</div>
+                    <div class="investor"><div class="inv-avatar">SA</div><span class="link">Synapse AI</span> &bull; AI Solutions</div>
+                    <div class="investor"><div class="inv-avatar">QL</div><span class="link">QuantumLeap</span> &bull; Quantum Computing</div>
+                    <div class="investor"><div class="inv-avatar">NT</div><span class="link">NovaTech</span> &bull; Renewable Energy</div>
+                </div>
+            </main>
+
+            <aside>
+                <div class="card">
+                    <div class="section-title">Recent Announcements</div>
+                    <div class="news-feed">
+                        <div class="news-item">
+                            <h4>LaunchPad Announces Partnership with QuantumLeap AI</h4>
+                            <p class="meta-row">October 14, 2025 &bull; We are thrilled to partner with a leader in quantum computing.</p>
+                        </div>
+                        <div class="news-item">
+                            <h4>Synapse AI Closes $15M Series A Round</h4>
+                            <p class="meta-row">October 10, 2025 &bull; The new funding will be used to expand their team and enter new markets.</p>
+                        </div>
+                        <div class="news-item">
+                            <h4>Quarterly Investor Report Now Available</h4>
+                            <p class="meta-row">October 1, 2025 &bull; Log in to your portal to view the full Q3 2025 performance report.</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="copyright">© 2025 LaunchPad</div>
+        </div>
+    </footer>
+</div>
+<script src="js/invester_shared_scripts.js"></script>
+</body>
+</html>

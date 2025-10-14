@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LaunchPad — Profile</title>
+    <link rel="stylesheet" href="css/Startup_shared_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="site-wrap">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LP</div>
+                <div class="logo-text">LaunchPad</div>
+            </div>
+            <div class="nav-links">
+                <a href="startup_index.html">Home</a>
+                <a href="startup_post.html">Posts</a>
+                <a href="startup_profile.html">Profile</a>
+                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div id="notification-popup">
+        <div class="section-title">Notifications</div>
+        <div class="notification-item">
+            <div class="notification-avatar">VC</div>
+            <div class="notification-text">Stellar Ventures just commented on your post.</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-avatar">SA</div>
+            <div class="notification-text">Synapse AI announced a new event.</div>
+        </div>
+    </div>
+
+    <section id="profile">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar-large">SA</div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Synapse AI</h1>
+                    <p class="profile-title">AI Solutions Startup | Connecting Innovation with Capital</p>
+                    <p class="profile-location">📍 Bengaluru, India</p>
+                </div>
+                <button class="edit-profile-btn" onclick="toggleEditProfileModal()">Edit Profile</button>
+            </div>
+
+            <div class="profile-contact">
+                <div class="section-title">Contact Info</div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span><a href="#" class="link">synapseai.com</a></span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>contact@synapseai.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91 98765 43210</span>
+                </div>
+            </div>
+
+            <div class="profile-summary">
+                <div class="section-title">About</div>
+                <p class="profile-summary-text">Synapse AI is an innovative platform dedicated to connecting visionary startups with the right investors. We simplify the fundraising process by providing a curated ecosystem where founders can showcase their ventures and investors can discover promising opportunities in emerging markets. Our mission is to democratize access to capital and accelerate the growth of the next generation of industry leaders.</p>
+            </div>
+
+            <div class="profile-media">
+                <div class="media-grid">
+                    <div class="media-item">
+                        <div class="media-placeholder">📈 Growth Chart</div>
+                        <span>Latest Growth Metrics</span>
+                    </div>
+                    <div class="media-item">
+                        <div class="media-placeholder">▶️ Pitch Deck Video</div>
+                        <span>Watch Our Pitch Deck</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-team">
+                <div class="section-title">Team</div>
+                <div class="team-member">
+                    <div class="member-avatar">JK</div>
+                    <div class="member-details">
+                        <h4>John K. Doe</h4>
+                        <p>CEO, Co-founder</p>
+                        <p>Experienced entrepreneur with a background in business development and strategy. Previously founded a successful fintech startup.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">AS</div>
+                    <div class="member-details">
+                        <h4>Alice Smith</h4>
+                        <p>CTO, Co-founder</p>
+                        <p>An AI specialist and software architect with over 10 years of experience building scalable tech solutions for Fortune 500 companies.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-experience">
+                <div class="section-title">Key Milestones</div>
+                <div class="experience-item">
+                    <div class="experience-title">Platform Launch</div>
+                    <div class="experience-company">Synapse AI</div>
+                    <div class="experience-duration">January 2024</div>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-title">Seed Funding Round</div>
+                    <div class="experience-company">Synapse AI</div>
+                    <div class="experience-duration">November 2023</div>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-title">Beta Testing Phase</div>
+                    <div class="experience-company">Synapse AI</div>
+                    <div class="experience-duration">September 2023</div>
+                </div>
+            </div>
+
+            <div class="profile-posts">
+                <div class="section-title">Recent Posts</div>
+                <article class="post startup-post post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">SA</div>
+                        <div>
+                            <div class="company-name"><span class="link">Synapse AI</span></div>
+                            <div class="post-meta">5h ago</div>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <div>Don't miss our upcoming webinar: "Navigating Seed Rounds - What Investors Look For." Join industry experts as they share insights and tips for early-stage startups. Register now!</div>
+                        <img src="https://images.unsplash.com/photo-1620325696245-0960538a7985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Webinar Announcement" class="post-image">
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-action like-btn" data-likes="56"><i class="fas fa-thumbs-up"></i> <span class="like-count">56</span></div>
+                        <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                        <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                    </div>
+                </article>
+                <article class="post startup-post post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">SA</div>
+                        <div>
+                            <div class="company-name"><span class="link">Synapse AI</span></div>
+                            <div class="post-meta">1d ago</div>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <div>We are thrilled to announce that we have successfully connected 50 startups with their first round of seed funding! The future of innovation is bright. #StartupSuccess #Funding</div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-action like-btn" data-likes="180"><i class="fas fa-thumbs-up"></i> <span class="like-count">180</span></div>
+                        <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                        <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="profile-skills">
+                <div class="section-title">Areas of Focus</div>
+                <div class="skills-list">
+                    <span class="skill-tag">Startup Ecosystem</span>
+                    <span class="skill-tag">Venture Capital</span>
+                    <span class="skill-tag">Pitch Deck Analysis</span>
+                    <span class="skill-tag">Seed Funding</span>
+                    <span class="skill-tag">AI-powered Matching</span>
+                    <span class="skill-tag">Networking</span>
+                    <span class="skill-tag">Business Strategy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="copyright">© 2025 LaunchPad</div>
+        </div>
+    </footer>
+</div>
+
+<div id="edit-profile-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Edit Profile</h3>
+        <form>
+            <label for="edit-name">Company Name</label>
+            <input type="text" id="edit-name" value="Synapse AI">
+
+            <label for="edit-title">Title</label>
+            <input type="text" id="edit-title" value="AI Solutions Startup | Connecting Innovation with Capital">
+
+            <label for="edit-location">Location</label>
+            <input type="text" id="edit-location" value="Bengaluru, India">
+
+            <label for="edit-about">About</label>
+            <textarea id="edit-about">Synapse AI is an innovative platform dedicated to connecting visionary startups with the right investors. We simplify the fundraising process by providing a curated ecosystem where founders can showcase their ventures and investors can discover promising opportunities in emerging markets. Our mission is to democratize access to capital and accelerate the growth of the next generation of industry leaders.</textarea>
+
+            <label for="edit-contact-website">Website</label>
+            <input type="text" id="edit-contact-website" value="synapseai.com">
+
+            <label for="edit-contact-email">Email</label>
+            <input type="email" id="edit-contact-email" value="contact@synapseai.com">
+
+            <label for="edit-contact-phone">Phone</label>
+            <input type="tel" id="edit-contact-phone" value="+91 98765 43210">
+
+            <label for="edit-team">Team Members</label>
+            <textarea id="edit-team">CEO: John K. Doe
+CTO: Alice Smith</textarea>
+
+            <label for="edit-milestones">Key Milestones</label>
+            <textarea id="edit-milestones">Platform Launch: January 2024
+Seed Funding Round: November 2023
+Beta Testing Phase: September 2023</textarea>
+
+            <label for="edit-skills">Areas of Focus (Comma Separated)</label>
+            <textarea id="edit-skills">Startup Ecosystem, Venture Capital, Pitch Deck Analysis, Seed Funding, AI-powered Matching, Networking, Business Strategy</textarea>
+        </form>
+        <div class="modal-buttons">
+            <button class="cancel-btn" onclick="toggleEditProfileModal()">Cancel</button>
+            <button class="save-btn" onclick="alert('Changes saved!'); toggleEditProfileModal();">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/startup_shared_scripts.js"></script>
+</body>
+</html>

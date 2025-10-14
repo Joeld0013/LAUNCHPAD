@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LaunchPad — Home</title>
+    <link rel="stylesheet" href="css/Startup_shared_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="site-wrap">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LP</div>
+                <div class="logo-text">LaunchPad</div>
+            </div>
+            <div class="nav-links">
+                <a href="startup_index.html">Home</a>
+                <a href="startup_post.html">Posts</a>
+                <a href="startup_profile.html">Profile</a>
+                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-bar-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" placeholder="Search for investors, posts, skills...">
+    </div>
+
+    <div id="notification-popup">
+        <div class="section-title">Notifications</div>
+        <div class="notification-item">
+            <div class="notification-avatar">VC</div>
+            <div class="notification-text">Stellar Ventures just commented on your post.</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-avatar">SA</div>
+            <div class="notification-text">Synapse AI announced a new event.</div>
+        </div>
+    </div>
+
+    <section id="home">
+        <div class="grid home-grid">
+            <aside>
+                <div class="card home-profile-preview">
+                    <div class="home-profile-top">
+                        <div class="home-profile-avatar">SA</div>
+                        <a href="startup_profile.html" class="home-profile-name link">Synapse AI</a>
+                        <div class="home-profile-title">AI Solutions Startup</div>
+                        <div class="meta-row">Synapse AI develops and implements next-generation AI pipelines.</div>
+                        <div class="meta-row">📍 Bengaluru, India</div>
+                    </div>
+                </div>
+            </aside>
+            <main>
+                <div class="start-post-card">
+                    <div class="start-post-top">
+                        <div class="my-avatar">SA</div>
+                        <input type="text" class="start-post-input" placeholder="Start a post">
+                    </div>
+                    <div class="start-post-actions">
+                        <label for="post-attachment"><i class="fas fa-paperclip"></i></label>
+                        <input type="file" id="post-attachment" style="display: none;">
+                        <button class="post-btn">Post</button>
+                    </div>
+                </div>
+                <div class="home-grid-cards">
+                    <div class="card">
+                        <div class="section-title">Company Updates</div>
+                        <p>See the <a href="startup_post.html" class="link">Posts</a> for announcements.</p>
+                    </div>
+                    <div class="card">
+                        <div class="section-title">Top Investors</div>
+                        <div class="investor"><div class="inv-avatar">VC</div><a href="startup_profile.html" class="link">Stellar Ventures</a></div>
+                        <div class="investor"><div class="inv-avatar">IC</div><a href="startup_profile.html" class="link">Innovate Capital</a></div>
+                        <div class="investor"><div class="inv-avatar">FP</div><a href="startup_profile.html" class="link">Future Partners</a></div>
+                    </div>
+                </div>
+            </main>
+            <aside>
+                <div class="card news-card">
+                    <div class="section-title">Latest News</div>
+                    <div class="news-item">
+                        <strong>Vibe coding firms raise millions</strong>
+                        <div class="meta-row">2h ago &bull; 1,234 readers</div>
+                    </div>
+                    <div class="news-item">
+                        <strong>Ad agencies seek new leaders</strong>
+                        <div class="meta-row">2d ago &bull; 567 readers</div>
+                    </div>
+                    <div class="news-item">
+                        <strong>New partnership with SpaceTech firm</strong>
+                        <div class="meta-row">3d ago &bull; 987 readers</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="copyright">© 2025 LaunchPad</div>
+        </div>
+    </footer>
+</div>
+<script src="js/startup_shared_scripts.js"></script>
+</body>
+</html>

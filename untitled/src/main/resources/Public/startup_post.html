@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LaunchPad — Posts</title>
+    <link rel="stylesheet" href="css/Startup_shared_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="site-wrap">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LP</div>
+                <div class="logo-text">LaunchPad</div>
+            </div>
+            <div class="nav-links">
+                <a href="startup_index.html">Home</a>
+                <a href="startup_post.html">Posts</a>
+                <a href="startup_profile.html">Profile</a>
+                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-bar-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" placeholder="Search for investors, posts, skills...">
+    </div>
+
+    <div id="notification-popup">
+        <div class="section-title">Notifications</div>
+        <div class="notification-item">
+            <div class="notification-avatar">VC</div>
+            <div class="notification-text">Stellar Ventures just commented on your post.</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-avatar">SA</div>
+            <div class="notification-text">Synapse AI announced a new event.</div>
+        </div>
+    </div>
+
+    <section id="posts">
+        <div class="start-post-card">
+            <div class="start-post-top">
+                <div class="my-avatar">SA</div>
+                <input type="text" class="start-post-input" placeholder="Start a post">
+            </div>
+            <div class="start-post-actions">
+                <label for="post-attachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="post-attachment" style="display: none;">
+                <button class="post-btn">Post</button>
+            </div>
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterPosts('all')">All Posts</button>
+            <button class="filter-btn" onclick="filterPosts('investor')">Investors</button>
+            <button class="filter-btn" onclick="filterPosts('startup')">Startups</button>
+        </div>
+        <div class="card post-list">
+            <div class="section-title" id="post-list-title">All Posts</div>
+            <article class="post investor-post post-card">
+                <div class="post-header">
+                    <div class="post-avatar">VC</div>
+                    <div>
+                        <div class="company-name"><span class="link">Stellar Ventures</span></div>
+                        <div class="post-meta">2h ago</div>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <div>Thrilled to announce our new investment in **QuantumLeap AI**, a groundbreaking startup developing next-gen quantum machine learning algorithms! We believe their technology will revolutionize data processing and scientific discovery. Excited for what's ahead! #AI #QuantumComputing #VentureCapital</div>
+                    <img src="https://images.unsplash.com/photo-1579546305988-124619082359?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="QuantumLeap AI Investment" class="post-image">
+                </div>
+                <div class="post-footer">
+                    <div class="post-action like-btn" data-likes="120"><i class="fas fa-thumbs-up"></i> <span class="like-count">120</span></div>
+                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                </div>
+            </article>
+            <article class="post startup-post post-card">
+                <div class="post-header">
+                    <div class="post-avatar">SA</div>
+                    <div>
+                        <div class="company-name"><span class="link">Synapse AI</span></div>
+                        <div class="post-meta">5h ago</div>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <div>Don't miss our upcoming webinar: "Navigating Seed Rounds - What Investors Look For." Join industry experts as they share insights and tips for early-stage startups. Register now!</div>
+                    <img src="https://images.unsplash.com/photo-1620325696245-0960538a7985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Webinar Announcement" class="post-image">
+                </div>
+                <div class="post-footer">
+                    <div class="post-action like-btn" data-likes="56"><i class="fas fa-thumbs-up"></i> <span class="like-count">56</span></div>
+                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                </div>
+            </article>
+            <article class="post investor-post post-card">
+                <div class="post-header">
+                    <div class="post-avatar">VC</div>
+                    <div>
+                        <div class="company-name"><span class="link">Stellar Ventures</span></div>
+                        <div class="post-meta">1d ago</div>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <div>Reflecting on a fantastic year of growth and innovation! We're proud to support visionary founders building the future. Here's to more success in the coming year!</div>
+                </div>
+                <div class="post-footer">
+                    <div class="post-action like-btn" data-likes="203"><i class="fas fa-thumbs-up"></i> <span class="like-count">203</span></div>
+                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="copyright">© 2025 LaunchPad</div>
+        </div>
+    </footer>
+</div>
+<script src="js/startup_shared_scripts.js"></script>
+</body>
+</html>

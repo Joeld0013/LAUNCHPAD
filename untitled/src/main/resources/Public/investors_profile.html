@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LaunchPad — Investor Profile</title>
+    <link rel="stylesheet" href="css/invester_shared_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="site-wrap">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LP</div>
+                <div class="logo-text">LaunchPad</div>
+            </div>
+            <div class="nav-links">
+                <a href="investors_index.html">Home</a>
+                <a href="investors_posts.html">Posts</a>
+                <a href="investors_profile.html">Profile</a>
+                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section id="profile">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar-large">VC</div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Stellar Ventures</h1>
+                    <p class="profile-title">Venture Capital Firm | Fuelling the Next Wave of Innovation</p>
+                    <p class="profile-location">📍 Mumbai, India</p>
+                </div>
+                <button class="edit-profile-btn" onclick="toggleEditProfileModal()">Edit Profile</button>
+            </div>
+
+            <div class="profile-contact">
+                <div class="section-title">Contact Information</div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span><a href="#" class="link">stellar.ventures</a></span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>contact@stellar.ventures</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91 22 4000 5000</span>
+                </div>
+            </div>
+
+            <div class="profile-summary">
+                <div class="section-title">About</div>
+                <p class="profile-summary-text">Stellar Ventures is a leading venture capital firm focused on early-stage technology startups in India and Southeast Asia. We partner with exceptional founders to build category-defining companies.</p>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Asset Allocation Dashboard</div>
+                <div class="dashboard-grid">
+                    <div class="pie-chart-container">
+                        <h4>Allocation by Sector</h4>
+                        <div class="pie-chart"></div>
+                        <div class="chart-legend">
+                            <div><span class="legend-dot" style="background-color: #edb96f;"></span> Fintech (40%)</div>
+                            <div><span class="legend-dot" style="background-color: #2b3446;"></span> Deep Tech & AI (30%)</div>
+                            <div><span class="legend-dot" style="background-color: #7a8ba3;"></span> SaaS (20%)</div>
+                            <div><span class="legend-dot" style="background-color: #d1d5db;"></span> Consumer Tech (10%)</div>
+                        </div>
+                    </div>
+                    <div class="performance-graph-container">
+                        <h4>Portfolio Performance (YoY)</h4>
+                        <div class="chart-container" style="height: 180px;">
+                            <div class="chart-bar" style="height: 55%;" data-label="2023">+15%</div>
+                            <div class="chart-bar" style="height: 80%;" data-label="2024">+28%</div>
+                            <div class="chart-bar" style="height: 90%;" data-label="2025 (YTD)">+35%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Investment Milestones</div>
+                <div class="funding-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Portfolio Value Exceeds $5M</h3>
+                            <time>October 2025</time>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Lead Investor in QuantumLeap's Series A</h3>
+                            <time>February 2025</time>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>First Investment: Synapse AI (Seed)</h3>
+                            <time>June 2024</time>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h3>Joined LaunchPad Platform</h3>
+                            <time>January 2024</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-posts">
+                <div class="section-title">Recent Posts</div>
+                <article class="post investor-post post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">VC</div>
+                        <div>
+                            <div class="company-name"><span class="link">Stellar Ventures</span></div>
+                            <div class="post-meta">2h ago</div>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <div>Thrilled to announce our new investment in **QuantumLeap AI**! #AI #QuantumComputing #VentureCapital</div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="copyright">© 2025 LaunchPad</div>
+        </div>
+    </footer>
+</div>
+
+<div id="edit-profile-modal" class="modal">
+    <div class="modal-content">
+        <h3>Edit Investor Profile</h3>
+        <form>
+            <label for="edit-firm-name">Firm Name</label>
+            <input type="text" id="edit-firm-name" value="Stellar Ventures">
+            <label for="edit-title">Title</label>
+            <input type="text" id="edit-title" value="Venture Capital Firm | Fuelling the Next Wave of Innovation">
+            <label for="edit-about">About</label>
+            <textarea id="edit-about" rows="4">Stellar Ventures is a leading venture capital firm focused on early-stage technology startups in India and Southeast Asia.</textarea>
+
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+
+            <h4>Investment Preferences</h4>
+            <div class="preferences-form" style="margin-top: 15px;">
+                <div class="form-row" style="grid-template-columns: 1fr;">
+                    <div class="form-group">
+                        <label>Preferred Sectors (Select up to 3)</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" checked> Fintech</label>
+                            <label><input type="checkbox" checked> Deep Tech & AI</label>
+                            <label><input type="checkbox"> SaaS</label>
+                            <label><input type="checkbox"> HealthTech</label>
+                            <label><input type="checkbox"> Consumer Tech</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="investment-amount">Typical Investment Amount</label>
+                        <select id="investment-amount">
+                            <option>$50,000 - $250,000</option>
+                            <option>$250,000 - $1,000,000</option>
+                            <option>$1,000,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Time Horizon</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="horizon"> 1-3 Years</label>
+                            <label><input type="radio" name="horizon" checked> 3-5 Years</label>
+                            <label><input type="radio" name="horizon"> 5+ Years</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal-buttons">
+            <button class="cancel-btn" onclick="toggleEditProfileModal()">Cancel</button>
+            <button class="save-btn" onclick="toggleEditProfileModal()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/invester_shared_scripts.js"></script>
+</body>
+</html>
