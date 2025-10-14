@@ -1,9 +1,9 @@
 package com.launchpad.admin.services;
 
 import com.launchpad.admin.dto.*;
-import com.launchpad.registration.model.Startup;  // Use registration model
-import com.launchpad.registration.model.DocumentFile;  // Use registration model
-import com.launchpad.admin.repository.StartupDocumentRepository;
+import com.launchpad.registration.model.Startup;
+import com.launchpad.registration.model.DocumentFile;
+import com.launchpad.admin.repository.DocumentFileRepository;
 import com.launchpad.admin.repository.AdminStartupRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.io.File;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +31,7 @@ public class StartupAdminService {
     private AdminStartupRepository startupRepository;
 
     @Autowired
-    private StartupDocumentRepository documentRepository;
+    private DocumentFileRepository documentRepository;
 
     @Autowired
     private AdminEmailService emailService;
@@ -39,6 +39,9 @@ public class StartupAdminService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    /**
+     * Get all startups with optional filtering
+     */
     public List<StartupResponseDTO> getAllStartups(StartupFilterDTO filter) {
         logger.info("Fetching startups with filter: {}", filter);
 
@@ -58,7 +61,7 @@ public class StartupAdminService {
             }
 
             if (filter.getRegistrationStatus() != null) {
-                query.addCriteria(Criteria.where("registrationStatus").is(filter.getRegistrationStatus().toString()));
+                query.addCriteria(Criteria.where("registrationStatus").is(filter.getRegistrationStatus()));
             }
 
             if (filter.getSearchTerm() != null && !filter.getSearchTerm().isEmpty()) {
@@ -81,6 +84,9 @@ public class StartupAdminService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get startups by status
+     */
     public List<StartupResponseDTO> getStartupsByStatus(String status) {
         logger.info("Fetching startups with status: {}", status);
         List<Startup> startups = startupRepository.findByRegistrationStatus(status);
@@ -90,6 +96,9 @@ public class StartupAdminService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get startup by ID with documents
+     */
     public StartupResponseDTO getStartupById(String id) {
         logger.info("Fetching startup with ID: {}", id);
         Startup startup = startupRepository.findById(id)
@@ -97,6 +106,9 @@ public class StartupAdminService {
         return convertToDTO(startup);
     }
 
+    /**
+     * Approve a startup. Sends colored HTML email.
+     */
     @Transactional
     public StartupResponseDTO approveStartup(ApprovalRequestDTO request) {
         logger.info("Approving startup with ID: {}", request.getStartupId());
@@ -115,17 +127,23 @@ public class StartupAdminService {
         logger.info("Startup approved and saved: {}", savedStartup.getId());
 
         try {
-            // Create temp Startup object for email (since AdminEmailService expects admin.model.Startup)
-            com.launchpad.admin.model.Startup emailStartup = convertForEmail(savedStartup);
-            emailService.sendApprovalEmail(emailStartup);
-            logger.info("Approval email sent to: {}", savedStartup.getEmail());
+            emailService.sendApprovalEmail(
+                    savedStartup.getEmail(),
+                    savedStartup.getName(), // ContactPerson if available
+                    savedStartup.getName(),
+                    "http://localhost:8080/startup_login.html"
+            );
+            logger.info("✅ Approval email sent to: {}", savedStartup.getEmail());
         } catch (Exception e) {
-            logger.error("Failed to send approval email: {}", e.getMessage());
+            logger.error("❌ Failed to send approval email: {}", e.getMessage(), e);
         }
 
         return convertToDTO(savedStartup);
     }
 
+    /**
+     * Reject a startup
+     */
     @Transactional
     public StartupResponseDTO rejectStartup(ApprovalRequestDTO request) {
         logger.info("Rejecting startup with ID: {}", request.getStartupId());
@@ -139,16 +157,23 @@ public class StartupAdminService {
         Startup savedStartup = startupRepository.save(startup);
 
         try {
-            com.launchpad.admin.model.Startup emailStartup = convertForEmail(savedStartup);
-            emailService.sendRejectionEmail(emailStartup, request.getComments());
+            emailService.sendRejectionEmail(
+                    savedStartup.getEmail(),
+                    savedStartup.getName(), // ContactPerson if available
+                    savedStartup.getName(),
+                    request.getComments()
+            );
             logger.info("Rejection email sent to: {}", savedStartup.getEmail());
         } catch (Exception e) {
-            logger.error("Failed to send rejection email: {}", e.getMessage());
+            logger.error("Failed to send rejection email: {}", e.getMessage(), e);
         }
 
         return convertToDTO(savedStartup);
     }
 
+    /**
+     * Search startups
+     */
     public List<StartupResponseDTO> searchStartups(String searchTerm) {
         logger.info("Searching startups with term: {}", searchTerm);
         List<Startup> startups = startupRepository.searchStartups(searchTerm);
@@ -157,6 +182,9 @@ public class StartupAdminService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get startup statistics
+     */
     public StartupStatsDTO getStartupStatistics() {
         StartupStatsDTO stats = new StartupStatsDTO();
         stats.setTotalStartups(startupRepository.count());
@@ -166,6 +194,9 @@ public class StartupAdminService {
         return stats;
     }
 
+    /**
+     * Convert Startup entity to DTO
+     */
     private StartupResponseDTO convertToDTO(Startup startup) {
         StartupResponseDTO dto = new StartupResponseDTO();
 
@@ -181,45 +212,80 @@ public class StartupAdminService {
         dto.setRegistrationStatus(startup.getRegistrationStatus());
         dto.setIsVerified(startup.isVerified());
 
-        // Convert LocalDateTime to Date for DTO
         if (startup.getCreatedAt() != null) {
             dto.setCreatedAt(Date.from(startup.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()));
         }
 
         dto.setWebsite(startup.getWebsite());
-        dto.setBusinessPlan(null);  // Not in registration model
-        dto.setFoundedDate(null);   // Not in registration model
-        dto.setTeamSize(null);      // Not in registration model
-        dto.setContactPerson(startup.getName());  // Use name as contact person
+        dto.setBusinessPlan(null);
+        dto.setFoundedDate(null);
+        dto.setTeamSize(null);
+        dto.setContactPerson(startup.getName());
 
-        // Load documents
-        if (startup.getDocumentIds() != null && !startup.getDocumentIds().isEmpty()) {
-            List<DocumentDTO> documents = new ArrayList<>();
-            for (String docId : startup.getDocumentIds()) {
-                documentRepository.findById(docId).ifPresent(doc -> {
-                    DocumentDTO docDTO = new DocumentDTO();
-                    docDTO.setId(doc.getId());
-                    docDTO.setFileName(doc.getFilePath().substring(doc.getFilePath().lastIndexOf("\\") + 1));
-                    docDTO.setFileType(doc.getDocType().toString());
-                    docDTO.setFileSize(0L);  // File size not stored in DocumentFile
+        // Load documents by startupId directly from documents collection
+        List<DocumentDTO> documents = new ArrayList<>();
+        try {
+            logger.info("🔍 Looking for documents for startup ID: {}", startup.getId());
 
-                    if (doc.getUploadedAt() != null) {
-                        docDTO.setUploadedAt(doc.getUploadedAt());
+            List<DocumentFile> docFiles = documentRepository.findByStartupId(startup.getId());
+            logger.info("📎 Found {} documents for startup {}", docFiles.size(), startup.getId());
+
+            for (DocumentFile doc : docFiles) {
+                logger.info("📄 Processing document: {} - {}", doc.getId(), doc.getFilePath());
+
+                DocumentDTO docDTO = new DocumentDTO();
+                docDTO.setId(doc.getId());
+
+                String fileName = doc.getFilePath();
+                if (fileName != null) {
+                    if (fileName.contains("\\")) {
+                        fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+                    } else if (fileName.contains("/")) {
+                        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
                     }
+                }
+                docDTO.setFileName(fileName != null ? fileName : "Unknown");
 
-                    docDTO.setDownloadUrl("/api/admin/startups/documents/" + doc.getId() + "/download");
-                    documents.add(docDTO);
-                });
+                String fileType = doc.getDocType() != null ? doc.getDocType().toString() : "OTHER";
+                docDTO.setFileType(fileType);
+
+                try {
+                    File file = new File(doc.getFilePath());
+                    if (file.exists()) {
+                        docDTO.setFileSize(file.length());
+                        logger.info("✅ File exists: {} bytes", file.length());
+                    } else {
+                        docDTO.setFileSize(0L);
+                        logger.warn("⚠️ File not found: {}", doc.getFilePath());
+                    }
+                } catch (Exception e) {
+                    docDTO.setFileSize(0L);
+                    logger.error("❌ Error reading file: {}", e.getMessage());
+                }
+
+                if (doc.getUploadedAt() != null) {
+                    docDTO.setUploadedAt(doc.getUploadedAt());
+                }
+
+                docDTO.setDownloadUrl("/api/admin/startups/documents/" + doc.getId() + "/download");
+                documents.add(docDTO);
+
+                logger.info("✅ Added document to DTO: {}", docDTO.getFileName());
             }
-            dto.setDocuments(documents);
-        } else {
-            dto.setDocuments(new ArrayList<>());
+        } catch (Exception e) {
+            logger.error("❌ Error loading documents for startup {}: {}", startup.getId(), e.getMessage(), e);
+            e.printStackTrace();
         }
+
+        dto.setDocuments(documents);
+        logger.info("📦 Total documents in DTO: {}", documents.size());
 
         return dto;
     }
 
-    // Helper method to convert registration.model.Startup to admin.model.Startup for emails
+    /**
+     * Helper method to convert registration.model.Startup to admin.model.Startup for emails
+     */
     private com.launchpad.admin.model.Startup convertForEmail(Startup regStartup) {
         com.launchpad.admin.model.Startup adminStartup = new com.launchpad.admin.model.Startup();
         adminStartup.setId(regStartup.getId());

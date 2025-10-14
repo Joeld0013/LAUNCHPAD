@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadStartups();
     setupEventListeners();
     setupFilters();
+    setupExportFunctionality();
 });
 
 // ========== NAVIGATION FUNCTIONALITY (ORIGINAL) ==========
@@ -18,65 +19,53 @@ function initializeNavigation() {
 
     // Frontend routes mapping - direct HTML file navigation
     const routes = {
-        // Sidebar navigation - direct HTML files
         'dashboard': 'admindashboard.html',
         'startups': 'startupadmin.html',
         'investors': 'investors.html',
         'approvals': 'approvals.html',
         'analytics': 'analytics.html',
         'settings': 'settings.html',
-
-        // Quick action buttons
         'register-startup': 'startupadmin.html?action=register',
         'browse-investors': 'investors.html',
         'review-approvals': 'approvals.html'
     };
 
-    // Function to handle navigation
     function navigateTo(route) {
-        // Direct frontend navigation to HTML files
         if (route.startsWith('/')) {
-            route = route.substring(1); // Remove leading slash
+            route = route.substring(1);
         }
 
-        // Check if we're already on the target page
         const currentPage = window.location.pathname.split('/').pop();
         if (currentPage === route) {
-            // Already on the page, just update active state
             updateActiveNavItem(route);
             return;
         }
 
-        // Navigate to the HTML file
         window.location.href = route;
     }
 
-    // Function to update active navigation item
     function updateActiveNavItem(route) {
-        // Remove active class from all items
         navItems.forEach(item => {
             item.classList.remove('active');
         });
 
-        // Determine which nav item should be active
         let activeNavId = '';
-        const currentPage = route.split('?')[0]; // Remove query parameters
+        const currentPage = route.split('?')[0];
 
-        if (currentPage.includes('admindashboard.html') || currentPage === 'admindashboard.html' || currentPage === '' || currentPage === 'dashboard') {
+        if (currentPage.includes('admindashboard.html') || currentPage === '' || currentPage === 'dashboard') {
             activeNavId = 'dashboard';
         } else if (currentPage.includes('startupadmin.html') || currentPage.includes('startups')) {
             activeNavId = 'startups';
-        } else if (currentPage.includes('investors.html') || currentPage.includes('investors')) {
+        } else if (currentPage.includes('investors.html')) {
             activeNavId = 'investors';
-        } else if (currentPage.includes('approvals.html') || currentPage.includes('approvals')) {
+        } else if (currentPage.includes('approvals.html')) {
             activeNavId = 'approvals';
-        } else if (currentPage.includes('analytics.html') || currentPage.includes('analytics')) {
+        } else if (currentPage.includes('analytics.html')) {
             activeNavId = 'analytics';
-        } else if (currentPage.includes('settings.html') || currentPage.includes('settings')) {
+        } else if (currentPage.includes('settings.html')) {
             activeNavId = 'settings';
         }
 
-        // Add active class to the correct nav item
         if (activeNavId) {
             const activeItem = document.querySelector(`.nav-item[data-route="${activeNavId}"]`);
             if (activeItem) {
@@ -85,23 +74,13 @@ function initializeNavigation() {
         }
     }
 
-    // Function to show navigation feedback
     function showNavigationFeedback(route) {
         const pageName = route.split('?')[0].replace('.html', '') || 'Dashboard';
         const notification = document.createElement('div');
         notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #edb96f;
-            color: #2b3446;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: fixed; top: 20px; right: 20px; background: #edb96f;
+            color: #2b3446; padding: 12px 20px; border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; font-weight: 600;
         `;
 
         const formattedPageName = pageName.charAt(0).toUpperCase() + pageName.slice(1).replace('admin', ' Admin');
@@ -109,19 +88,12 @@ function initializeNavigation() {
 
         document.body.appendChild(notification);
 
-        // Remove notification after 2 seconds
         setTimeout(() => {
             notification.style.opacity = '0';
-            notification.style.transform = 'translateX(100px)';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
+            setTimeout(() => notification.remove(), 300);
         }, 1500);
     }
 
-    // Sidebar nav click handling
     navItems.forEach(item => {
         const routeKey = item.querySelector('.nav-text').textContent.toLowerCase().trim();
         item.setAttribute('data-route', routeKey);
@@ -130,91 +102,122 @@ function initializeNavigation() {
             const route = routes[routeKey];
             if (route) {
                 showNavigationFeedback(route);
-                // Small delay to show the notification before navigation
-                setTimeout(() => {
-                    navigateTo(route);
-                }, 100);
+                setTimeout(() => navigateTo(route), 100);
             }
         });
     });
 
-    // Quick action button handling
-    actionButtons.forEach(button => {
-        let actionKey = '';
-        const buttonText = button.textContent.toLowerCase().trim();
+    // Add New Startup button
+    const addNewStartupBtn = document.querySelector('.page-actions .btn-primary');
+    if (addNewStartupBtn) {
+        addNewStartupBtn.addEventListener('click', function() {
+            // Redirect to startup registration page
+            window.location.href = 'startup_reg_pg.html';
+        });
+    }
 
-        if (buttonText.includes('register startup')) {
-            actionKey = 'register-startup';
-        } else if (buttonText.includes('browse investors')) {
-            actionKey = 'browse-investors';
-        } else if (buttonText.includes('review approvals')) {
-            actionKey = 'review-approvals';
-        }
-
-        if (actionKey) {
-            button.addEventListener('click', function() {
-                const route = routes[actionKey];
-                if (route) {
-                    showNavigationFeedback(route);
-                    setTimeout(() => {
-                        navigateTo(route);
-                    }, 100);
-                }
-            });
-        }
-    });
-
-    // Set initial active state based on current page
     function setInitialActiveState() {
         const currentPage = window.location.pathname.split('/').pop();
         updateActiveNavItem(currentPage);
     }
 
-    // Initialize navigation
     setInitialActiveState();
+}
 
-    // Search functionality
-    const searchInput = document.querySelector('.search-bar input');
-    if (searchInput) {
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const searchTerm = this.value.trim();
-                if (searchTerm) {
-                    alert(`Searching for: ${searchTerm}`);
-                    this.value = '';
-                }
-            }
-        });
+// ========== EXPORT FUNCTIONALITY ==========
+let selectedStartups = new Set();
+
+function setupExportFunctionality() {
+    const exportBtn = document.querySelector('.page-actions .btn-secondary');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', showExportModal);
     }
+}
 
-    // Notification dropdown
-    const notificationIcon = document.querySelector('.notification');
-    if (notificationIcon) {
-        notificationIcon.addEventListener('click', function() {
-            alert('Notifications dropdown would appear here');
-        });
-    }
+function showExportModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Export Startup Data</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="filter-group" style="margin-bottom: 20px;">
+                    <label class="filter-label">Export Which Startups?</label>
+                    <select class="filter-select" id="export-filter">
+                        <option value="all">All Startups</option>
+                        <option value="PENDING">Pending Only</option>
+                        <option value="APPROVED">Approved Only</option>
+                        <option value="REJECTED">Rejected Only</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Export Format</label>
+                    <select class="filter-select" id="export-format">
+                        <option value="csv">CSV (Excel)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="executeExport()">
+                    <i class="fas fa-download"></i> Download Export
+                </button>
+                <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
 
-    // User profile dropdown
-    const userProfile = document.querySelector('.user-profile');
-    if (userProfile) {
-        userProfile.addEventListener('click', function() {
-            alert('User profile menu would appear here');
-        });
+async function executeExport() {
+    const filter = document.getElementById('export-filter').value;
+    const format = document.getElementById('export-format').value;
+
+    try {
+        showLoading();
+
+        const url = filter === 'all'
+            ? `${API_BASE_URL}/admin/startups/export?format=${format}`
+            : `${API_BASE_URL}/admin/startups/export?status=${filter}&format=${format}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Export failed');
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `startups-export-${filter}-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(a);
+
+        document.querySelector('.modal').remove();
+        showSuccess('Export completed successfully!');
+
+    } catch (error) {
+        console.error('Export error:', error);
+        showError('Failed to export data. Please try again.');
+    } finally {
+        hideLoading();
     }
 }
 
 // ========== DATA LOADING ==========
-
-/**
- * Load all startups from backend
- */
 async function loadStartups(filters = {}) {
     try {
         console.log('📡 Loading startups with filters:', filters);
         showLoading();
 
-        // Build query parameters
         const params = new URLSearchParams();
         if (filters.industry) params.append('industry', filters.industry);
         if (filters.stage) params.append('stage', filters.stage);
@@ -225,13 +228,7 @@ async function loadStartups(filters = {}) {
         const url = `${API_BASE_URL}/admin/startups?${params.toString()}`;
         console.log('🔗 Fetching from:', url);
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
+        const response = await fetch(url);
         console.log('📥 Response status:', response.status);
 
         if (!response.ok) {
@@ -258,19 +255,14 @@ async function loadStartups(filters = {}) {
     }
 }
 
-/**
- * Display startups in the grid
- */
 function displayStartups(startups) {
     console.log('🎨 Displaying startups:', startups.length);
 
-    // Separate pending and approved startups
     const pendingStartups = startups.filter(s => s.registrationStatus === 'PENDING');
     const approvedStartups = startups.filter(s => s.registrationStatus === 'APPROVED');
 
     console.log(`📋 Pending: ${pendingStartups.length}, Approved: ${approvedStartups.length}`);
 
-    // Display pending startups
     const pendingGrid = document.getElementById('pending-startups');
     if (pendingGrid) {
         if (pendingStartups.length === 0) {
@@ -278,11 +270,8 @@ function displayStartups(startups) {
         } else {
             pendingGrid.innerHTML = pendingStartups.map(startup => createStartupCard(startup, true)).join('');
         }
-    } else {
-        console.error('❌ Pending grid element not found');
     }
 
-    // Display approved startups
     const approvedGrid = document.getElementById('approved-startups');
     if (approvedGrid) {
         if (approvedStartups.length === 0) {
@@ -290,28 +279,17 @@ function displayStartups(startups) {
         } else {
             approvedGrid.innerHTML = approvedStartups.map(startup => createStartupCard(startup, false)).join('');
         }
-    } else {
-        console.error('❌ Approved grid element not found');
     }
 }
 
-/**
- * Create HTML for a startup card
- */
 function createStartupCard(startup, showActions = true) {
     const statusClass = startup.registrationStatus === 'APPROVED' ? 'status-approved' : 'status-pending';
     const statusText = startup.registrationStatus === 'APPROVED' ? 'Approved' : 'Pending Review';
 
-    // Get initials for logo
     const initials = startup.name.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase();
-
-    // Format stage
     const stageFormatted = startup.stage ? startup.stage.charAt(0).toUpperCase() + startup.stage.slice(1) : 'N/A';
-
-    // Format location
     const location = startup.address || startup.country || 'Location not specified';
 
-    // Founded date - handle both Date and string formats
     let founded = 'N/A';
     if (startup.createdAt) {
         try {
@@ -377,21 +355,12 @@ function createStartupCard(startup, showActions = true) {
 }
 
 // ========== MODAL FUNCTIONALITY ==========
-
-/**
- * Open startup detail modal
- */
 async function openStartupModal(startupId) {
     try {
         console.log('🔍 Opening modal for startup:', startupId);
         showLoading();
 
-        const response = await fetch(`${API_BASE_URL}/admin/startups/${startupId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        const response = await fetch(`${API_BASE_URL}/admin/startups/${startupId}`);
 
         if (!response.ok) {
             throw new Error('Failed to fetch startup details');
@@ -415,16 +384,11 @@ async function openStartupModal(startupId) {
     }
 }
 
-/**
- * Populate modal with startup data
- */
 function populateModal(startup) {
     console.log('📝 Populating modal with:', startup);
 
-    // Store startup ID in modal for approve/reject actions
     document.getElementById('startupModal').dataset.startupId = startup.id;
 
-    // Basic information
     document.getElementById('modal-name').textContent = startup.name || 'N/A';
     document.getElementById('modal-category').textContent = startup.industry || 'N/A';
     document.getElementById('modal-industry').textContent = startup.industry || 'N/A';
@@ -434,19 +398,15 @@ function populateModal(startup) {
     document.getElementById('modal-team').textContent = startup.teamSize || 'N/A';
     document.getElementById('modal-website').textContent = startup.website || 'N/A';
 
-    // Description and business plan
     document.getElementById('modal-description').textContent = startup.description || 'No description provided.';
     document.getElementById('modal-plan').textContent = startup.businessPlan || 'No business plan provided.';
 
-    // Contact information
     document.getElementById('modal-contact').textContent = startup.contactPerson || startup.name || 'N/A';
     document.getElementById('modal-email').textContent = startup.email || 'N/A';
     document.getElementById('modal-phone').textContent = startup.phone || 'N/A';
 
-    // Documents
     displayDocuments(startup.documents || []);
 
-    // Show/hide approve/reject buttons based on status
     const modalFooter = document.querySelector('.modal-footer');
     const approveBtn = modalFooter.querySelector('.btn-approve');
     const rejectBtn = modalFooter.querySelector('.btn-reject');
@@ -460,9 +420,6 @@ function populateModal(startup) {
     }
 }
 
-/**
- * Display documents in modal
- */
 function displayDocuments(documents) {
     const documentList = document.getElementById('modal-documents');
 
@@ -470,6 +427,8 @@ function displayDocuments(documents) {
         console.error('❌ Document list element not found');
         return;
     }
+
+    console.log('📎 Displaying documents:', documents);
 
     if (!documents || documents.length === 0) {
         documentList.innerHTML = '<p style="color: #777;">No documents uploaded.</p>';
@@ -479,12 +438,14 @@ function displayDocuments(documents) {
     documentList.innerHTML = documents.map(doc => {
         const icon = getFileIcon(doc.fileType);
         const fileName = doc.fileName || 'Unknown file';
+        const fileSize = formatFileSize(doc.fileSize);
 
         return `
             <div class="document-item">
                 <div class="document-name">
                     <i class="${icon}"></i>
                     <span>${fileName}</span>
+                    <small style="color: #999; margin-left: 10px;">(${fileSize})</small>
                 </div>
                 <div class="document-actions">
                     <button class="btn-icon btn-view" onclick="downloadDocument('${doc.id}', '${fileName}')">
@@ -496,9 +457,6 @@ function displayDocuments(documents) {
     }).join('');
 }
 
-/**
- * Get appropriate icon for file type
- */
 function getFileIcon(fileType) {
     if (!fileType) return 'fas fa-file-alt';
 
@@ -508,21 +466,23 @@ function getFileIcon(fileType) {
     if (type.includes('EXCEL') || type.includes('SPREADSHEET')) return 'fas fa-file-excel';
     if (type.includes('WORD') || type.includes('DOCUMENT')) return 'fas fa-file-word';
     if (type.includes('POWERPOINT') || type.includes('PRESENTATION')) return 'fas fa-file-powerpoint';
+    if (type.includes('OTHER') || type.includes('UNKNOWN')) return 'fas fa-file';
     return 'fas fa-file-alt';
 }
 
-/**
- * Close startup modal
- */
+function formatFileSize(bytes) {
+    if (!bytes || bytes === 0) return 'Unknown size';
+
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+}
+
 function closeStartupModal() {
     document.getElementById('startupModal').style.display = 'none';
 }
 
 // ========== APPROVAL/REJECTION ACTIONS ==========
-
-/**
- * Approve a startup
- */
 async function approveStartup(startupId) {
     if (!confirm('Are you sure you want to approve this startup? An email notification will be sent to the startup.')) {
         return;
@@ -549,7 +509,7 @@ async function approveStartup(startupId) {
         if (data.success) {
             showSuccess(data.message || 'Startup approved successfully! An email has been sent to the startup.');
             closeStartupModal();
-            loadStartups(); // Reload the list
+            loadStartups();
         } else {
             showError(data.message || 'Failed to approve startup');
         }
@@ -562,14 +522,11 @@ async function approveStartup(startupId) {
     }
 }
 
-/**
- * Reject a startup
- */
 async function rejectStartup(startupId) {
     const comments = prompt('Please provide a reason for rejection (optional):');
 
     if (comments === null) {
-        return; // User cancelled
+        return;
     }
 
     if (!confirm('Are you sure you want to reject this startup? An email notification will be sent.')) {
@@ -598,7 +555,7 @@ async function rejectStartup(startupId) {
         if (data.success) {
             showSuccess(data.message || 'Startup rejected. A notification email has been sent.');
             closeStartupModal();
-            loadStartups(); // Reload the list
+            loadStartups();
         } else {
             showError(data.message || 'Failed to reject startup');
         }
@@ -611,9 +568,6 @@ async function rejectStartup(startupId) {
     }
 }
 
-/**
- * Modal approve button handler
- */
 function handleModalApprove() {
     const startupId = document.getElementById('startupModal').dataset.startupId;
     if (startupId) {
@@ -621,9 +575,6 @@ function handleModalApprove() {
     }
 }
 
-/**
- * Modal reject button handler
- */
 function handleModalReject() {
     const startupId = document.getElementById('startupModal').dataset.startupId;
     if (startupId) {
@@ -632,10 +583,6 @@ function handleModalReject() {
 }
 
 // ========== FILTER FUNCTIONALITY ==========
-
-/**
- * Setup filter controls
- */
 function setupFilters() {
     const filterSelects = document.querySelectorAll('.filter-select');
 
@@ -643,16 +590,12 @@ function setupFilters() {
         select.addEventListener('change', applyFilters);
     });
 
-    // Reset filters button
     const resetBtn = document.querySelector('.filters-header .btn-secondary');
     if (resetBtn) {
         resetBtn.addEventListener('click', resetFilters);
     }
 }
 
-/**
- * Apply filters
- */
 function applyFilters() {
     const filters = {
         industry: document.getElementById('filter-industry')?.value || '',
@@ -662,7 +605,6 @@ function applyFilters() {
 
     console.log('🔍 Applying filters:', filters);
 
-    // Remove empty filters
     Object.keys(filters).forEach(key => {
         if (!filters[key]) {
             delete filters[key];
@@ -672,9 +614,6 @@ function applyFilters() {
     loadStartups(filters);
 }
 
-/**
- * Reset all filters
- */
 function resetFilters() {
     console.log('🔄 Resetting filters');
     const filterSelects = document.querySelectorAll('.filter-select');
@@ -682,16 +621,16 @@ function resetFilters() {
         select.value = '';
     });
 
+    const searchInput = document.querySelector('.search-bar input');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+
     loadStartups();
 }
 
 // ========== SEARCH FUNCTIONALITY ==========
-
-/**
- * Setup search
- */
 function setupEventListeners() {
-    // Search functionality
     const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
         let searchTimeout;
@@ -707,13 +646,11 @@ function setupEventListeners() {
         });
     }
 
-    // Modal close button
     const modalCloseBtn = document.querySelector('.modal-close');
     if (modalCloseBtn) {
         modalCloseBtn.addEventListener('click', closeStartupModal);
     }
 
-    // Modal footer buttons
     const modalApproveBtn = document.querySelector('.modal-footer .btn-approve');
     const modalRejectBtn = document.querySelector('.modal-footer .btn-reject');
     const modalCloseFooterBtn = document.querySelector('.modal-footer .btn-secondary');
@@ -730,55 +667,25 @@ function setupEventListeners() {
         modalCloseFooterBtn.addEventListener('click', closeStartupModal);
     }
 
-    // Close modal when clicking outside
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('startupModal');
         if (event.target === modal) {
             closeStartupModal();
         }
     });
-
-    // Add New Startup button
-    const addStartupBtn = document.querySelector('.btn-primary');
-    if (addStartupBtn) {
-        addStartupBtn.addEventListener('click', function() {
-            alert('Add New Startup functionality would open here');
-        });
-    }
-
-    // Export Data button
-    const exportBtn = document.querySelector('.btn-secondary');
-    if (exportBtn && exportBtn.textContent.includes('Export Data')) {
-        exportBtn.addEventListener('click', function() {
-            alert('Export Data functionality would trigger here');
-        });
-    }
 }
 
 // ========== STATISTICS ==========
-
-/**
- * Update statistics display
- */
 async function updateStatistics() {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/startups/stats`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
+        const response = await fetch(`${API_BASE_URL}/admin/startups/stats`);
         const data = await response.json();
 
         if (data.success) {
             console.log('📊 Statistics:', data.data);
 
-            // Update section titles with counts
             const pendingSection = document.querySelector('.startups-section:first-of-type .section-title');
             const approvedSection = document.querySelector('.startups-section:last-of-type .section-title');
-
-            // Update notification badge
             const notificationBadge = document.querySelector('.notification-badge');
 
             if (pendingSection) {
@@ -800,17 +707,11 @@ async function updateStatistics() {
 }
 
 // ========== DOCUMENT DOWNLOAD ==========
-
-/**
- * Download document
- */
 async function downloadDocument(documentId, fileName) {
     try {
         showLoading();
 
-        const response = await fetch(`${API_BASE_URL}/admin/startups/documents/${documentId}/download`, {
-            method: 'GET'
-        });
+        const response = await fetch(`${API_BASE_URL}/admin/startups/documents/${documentId}/download`);
 
         if (!response.ok) {
             throw new Error('Failed to download document');
@@ -837,10 +738,6 @@ async function downloadDocument(documentId, fileName) {
 }
 
 // ========== UI HELPERS ==========
-
-/**
- * Show loading indicator
- */
 function showLoading() {
     let loader = document.getElementById('loading-overlay');
     if (!loader) {
@@ -861,7 +758,6 @@ function showLoading() {
         `;
         document.body.appendChild(loader);
 
-        // Add keyframes for spinner
         if (!document.getElementById('spinner-style')) {
             const style = document.createElement('style');
             style.id = 'spinner-style';
@@ -877,9 +773,6 @@ function showLoading() {
     loader.style.display = 'block';
 }
 
-/**
- * Hide loading indicator
- */
 function hideLoading() {
     const loader = document.getElementById('loading-overlay');
     if (loader) {
@@ -887,23 +780,14 @@ function hideLoading() {
     }
 }
 
-/**
- * Show success message
- */
 function showSuccess(message) {
     showNotification(message, 'success');
 }
 
-/**
- * Show error message
- */
 function showError(message) {
     showNotification(message, 'error');
 }
 
-/**
- * Show notification
- */
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.style.cssText = `
@@ -926,7 +810,6 @@ function showNotification(message, type = 'info') {
 
     document.body.appendChild(notification);
 
-    // Add slide-in animation
     if (!document.getElementById('notification-style')) {
         const style = document.createElement('style');
         style.id = 'notification-style';
@@ -955,7 +838,6 @@ function showNotification(message, type = 'info') {
         document.head.appendChild(style);
     }
 
-    // Remove after 4 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease-out';
         setTimeout(() => {
@@ -965,16 +847,3 @@ function showNotification(message, type = 'info') {
         }, 300);
     }, 4000);
 }
-
-// ========== GLOBAL FUNCTIONS ==========
-
-// Make functions globally available for onclick handlers
-window.openStartupModal = openStartupModal;
-window.closeStartupModal = closeStartupModal;
-window.approveStartup = approveStartup;
-window.rejectStartup = rejectStartup;
-window.downloadDocument = downloadDocument;
-window.handleModalApprove = handleModalApprove;
-window.handleModalReject = handleModalReject;
-
-console.log('✅ startupadmin.js loaded successfully');

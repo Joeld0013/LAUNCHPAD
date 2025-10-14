@@ -1,5 +1,6 @@
 package com.launchpad.shared.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.multipart.support.MultipartFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -22,18 +30,62 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors().and()
-                .csrf().disable()
+                .csrf().disable()  // CSRF disabled for stateless API
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                // Static resources
                 .antMatchers("/", "/*.html", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+
+                // Auth endpoints - MUST come before wildcard patterns
                 .antMatchers("/api/startup/auth/**").permitAll()
                 .antMatchers("/api/investor/auth/**").permitAll()
+                .antMatchers("/api/admin/auth/**").permitAll()
+
+                // CRITICAL: Startup registration endpoint
+                .antMatchers("/api/startup/register").permitAll()
+                .antMatchers("/api/startup/documents/**").permitAll()
+
+                // Investor registration endpoint
+                .antMatchers("/api/investor/register").permitAll()
+
+                // Admin endpoints
                 .antMatchers("/api/admin/**").permitAll()
+
+                // Public endpoints
                 .antMatchers("/api/public/**").permitAll()
+
+                // All other requests require authentication
                 .anyRequest().authenticated();
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    /**
+     * MultipartFilter must be registered BEFORE Spring Security filters
+     * to handle file uploads properly and avoid 403 errors
+     */
+    @Bean
+    public FilterRegistrationBean<MultipartFilter> multipartFilterRegistration() {
+        FilterRegistrationBean<MultipartFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new MultipartFilter());
+        registration.addUrlPatterns("/*");
+        registration.setOrder(0); // Highest priority - runs before Spring Security
+        return registration;
     }
 }
