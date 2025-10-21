@@ -187,7 +187,7 @@ document.getElementById('registration-form').addEventListener('submit', async fu
             const result = await response.text();
             alert('Registration submitted! Your documents will be verified. You will receive login credentials once approved.');
             console.log('Success:', result);
-            // window.location.href = 'investor_login.html';
+            window.location.href = 'index.html';
         } else {
             const error = await response.text();
             alert(`Registration failed: ${error}`);
