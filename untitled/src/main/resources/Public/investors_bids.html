@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LaunchPad — My Bids</title>
+    <link rel="stylesheet" href="css/invester_shared_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="site-wrap">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LP</div>
+                <div class="logo-text">LaunchPad</div>
+            </div>
+            <div class="nav-links">
+                <a href="investors_index.html">Home</a>
+                <a href="investors_posts.html">Posts</a>
+                <a href="investors_profile.html">Profile</a>
+                <a href="investors_bids.html">My Bids</a>
+                <a href="investors_chat.html">Chat</a>
+                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
+                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div id="notification-popup">
+        <div class="section-title">Notifications</div>
+        <div class="notification-item">
+            <div class="notification-avatar">SA</div>
+            <div class="notification-text">Synapse AI just sent you a new message.</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-avatar">QL</div>
+            <div class="notification-text">QuantumLeap accepted your bid!</div>
+        </div>
+    </div>
+
+    <section id="bids-dashboard">
+        <div class="card bids-container">
+            <div class="bids-header">
+                <h2>My Outgoing Bids</h2>
+                <p>Track the status of your investment offers</p>
+            </div>
+
+            <nav class="profile-tab-nav">
+                <button class="profile-tab-btn active" onclick="switchBidTab(event, 'bids-pending')">
+                    <i class="fas fa-hourglass-half"></i> Pending <span class="bid-count-badge">1</span>
+                </button>
+                <button class="profile-tab-btn" onclick="switchBidTab(event, 'bids-negotiating')">
+                    <i class="fas fa-comments-dollar"></i> Negotiating <span class="bid-count-badge">1</span>
+                </button>
+                <button class="profile-tab-btn" onclick="switchBidTab(event, 'bids-accepted')">
+                    <i class="fas fa-check-circle"></i> Accepted
+                </button>
+                <button class="profile-tab-btn" onclick="switchBidTab(event, 'bids-rejected')">
+                    <i class="fas fa-times-circle"></i> Rejected / Withdrawn
+                </button>
+            </nav>
+
+            <div class="bids-tab-content">
+
+                <div id="bids-pending" class="bids-tab-panel active-tab">
+
+                    <div class="bid-card bid-status-pending">
+                        <div class="bid-card-header">
+                            <div class="bid-investor-info">
+                                <div class="bid-avatar" style="background-color: #e67e22;">NT</div>
+                                <div class="bid-investor-details">
+                                    <span class="bid-investor-name link">NovaTech</span>
+                                    <span class="bid-timestamp">Sent 2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="bid-amount-total">
+                                $250,000
+                            </div>
+                        </div>
+                        <div class="bid-card-body">
+                            <div class="bid-terms">
+                                <span class="bid-term-item"><i class="fas fa-briefcase"></i> <strong>Type:</strong> Convertible Note</span>
+                                <span class="bid-term-item"><i class="fas fa-chart-pie"></i> <strong>Cap:</strong> $6M</span>
+                            </div>
+                            <div class="bid-status-message">
+                                <i class="fas fa-info-circle"></i> <strong>Status:</strong> Pending. The startup has not responded yet.
+                            </div>
+                        </div>
+                        <div class="bid-card-actions">
+                            <button class="bid-btn bid-btn-reject" onclick="handleBidAction(event, 'withdraw')"><i class="fas fa-times"></i> Withdraw Bid</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bids-negotiating" class="bids-tab-panel">
+                    <div class="bid-card bid-status-negotiating">
+                        <div class="bid-card-header">
+                            <div class="bid-investor-info">
+                                <div class="bid-avatar" style="background-color: #3498db;">SA</div>
+                                <div class="bid-investor-details">
+                                    <span class="bid-investor-name link">Synapse AI</span>
+                                    <span class="bid-timestamp">In negotiation for 3 days</span>
+                                </div>
+                            </div>
+                            <div class="bid-amount-total">
+                                $500,000
+                            </div>
+                        </div>
+                        <div class="bid-card-body">
+                            <div class="bid-status-message">
+                                <i class="fas fa-info-circle"></i> <strong>Status:</strong> Awaiting your response. (Last message: "We'd like to discuss the valuation cap...")
+                            </div>
+                        </div>
+                        <div class="bid-card-actions">
+                            <button class="bid-btn bid-btn-chat" onclick="window.location.href='investors_chat.html'"><i class="fas fa-paper-plane"></i> Continue Chat</button>
+                            <button class="bid-btn bid-btn-reject" onclick="handleBidAction(event, 'withdraw')"><i class="fas fa-times"></i> Withdraw Bid</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bids-accepted" class="bids-tab-panel">
+                    <p class="empty-tab-message">No bids have been accepted yet.</p>
+                </div>
+
+                <div id="bids-rejected" class="bids-tab-panel">
+                    <p class="empty-tab-message">No bids have been rejected or withdrawn.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="copyright">© 2025 LaunchPad</div>
+        </div>
+    </footer>
+</div>
+<script src="js/invester_shared_scripts.js"></script>
+<div id="logout-confirm-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <h3 style="margin-top: 10px;">Log Out</h3>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons" style="justify-content: center;">
+            <button class="cancel-btn" onclick="toggleLogoutModal()">Cancel</button>
+            <button class="save-btn" onclick="confirmLogout()" style="background-color: #e74c3c;">Log Out</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

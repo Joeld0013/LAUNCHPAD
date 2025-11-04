@@ -18,16 +18,14 @@
             <div class="nav-links">
                 <a href="startup_index.html">Home</a>
                 <a href="startup_post.html">Posts</a>
+                <a href="startup_bids.html">Bids</a>
                 <a href="startup_profile.html">Profile</a>
-                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+                <a href="startup_chat.html">Chat</a>
+                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
+                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
             </div>
         </div>
     </header>
-
-    <div class="search-bar-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Search for investors, posts, skills...">
-    </div>
 
     <div id="notification-popup">
         <div class="section-title">Notifications</div>
@@ -42,77 +40,155 @@
     </div>
 
     <section id="posts">
-        <div class="start-post-card">
-            <div class="start-post-top">
-                <div class="my-avatar">SA</div>
-                <input type="text" class="start-post-input" placeholder="Start a post">
-            </div>
-            <div class="start-post-actions">
-                <label for="post-attachment"><i class="fas fa-paperclip"></i></label>
-                <input type="file" id="post-attachment" style="display: none;">
-                <button class="post-btn">Post</button>
-            </div>
-        </div>
-        <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterPosts('all')">All Posts</button>
-            <button class="filter-btn" onclick="filterPosts('investor')">Investors</button>
-            <button class="filter-btn" onclick="filterPosts('startup')">Startups</button>
-        </div>
-        <div class="card post-list">
-            <div class="section-title" id="post-list-title">All Posts</div>
-            <article class="post investor-post post-card">
-                <div class="post-header">
-                    <div class="post-avatar">VC</div>
-                    <div>
-                        <div class="company-name"><span class="link">Stellar Ventures</span></div>
-                        <div class="post-meta">2h ago</div>
+        <div class="posts-grid">
+
+            <main class="feed-column">
+
+                <div class="card create-post-trigger-card" onclick="toggleCreatePostModal()">
+                    <div class="start-post-top">
+                        <div class="my-avatar">SA</div>
+                        <div class="start-post-trigger-text">Start a post, share an update...</div>
+                    </div>
+                    <div class="start-post-actions">
+                        <button class="post-btn">Post</button>
                     </div>
                 </div>
-                <div class="post-body">
-                    <div>Thrilled to announce our new investment in **QuantumLeap AI**, a groundbreaking startup developing next-gen quantum machine learning algorithms! We believe their technology will revolutionize data processing and scientific discovery. Excited for what's ahead! #AI #QuantumComputing #VentureCapital</div>
-                    <img src="https://images.unsplash.com/photo-1579546305988-124619082359?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="QuantumLeap AI Investment" class="post-image">
+
+                <div class="feed-filter-bar">
+                    <button class="filter-btn active" onclick="filterPosts(event, 'all')">All</button>
+                    <button class="filter-btn" onclick="filterPosts(event, 'investor')">Investors</button>
+                    <button class="filter-btn" onclick="filterPosts(event, 'startup')">Startups</button>
                 </div>
-                <div class="post-footer">
-                    <div class="post-action like-btn" data-likes="120"><i class="fas fa-thumbs-up"></i> <span class="like-count">120</span></div>
-                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
-                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+
+                <div class="post-feed" id="post-feed">
+
+                    <article class="card post-card investor-post">
+                        <div class="post-header">
+                            <div class="post-avatar">VC</div>
+                            <div>
+                                <div class="company-name"><span class="link">Stellar Ventures</span></div>
+                                <div class="post-meta">2h ago</div>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            <div>Thrilled to announce our new investment in **QuantumLeap AI**, a groundbreaking startup developing next-gen quantum machine learning algorithms! We believe their technology will revolutionize data processing and scientific discovery. Excited for what's ahead! #AI #QuantumComputing #VentureCapital</div>
+                        </div>
+                        <div class="post-media">
+                            <img src="https://images.unsplash.com/photo-1579546305988-124619082359?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="QuantumLeap AI Investment" class="post-image">
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-action like-btn" data-likes="120"><i class="fas fa-thumbs-up"></i> <span class="like-count">120</span></div>
+                            <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                            <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                        </div>
+                        <div class="comment-section">
+                            <div class="comment-input-box">
+                                <div class="my-avatar-small">SA</div>
+                                <input type="text" placeholder="Add a comment...">
+                            </div>
+                            <div class="comment-list">
+                                <div class="comment-item">
+                                    <div class="comment-avatar">IC</div>
+                                    <div class="comment-content">
+                                        <span class="comment-name">Innovate Capital</span>
+                                        <p>This is huge! Congratulations to the QuantumLeap team.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card post-card startup-post">
+                        <div class="post-header">
+                            <div class="post-avatar">SA</div>
+                            <div>
+                                <div class="company-name"><span class="link">Synapse AI</span></div>
+                                <div class="post-meta">5h ago</div>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            <div>Don't miss our upcoming webinar: "Navigating Seed Rounds - What Investors Look For." Join industry experts as they share insights and tips for early-stage startups. Register now!
+                                <br><br>
+                                We'll be covering pitch deck essentials, how to value your company, and what VCs *really* want to see in your traction. This is a must-see for any founder currently fundraising or planning to in the next 6 months.
+                                <span class="see-more-toggle">See more</span>
+                            </div>
+                        </div>
+                        <div class="post-media">
+                            <a href="#" class="link-preview-card">
+                                <div class="link-preview-title">Webinar: Navigating Seed Rounds</div>
+                                <div class="link-preview-domain">synapseai.com/webinar</div>
+                            </a>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-action like-btn" data-likes="56"><i class="fas fa-thumbs-up"></i> <span class="like-count">56</span></div>
+                            <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                            <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                        </div>
+                        <div class="comment-section">
+                            <div class="comment-input-box">
+                                <div class="my-avatar-small">SA</div>
+                                <input type="text" placeholder="Add a comment...">
+                            </div>
+                            <div class="comment-list">
+                                <div class="comment-item">
+                                    <div class="comment-avatar">FP</div>
+                                    <div class="comment-content">
+                                        <span class="comment-name">Future Partners</span>
+                                        <p>Registered! Looking forward to it.</p>
+                                    </div>
+                                </div>
+                                <div class="comment-item">
+                                    <div class="comment-avatar">VC</div>
+                                    <div class="comment-content">
+                                        <span class="comment-name">Stellar Ventures</span>
+                                        <p>Great topic. We'll be tuning in.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
                 </div>
-            </article>
-            <article class="post startup-post post-card">
-                <div class="post-header">
-                    <div class="post-avatar">SA</div>
-                    <div>
-                        <div class="company-name"><span class="link">Synapse AI</span></div>
-                        <div class="post-meta">5h ago</div>
+            </main>
+
+            <aside class="sidebar-column">
+
+                <div class="card">
+                    <div class="section-title">Trending Tags</div>
+                    <div class="skills-list">
+                        <span class="skill-tag">#AI</span>
+                        <span class="skill-tag">#Funding</span>
+                        <span class="skill-tag">#SaaS</span>
+                        <span class="skill-tag">#Fintech</span>
+                        <span class="skill-tag">#SeedRound</span>
+                        <span class="skill-tag">#VentureCapital</span>
                     </div>
                 </div>
-                <div class="post-body">
-                    <div>Don't miss our upcoming webinar: "Navigating Seed Rounds - What Investors Look For." Join industry experts as they share insights and tips for early-stage startups. Register now!</div>
-                    <img src="https://images.unsplash.com/photo-1620325696245-0960538a7985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Webinar Announcement" class="post-image">
-                </div>
-                <div class="post-footer">
-                    <div class="post-action like-btn" data-likes="56"><i class="fas fa-thumbs-up"></i> <span class="like-count">56</span></div>
-                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
-                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
-                </div>
-            </article>
-            <article class="post investor-post post-card">
-                <div class="post-header">
-                    <div class="post-avatar">VC</div>
-                    <div>
-                        <div class="company-name"><span class="link">Stellar Ventures</span></div>
-                        <div class="post-meta">1d ago</div>
+
+                <div class="card">
+                    <div class="section-title">Who to Follow</div>
+                    <div class="follow-list">
+                        <div class="follow-item">
+                            <div class="post-avatar">IC</div>
+                            <div class="follow-info">
+                                <div class="company-name">Innovate Capital</div>
+                                <div class="follow-title">Venture Capital Firm</div>
+                            </div>
+                            <button class="follow-btn"><i class="fas fa-plus"></i> Follow</button>
+                        </div>
+                        <div class="follow-item">
+                            <div class="post-avatar">FP</div>
+                            <div class="follow-info">
+                                <div class="company-name">Future Partners</div>
+                                <div class="follow-title">Growth Equity</div>
+                            </div>
+                            <button class="follow-btn"><i class="fas fa-plus"></i> Follow</button>
+                        </div>
                     </div>
                 </div>
-                <div class="post-body">
-                    <div>Reflecting on a fantastic year of growth and innovation! We're proud to support visionary founders building the future. Here's to more success in the coming year!</div>
-                </div>
-                <div class="post-footer">
-                    <div class="post-action like-btn" data-likes="203"><i class="fas fa-thumbs-up"></i> <span class="like-count">203</span></div>
-                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
-                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
-                </div>
-            </article>
+
+            </aside>
+
         </div>
     </section>
 
@@ -127,6 +203,55 @@
         </div>
     </footer>
 </div>
+
+<div id="create-post-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 700px;">
+        <h3>Create a Post</h3>
+        <div class="create-post-header">
+            <div class="my-avatar">SA</div>
+            <span>Synapse AI</span>
+        </div>
+        <textarea id="create-post-textarea" placeholder="What do you want to talk about?"></textarea>
+        <div class="modal-buttons" style="justify-content: space-between;">
+            <div>
+                <label for="post-attachment-modal" class="post-attach-btn">
+                    <i class="fas fa-paperclip"></i> Attach File
+                </label>
+                <input type="file" id="post-attachment-modal" style="display: none;">
+            </div>
+            <div>
+                <button class="cancel-btn" onclick="toggleCreatePostModal()">Cancel</button>
+                <button class="save-btn" onclick="alert('Post created!'); toggleCreatePostModal();">Post</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="share-post-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <h3>Share Post</h3>
+        <p>Share this post with your network.</p>
+        <div class="share-link-box">
+            <input type="text" id="share-link-input" value="https://launchpad.com/post/12345" readonly>
+            <button class="save-btn" onclick="copyShareLink()">Copy</button>
+        </div>
+        <div class="modal-buttons" style="justify-content: flex-end;">
+            <button class="cancel-btn" onclick="toggleShareModal()">Done</button>
+        </div>
+    </div>
+</div>
+
+<div id="logout-confirm-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <h3 style="margin-top: 10px;">Log Out</h3>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons" style="justify-content: center;">
+            <button class="cancel-btn" onclick="toggleLogoutModal()">Cancel</button>
+            <button class="save-btn" onclick="confirmLogout()" style="background-color: #e74c3c;">Log Out</button>
+        </div>
+    </div>
+</div>
+
 <script src="js/startup_shared_scripts.js"></script>
 </body>
 </html>

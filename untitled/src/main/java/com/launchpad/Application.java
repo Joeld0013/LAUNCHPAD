@@ -12,7 +12,7 @@ public class Application {
         SpringApplication.run(Application.class, args);
 
 
-System.out.println("front rnd runs in : http://localhost:8080/index.html");
-System.out.println("front rnd runs in : http://localhost:8080/adminlogin.html");
+System.out.println("front rnd runs in : http://localhost:8081/index.html");
+System.out.println("front rnd runs in : http://localhost:8081/adminlogin.html");
     }
 }

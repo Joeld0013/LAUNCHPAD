@@ -19,113 +19,197 @@
                 <a href="investors_index.html">Home</a>
                 <a href="investors_posts.html">Posts</a>
                 <a href="investors_profile.html">Profile</a>
-                <a href="#" class="nav-icon" onclick="toggleNotifications()"><i class="fas fa-bell"></i></a>
+                <a href="investors_bids.html">My Bids</a>
+                <a href="investors_chat.html">Chat</a>
+                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
+                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
             </div>
         </div>
     </header>
 
+    <div id="notification-popup">
+        <div class="section-title">Notifications</div>
+        <div class="notification-item">
+            <div class="notification-avatar">SA</div>
+            <div class="notification-text">Synapse AI just sent you a new message.</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-avatar">QL</div>
+            <div class="notification-text">QuantumLeap accepted your bid!</div>
+        </div>
+    </div>
+
     <section id="profile">
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="profile-avatar-large">VC</div>
-                <div class="profile-info">
-                    <h1 class="profile-name">Stellar Ventures</h1>
-                    <p class="profile-title">Venture Capital Firm | Fuelling the Next Wave of Innovation</p>
-                    <p class="profile-location">📍 Mumbai, India</p>
-                </div>
-                <button class="edit-profile-btn" onclick="toggleEditProfileModal()">Edit Profile</button>
-            </div>
+        <div class="profile-grid">
 
-            <div class="profile-contact">
-                <div class="section-title">Contact Information</div>
-                <div class="contact-item">
-                    <i class="fas fa-globe"></i>
-                    <span><a href="#" class="link">stellar.ventures</a></span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>contact@stellar.ventures</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+91 22 4000 5000</span>
-                </div>
-            </div>
+            <main class="profile-main-column">
 
-            <div class="profile-summary">
-                <div class="section-title">About</div>
-                <p class="profile-summary-text">Stellar Ventures is a leading venture capital firm focused on early-stage technology startups in India and Southeast Asia. We partner with exceptional founders to build category-defining companies.</p>
-            </div>
-
-            <div class="card">
-                <div class="section-title">Asset Allocation Dashboard</div>
-                <div class="dashboard-grid">
-                    <div class="pie-chart-container">
-                        <h4>Allocation by Sector</h4>
-                        <div class="pie-chart"></div>
-                        <div class="chart-legend">
-                            <div><span class="legend-dot" style="background-color: #edb96f;"></span> Fintech (40%)</div>
-                            <div><span class="legend-dot" style="background-color: #2b3446;"></span> Deep Tech & AI (30%)</div>
-                            <div><span class="legend-dot" style="background-color: #7a8ba3;"></span> SaaS (20%)</div>
-                            <div><span class="legend-dot" style="background-color: #d1d5db;"></span> Consumer Tech (10%)</div>
+                <div class="card profile-header-card">
+                    <div class="profile-header-top">
+                        <div class="profile-avatar-large" id="page-avatar">VC</div>
+                        <div class="profile-info-main">
+                            <h1 class="profile-name" id="page-name">Stellar Ventures</h1>
+                            <p class="profile-title" id="page-title">Venture Capital Firm | Fuelling the Next Wave of Innovation</p>
+                            <p class="profile-location" id="page-location">📍 Mumbai, India</p>
                         </div>
                     </div>
-                    <div class="performance-graph-container">
-                        <h4>Portfolio Performance (YoY)</h4>
-                        <div class="chart-container" style="height: 180px;">
-                            <div class="chart-bar" style="height: 55%;" data-label="2023">+15%</div>
-                            <div class="chart-bar" style="height: 80%;" data-label="2024">+28%</div>
-                            <div class="chart-bar" style="height: 90%;" data-label="2025 (YTD)">+35%</div>
+                    <div class="profile-action-buttons">
+                        <button class="edit-btn-profile" onclick="toggleEditProfileModal(true)" style="margin-left: auto;">
+                            <i class="fas fa-pen"></i>
+                            <span>Edit Profile</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card profile-content-tabs">
+
+                    <nav class="profile-tab-nav">
+                        <button class="profile-tab-btn active" onclick="switchProfileTab(event, 'tab-about')">About</button>
+                        <button class="profile-tab-btn" onclick="switchProfileTab(event, 'tab-thesis')">Investment Thesis</button>
+                        <button class="profile-tab-btn" onclick="switchProfileTab(event, 'tab-portfolio')">Portfolio</button>
+                        <button class="profile-tab-btn" onclick="switchProfileTab(event, 'tab-posts')">Posts</button>
+                    </nav>
+
+                    <div class="profile-tab-content">
+
+                        <div id="tab-about" class="profile-tab-panel active-tab">
+                            <div class="section-title">About Stellar Ventures</div>
+                            <p class="profile-summary-text" id="page-about">Stellar Ventures is a leading venture capital firm focused on early-stage technology startups in India and Southeast Asia. We partner with exceptional founders to build category-defining companies.</p>
+                        </div>
+
+                        <div id="tab-thesis" class="profile-tab-panel">
+                            <div class="section-title">Investment Thesis</div>
+                            <div class="dashboard-grid">
+                                <div class="pie-chart-container">
+                                    <h4>Allocation by Sector</h4>
+                                    <div class="pie-chart" id="page-pie-chart"></div>
+                                    <div class="chart-legend" id="page-pie-legend">
+                                        <div><span class="legend-dot" style="background-color: #edb96f;"></span> Fintech (40%)</div>
+                                        <div><span class="legend-dot" style="background-color: #2b3446;"></span> Deep Tech & AI (30%)</div>
+                                        <div><span class="legend-dot" style="background-color: #7a8ba3;"></span> SaaS (20%)</div>
+                                        <div><span class="legend-dot" style="background-color: #d1d5db;"></span> Consumer Tech (10%)</div>
+                                    </div>
+                                </div>
+                                <div class="performance-graph-container">
+                                    <h4>Typical Investment</h4>
+                                    <ul class="thesis-list" id="page-thesis-list">
+                                        <li><strong>Stage:</strong> Pre-Seed, Seed</li>
+                                        <li><strong>Check Size:</strong> $250,000 - $1,000,000</li>
+                                        <li><strong>Horizon:</strong> 3-5 Years</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-portfolio" class="profile-tab-panel">
+                            <div class="section-title">Portfolio Companies</div>
+                            <div class="team-list" id="page-portfolio-list">
+                                <div class="team-member" data-initials="SA">
+                                    <div class="member-avatar" style="background-color: #3498db;">SA</div>
+                                    <div class="member-details">
+                                        <h4>Synapse AI</h4>
+                                        <p>AI Solutions Startup</p>
+                                        <p>Developing next-generation AI pipelines for enterprise.</p>
+                                    </div>
+                                </div>
+                                <div class="team-member" data-initials="QL">
+                                    <div class="member-avatar" style="background-color: #9b59b6;">QL</div>
+                                    <div class="member-details">
+                                        <h4>QuantumLeap AI</h4>
+                                        <p>Quantum Computing</p>
+                                        <p>Groundbreaking startup developing next-gen quantum ML algorithms.</p>
+                                    </div>
+                                </div>
+                                <div class="team-member" data-initials="NT">
+                                    <div class="member-avatar" style="background-color: #e67e22;">NT</div>
+                                    <div class="member-details">
+                                        <h4>NovaTech</h4>
+                                        <p>Renewable Energy</p>
+                                        <p>Innovating in solar panel efficiency and battery storage.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-posts" class="profile-tab-panel">
+                            <div class="section-title">Recent Posts</div>
+                            <article class="card post-card investor-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">VC</div>
+                                    <div>
+                                        <div class="company-name"><span class="link">Stellar Ventures</span></div>
+                                        <div class="post-meta">2h ago</div>
+                                    </div>
+                                </div>
+                                <div class="post-body">
+                                    <div>Thrilled to announce our new investment in **QuantumLeap AI**! #AI #QuantumComputing #VentureCapital</div>
+                                </div>
+                                <div class="post-media">
+                                    <img src="https://images.unsplash.com/photo-1579546305988-124619082359?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Investment" class="post-image">
+                                </div>
+                                <div class="post-footer">
+                                    <div class="post-action like-btn" data-likes="120"><i class="fas fa-thumbs-up"></i> <span class="like-count">120</span></div>
+                                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
+                                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
+                                </div>
+                            </article>
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
 
-            <div class="card">
-                <div class="section-title">Investment Milestones</div>
-                <div class="funding-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Portfolio Value Exceeds $5M</h3>
-                            <time>October 2025</time>
+            <aside class="sidebar-column">
+
+                <div class="card">
+                    <div class="section-title">Contact Info</div>
+                    <div class="contact-list">
+                        <div class="contact-item" id="page-website">
+                            <i class="fas fa-globe"></i>
+                            <span><a href="#" class="link">stellar.ventures</a></span>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Lead Investor in QuantumLeap's Series A</h3>
-                            <time>February 2025</time>
+                        <div class="contact-item" id="page-email">
+                            <i class="fas fa-envelope"></i>
+                            <span>contact@stellar.ventures</span>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>First Investment: Synapse AI (Seed)</h3>
-                            <time>June 2024</time>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>Joined LaunchPad Platform</h3>
-                            <time>January 2024</time>
+                        <div class="contact-item" id="page-phone">
+                            <i class="fas fa-phone"></i>
+                            <span>+91 22 4000 5000</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="profile-posts">
-                <div class="section-title">Recent Posts</div>
-                <article class="post investor-post post-card">
-                    <div class="post-header">
-                        <div class="post-avatar">VC</div>
-                        <div>
-                            <div class="company-name"><span class="link">Stellar Ventures</span></div>
-                            <div class="post-meta">2h ago</div>
+                <div class="card">
+                    <div class="section-title">Investment Focus</div>
+                    <div class="skills-list" id="page-skills-list">
+                        <span class="skill-tag">Fintech</span>
+                        <span class="skill-tag">Deep Tech & AI</span>
+                        <span class="skill-tag">SaaS</span>
+                        <span class="skill-tag">HealthTech</span>
+                        <span class="skill-tag">Consumer Tech</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title">Core Team</div>
+                    <div class="follow-list" id="page-team-list-sidebar">
+                        <div class="follow-item">
+                            <div class="post-avatar" style="background-color: #2c3e50; color: white;">AG</div>
+                            <div class="follow-info">
+                                <div class="company-name">Anand Gupta</div>
+                                <div class="follow-title">Managing Partner</div>
+                            </div>
+                        </div>
+                        <div class="follow-item">
+                            <div class="post-avatar" style="background-color: #c0392b; color: white;">PS</div>
+                            <div class="follow-info">
+                                <div class="company-name">Priya Singh</div>
+                                <div class="follow-title">Venture Partner</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="post-body">
-                        <div>Thrilled to announce our new investment in **QuantumLeap AI**! #AI #QuantumComputing #VentureCapital</div>
-                    </div>
-                </article>
-            </div>
+                </div>
+
+            </aside>
         </div>
     </section>
 
@@ -141,56 +225,111 @@
     </footer>
 </div>
 
-<div id="edit-profile-modal" class="modal">
-    <div class="modal-content">
-        <h3>Edit Investor Profile</h3>
-        <form>
-            <label for="edit-firm-name">Firm Name</label>
-            <input type="text" id="edit-firm-name" value="Stellar Ventures">
-            <label for="edit-title">Title</label>
-            <input type="text" id="edit-title" value="Venture Capital Firm | Fuelling the Next Wave of Innovation">
-            <label for="edit-about">About</label>
-            <textarea id="edit-about" rows="4">Stellar Ventures is a leading venture capital firm focused on early-stage technology startups in India and Southeast Asia.</textarea>
+<div id="edit-profile-modal" class="modal" style="display: none;">
+    <div class="modal-content modal-content-large">
 
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        <div class="modal-header">
+            <h3>Edit Investor Profile</h3>
+            <button class="modal-close-btn" onclick="toggleEditProfileModal(false)">&times;</button>
+        </div>
 
-            <h4>Investment Preferences</h4>
-            <div class="preferences-form" style="margin-top: 15px;">
-                <div class="form-row" style="grid-template-columns: 1fr;">
-                    <div class="form-group">
-                        <label>Preferred Sectors (Select up to 3)</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" checked> Fintech</label>
-                            <label><input type="checkbox" checked> Deep Tech & AI</label>
-                            <label><input type="checkbox"> SaaS</label>
-                            <label><input type="checkbox"> HealthTech</label>
-                            <label><input type="checkbox"> Consumer Tech</label>
+        <div class="modal-body-tabs">
+            <aside class="modal-tab-nav">
+                <button class="modal-tab-btn active" onclick="switchEditModalTab(event, 'edit-tab-overview')">
+                    <i class="fas fa-user-tie"></i> Overview
+                </button>
+                <button class="modal-tab-btn" onclick="switchEditModalTab(event, 'edit-tab-contact')">
+                    <i class="fas fa-address-book"></i> Contact
+                </button>
+                <button class="modal-tab-btn" onclick="switchEditModalTab(event, 'edit-tab-thesis')">
+                    <i class="fas fa-bullseye"></i> Investment Thesis
+                </button>
+                <button class="modal-tab-btn" onclick="switchEditModalTab(event, 'edit-tab-team')">
+                    <i class="fas fa-users"></i> Team
+                </button>
+                <button class="modal-tab-btn" onclick="switchEditModalTab(event, 'edit-tab-milestones')">
+                    <i class="fas fa-rocket"></i> Milestones
+                </button>
+            </aside>
+
+            <main class="modal-tab-content">
+
+                <div id="edit-tab-overview" class="modal-tab-panel active-tab">
+                    <h4>Overview</h4>
+                    <div class="form-group-horizontal">
+                        <img src="https://placehold.co/100x100/edb96f/2b3446?text=VC" alt="Profile Avatar" class="edit-profile-pic-preview" id="profile-pic-preview">
+                        <div>
+                            <label for="edit-profile-pic">Profile Picture</label>
+                            <input type="file" id="edit-profile-pic" class="form-input" accept="image/*" onchange="previewProfilePic(event)">
+                            <p class="form-hint">Upload a JPG or PNG. 1:1 aspect ratio recommended.</p>
                         </div>
                     </div>
+                    <div class="form-group"><label for="edit-name">Firm Name</label><input type="text" id="edit-name" class="form-input"></div>
+                    <div class="form-group"><label for="edit-title">Title / Tagline</label><input type="text" id="edit-title" class="form-input"></div>
+                    <div class="form-group"><label for="edit-location">Location (e.g., 📍 Mumbai, India)</label><input type="text" id="edit-location" class="form-input"></div>
+                    <div class="form-group"><label for="edit-about">About</label><textarea id="edit-about" class="form-input"></textarea></div>
                 </div>
-                <div class="form-row">
+
+                <div id="edit-tab-contact" class="modal-tab-panel">
+                    <h4>Contact Info</h4>
+                    <div class="form-group"><label for="edit-contact-website">Website URL (e.g., stellar.ventures)</label><input type="text" id="edit-contact-website" class="form-input"></div>
+                    <div class="form-group"><label for="edit-contact-email">Email</label><input type="email" id="edit-contact-email" class="form-input"></div>
+                    <div class="form-group"><label for="edit-contact-phone">Phone</label><input type="tel" id="edit-contact-phone" class="form-input"></div>
+                </div>
+
+                <div id="edit-tab-thesis" class="modal-tab-panel">
+                    <h4>Investment Thesis</h4>
                     <div class="form-group">
-                        <label for="investment-amount">Typical Investment Amount</label>
-                        <select id="investment-amount">
-                            <option>$50,000 - $250,000</option>
-                            <option>$250,000 - $1,000,000</option>
-                            <option>$1,000,000+</option>
-                        </select>
+                        <label for="edit-skills">Investment Focus (comma separated)</label>
+                        <textarea id="edit-skills" class="form-input"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Preferred Time Horizon</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="horizon"> 1-3 Years</label>
-                            <label><input type="radio" name="horizon" checked> 3-5 Years</label>
-                            <label><input type="radio" name="horizon"> 5+ Years</label>
-                        </div>
+                        <label for="edit-investment-stage">Preferred Stage</label>
+                        <input type="text" id="edit-investment-stage" class="form-input" placeholder="e.g., Pre-Seed, Seed">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-investment-amount">Typical Check Size</label>
+                        <input type="text" id="edit-investment-amount" class="form-input" placeholder="e.g., $250,000 - $1,000,000">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-investment-horizon">Investment Horizon</label>
+                        <input type="text" id="edit-investment-horizon" class="form-input" placeholder="e.g., 3-5 Years">
                     </div>
                 </div>
-            </div>
-        </form>
-        <div class="modal-buttons">
-            <button class="cancel-btn" onclick="toggleEditProfileModal()">Cancel</button>
-            <button class="save-btn" onclick="toggleEditProfileModal()">Save Changes</button>
+
+                <div id="edit-tab-team" class="modal-tab-panel">
+                    <h4>Team Members</h4>
+                    <p class="form-hint">Add your firm's core team members.</p>
+                    <div class="dynamic-list" id="team-member-list">
+                    </div>
+                    <button class="add-new-btn" onclick="addTeamMember()"><i class="fas fa-plus"></i> Add Team Member</button>
+                </div>
+
+                <div id="edit-tab-milestones" class="modal-tab-panel">
+                    <h4>Key Milestones</h4>
+                    <p class="form-hint">List your firm's biggest achievements (e.g., "Fund II Closed", "First $1B Exit").</p>
+                    <div class="dynamic-list" id="milestone-list">
+                    </div>
+                    <button class="add-new-btn" onclick="addMilestone()"><i class="fas fa-plus"></i> Add Milestone</button>
+                </div>
+            </main>
+        </div>
+
+        <div class="modal-footer">
+            <button class="cancel-btn" onclick="toggleEditProfileModal(false)">Cancel</button>
+            <button class="save-btn" onclick="saveProfileChanges()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="logout-confirm-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <h3 style="margin-top: 10px;">Log Out</h3>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons" style="justify-content: center;">
+            <button class="cancel-btn" onclick="toggleLogoutModal()">Cancel</button>
+            <button class="save-btn" onclick="confirmLogout()" style="background-color: #e74c3c;">Log Out</button>
         </div>
     </div>
 </div>
