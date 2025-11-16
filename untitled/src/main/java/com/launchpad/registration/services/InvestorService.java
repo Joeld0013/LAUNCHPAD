@@ -86,9 +86,9 @@ public class InvestorService {
 
                 DocumentFile doc = new DocumentFile();
                 doc.setStartupId(saved.getId()); // Reusing field name for investor ID
-                doc.setDocType(docTypeEnum);
+                doc.setDocType(String.valueOf(docTypeEnum));
                 doc.setFilePath(target.toString());
-                doc.setStatus(DocumentStatus.PENDING);
+                doc.setStatus(String.valueOf(DocumentStatus.PENDING));
                 DocumentFile savedDoc = documentRepository.save(doc);
                 docIds.add(savedDoc.getId());
             }

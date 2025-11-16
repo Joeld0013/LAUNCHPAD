@@ -128,9 +128,7 @@ function toggleShareModal() {
 function confirmLogout() {
     toggleLogoutModal(); // Close the modal
     console.log("User clicked log out.");
-
-    // You can replace this with a redirect to a login page
-    // For example: window.location.href = "login.html";
+    window.location.href = "startup_login.html";
 
     // Show a temporary message
     const msg = document.createElement('div');

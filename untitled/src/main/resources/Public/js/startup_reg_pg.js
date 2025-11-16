@@ -1,3 +1,5 @@
+//startup registration
+
 // Show/hide form sections
 function showSection(sectionNumber) {
     // Hide all sections
@@ -234,7 +236,7 @@ document.getElementById('registration-form').addEventListener('submit', async fu
             console.log('Success:', result);
             
             // Optional: Reset form or redirect
-            // window.location.href = 'startup_login.html';
+             window.location.href = 'index.html';
         } else {
             const error = await response.text();
             alert(`Registration failed: ${error}`);

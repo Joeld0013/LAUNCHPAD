@@ -6,6 +6,44 @@
     <title>LaunchPad — Chat</title>
     <link rel="stylesheet" href="css/Startup_shared_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .pending-badge {
+            background: #f39c12;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .system {
+            background: #ecf0f1 !important;
+            color: #7f8c8d;
+            text-align: center;
+            padding: 8px 15px;
+            margin: 10px auto;
+            border-radius: 15px;
+            max-width: 80%;
+            font-size: 13px;
+        }
+
+        .system i {
+            margin-right: 5px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <div class="site-wrap">
@@ -20,8 +58,13 @@
                 <a href="startup_post.html">Posts</a>
                 <a href="startup_bids.html">Bids</a>
                 <a href="startup_profile.html">Profile</a>
-                <a href="startup_chat.html">Chat</a> <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
-                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
+                <a href="startup_chat.html">Chat</a>
+                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                </a>
+                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out">
+                    <i class="fas fa-right-from-bracket"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -44,69 +87,29 @@
             <aside class="chat-sidebar">
                 <div class="chat-sidebar-header">
                     <h3>Messages</h3>
-                    <i class="fas fa-edit"></i>
+                    <button onclick="checkPendingConversations()" style="background: none; border: none; cursor: pointer; color: #3498db; font-size: 18px;" title="Check pending messages">
+                        <i class="fas fa-inbox"></i>
+                    </button>
                 </div>
                 <div class="chat-search-container">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search messages...">
                 </div>
                 <div class="chat-inbox-list">
-
-                    <div class="chat-inbox-item active" onclick="selectChat(event)">
-                        <div class="chat-avatar">VC</div>
-                        <div class="chat-item-details">
-                            <div class="chat-item-name">Stellar Ventures</div>
-                            <div class="chat-item-preview">Sounds great, let's set up a call.</div>
-                        </div>
-                        <div class="chat-item-meta">
-                            <div class="chat-item-time">10:30 AM</div>
-                            <div class="unread-badge">2</div>
-                        </div>
+                    <!-- Conversations will be loaded here by JavaScript -->
+                    <div style="padding: 20px; text-align: center; color: #888;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                        <p>Loading conversations...</p>
                     </div>
-
-                    <div class="chat-inbox-item" onclick="selectChat(event)">
-                        <div class="chat-avatar">IC</div>
-                        <div class="chat-item-details">
-                            <div class="chat-item-name">Innovate Capital</div>
-                            <div class="chat-item-preview">Can you send over the pitch deck?</div>
-                        </div>
-                        <div class="chat-item-meta">
-                            <div class="chat-item-time">Yesterday</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-inbox-item" onclick="selectChat(event)">
-                        <div class="chat-avatar">FP</div>
-                        <div class="chat-item-details">
-                            <div class="chat-item-name">Future Partners</div>
-                            <div class="chat-item-preview">We're impressed with your traction.</div>
-                        </div>
-                        <div class="chat-item-meta">
-                            <div class="chat-item-time">Mon</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-inbox-item" onclick="selectChat(event)">
-                        <div class="chat-avatar">AS</div>
-                        <div class="chat-item-details">
-                            <div class="chat-item-name">Alice Smith</div>
-                            <div class="chat-item-preview">See you at the webinar!</div>
-                        </div>
-                        <div class="chat-item-meta">
-                            <div class="chat-item-time">Sun</div>
-                            <div class="unread-badge">1</div>
-                        </div>
-                    </div>
-
                 </div>
             </aside>
 
             <main class="chat-main">
                 <div class="chat-header">
-                    <div class="chat-avatar-large">VC</div>
+                    <div class="chat-avatar-large">--</div>
                     <div class="chat-header-info">
-                        <div class="chat-header-name">Stellar Ventures</div>
-                        <div class="chat-header-status">Online</div>
+                        <div class="chat-header-name">Select a conversation</div>
+                        <div class="chat-header-status">--</div>
                     </div>
                     <div class="e2e-note">
                         <i class="fas fa-lock"></i> End-to-end encrypted
@@ -114,21 +117,9 @@
                 </div>
 
                 <div class="chat-messages-area">
-                    <div class="message-bubble incoming">
-                        <div class="message-text">Hi Synapse AI, we were very impressed by your latest post on seed rounds.</div>
-                        <div class="message-timestamp">10:28 AM</div>
-                    </div>
-                    <div class="message-bubble incoming">
-                        <div class="message-text">We'd like to learn more about your platform.</div>
-                        <div class="message-timestamp">10:28 AM</div>
-                    </div>
-                    <div class="message-bubble outgoing">
-                        <div class="message-text">Thank you, Stellar Ventures! We'd be happy to chat. What time works for you?</div>
-                        <div class="message-timestamp">10:29 AM</div>
-                    </div>
-                    <div class="message-bubble incoming">
-                        <div class="message-text">Sounds great, let's set up a call.</div>
-                        <div class="message-timestamp">10:30 AM</div>
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 10px;"></i>
+                        <p>Select a conversation to start chatting</p>
                     </div>
                 </div>
 
@@ -153,17 +144,20 @@
         </div>
     </footer>
 </div>
+
 <script src="js/startup_shared_scripts.js"></script>
+<script src="js/chat.js"></script>
+
 <div id="logout-confirm-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
         <h3 style="margin-top: 10px;">Log Out</h3>
         <p>Are you sure you want to log out?</p>
         <div class="modal-buttons" style="justify-content: center;">
             <button class="cancel-btn" onclick="toggleLogoutModal()">Cancel</button>
-            <!-- This button uses an inline style to get the red color -->
             <button class="save-btn" onclick="confirmLogout()" style="background-color: #e74c3c;">Log Out</button>
         </div>
     </div>
 </div>
+
 </body>
 </html>

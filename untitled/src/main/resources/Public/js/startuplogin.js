@@ -47,12 +47,23 @@ document.getElementById('startup-login').addEventListener('submit', async functi
         }
 
         if (response.ok) {
-            // Store token and user info
+            // Store token and user info (both formats for compatibility)
             localStorage.setItem('token', data.token);
+            localStorage.setItem('authToken', data.token); // For chat system
             localStorage.setItem('userType', 'STARTUP');
             localStorage.setItem('userId', data.id);
             localStorage.setItem('userEmail', data.email);
             localStorage.setItem('userName', data.name);
+
+            // Store user object for chat system
+            const currentUser = {
+                id: data.id,
+                email: data.email,
+                name: data.name,
+                companyName: data.name, // Use name as companyName
+                userType: 'STARTUP'
+            };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
             // Show success message
             alert('Login successful! Redirecting to dashboard...');
