@@ -10,14 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Sidebar navigation - direct HTML files
         'dashboard': 'admindashboard.html',
         'startups': 'startupadmin.html',
-        'investors': 'investors.html',
+        'investors': 'investoradmin.html',
         'approvals': 'approvals.html',
         'analytics': 'analytics.html',
         'settings': 'settings.html',
 
         // Quick action buttons
         'register-startup': 'startupadmin.html?action=register',
-        'browse-investors': 'investors.html',
+        'browse-investors': 'investoradmin.html',
         'review-approvals': 'approvals.html'
     };
 

@@ -21,7 +21,7 @@ function initializeNavigation() {
     const routes = {
         'dashboard': 'admindashboard.html',
         'startups': 'startupadmin.html',
-        'investors': 'investors.html',
+        'investors': 'investoradmin.html',
         'approvals': 'approvals.html',
         'analytics': 'analytics.html',
         'settings': 'settings.html',
@@ -56,7 +56,7 @@ function initializeNavigation() {
             activeNavId = 'dashboard';
         } else if (currentPage.includes('startupadmin.html') || currentPage.includes('startups')) {
             activeNavId = 'startups';
-        } else if (currentPage.includes('investors.html')) {
+        } else if (currentPage.includes('investoradmin.html')) {
             activeNavId = 'investors';
         } else if (currentPage.includes('approvals.html')) {
             activeNavId = 'approvals';
