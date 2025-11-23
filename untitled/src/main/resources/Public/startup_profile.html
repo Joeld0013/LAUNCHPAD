@@ -9,7 +9,6 @@
 </head>
 <body>
 <div class="site-wrap">
-    <!-- Header remains consistent -->
     <header>
         <div class="header-content">
             <div class="logo">
@@ -20,7 +19,7 @@
                 <a href="startup_index.html">Home</a>
                 <a href="startup_post.html">Posts</a>
                 <a href="startup_bids.html">Bids</a>
-                <a href="startup_profile.html">Profile</a>
+                <a href="startup_profile.html" class="active">Profile</a>
                 <a href="startup_chat.html">Chat</a>
                 <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
                 <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
@@ -28,61 +27,42 @@
         </div>
     </header>
 
-    <!-- Notification Popup (unchanged) -->
     <div id="notification-popup">
         <div class="section-title">Notifications</div>
         <div class="notification-item">
-            <div class="notification-avatar">VC</div>
-            <div class="notification-text">Stellar Ventures just commented on your post.</div>
-        </div>
-        <div class="notification-item">
-            <div class="notification-avatar">SA</div>
-            <div class="notification-text">Synapse AI announced a new event.</div>
+            <div class="notification-text">No new notifications</div>
         </div>
     </div>
 
-    <!-- PROFILE PAGE LAYOUT -->
     <section id="profile">
         <div class="profile-grid">
 
-            <!-- Main Content Column -->
             <main class="profile-main-column">
 
-                <!-- Profile Header Card -->
                 <div class="card profile-header-card">
                     <div class="profile-header-top">
-                        <div class="profile-avatar-large" id="page-avatar">SA</div>
+                        <div class="profile-avatar-large" id="page-avatar"></div>
                         <div class="profile-info-main">
-                            <h1 class="profile-name" id="page-name">Synapse AI</h1>
-                            <p class="profile-title" id="page-title">AI Solutions Startup | Connecting Innovation with Capital</p>
-                            <p class="profile-location" id="page-location">📍 Bengaluru, India</p>
+                            <h1 class="profile-name" id="page-name"></h1>
+                            <p class="profile-title" id="page-title"></p>
+                            <p class="profile-location" id="page-location"></p>
                         </div>
                     </div>
                     <div class="profile-action-buttons">
-                        <button class="follow-btn-profile" onclick="toggleFollow(event)">
-                            <i class="fas fa-plus"></i>
-                            <span>Follow</span>
-                        </button>
-                        <button class="message-btn-profile" onclick="window.location.href='startup_chat.html'">
-                            <i class="fas fa-paper-plane"></i>
-                            <span>Send Message</span>
+                        <button class="edit-btn-profile" onclick="toggleEditProfileModal(true)">
+                            <i class="fas fa-pen"></i>
+                            <span>Edit Profile</span>
                         </button>
 
                         <button class="bid-btn-profile" onclick="toggleBidModal(true)">
                             <i class="fas fa-hand-holding-usd"></i>
                             <span>Make a Bid</span>
                         </button>
-                        <button class="edit-btn-profile" onclick="toggleEditProfileModal(true)">
-                            <i class="fas fa-pen"></i>
-                            <span>Edit Profile</span>
-                        </button>
                     </div>
                 </div>
 
-                <!-- Tabbed Content Card -->
                 <div class="card profile-content-tabs">
 
-                    <!-- Tab Navigation -->
                     <nav class="profile-tab-nav">
                         <button class="profile-tab-btn active" onclick="switchProfileTab(event, 'tab-about')">About</button>
                         <button class="profile-tab-btn" onclick="switchProfileTab(event, 'tab-milestones')">Milestones</button>
@@ -90,156 +70,70 @@
                         <button class="profile-tab-btn" onclick="switchProfileTab(event, 'tab-posts')">Posts</button>
                     </nav>
 
-                    <!-- Tab Content Panels -->
                     <div class="profile-tab-content">
 
-                        <!-- About Panel -->
                         <div id="tab-about" class="profile-tab-panel active-tab">
-                            <div class="section-title">About Synapse AI</div>
-                            <p class="profile-summary-text" id="page-about">Synapse AI is an innovative platform dedicated to connecting visionary startups with the right investors. We simplify the fundraising process by providing a curated ecosystem where founders can showcase their ventures and investors can discover promising opportunities in emerging markets. Our mission is to democratize access to capital and accelerate the growth of the next generation of industry leaders.</p>
+                            <div class="section-title">About</div>
+                            <p class="profile-summary-text" id="page-about">
+                            </p>
                         </div>
 
-                        <!-- Milestones Panel -->
                         <div id="tab-milestones" class="profile-tab-panel">
                             <div class="section-title">Key Milestones</div>
                             <div class="experience-list" id="page-milestone-list">
-                                <div class="experience-item" data-icon="fas fa-rocket">
-                                    <div class="experience-icon"><i class="fas fa-rocket"></i></div>
-                                    <div class="experience-details">
-                                        <div class="experience-title">Platform Launch</div>
-                                        <div class="experience-duration">January 2024</div>
-                                    </div>
-                                </div>
-                                <div class="experience-item" data-icon="fas fa-seedling">
-                                    <div class="experience-icon"><i class="fas fa-seedling"></i></div>
-                                    <div class="experience-details">
-                                        <div class="experience-title">Seed Funding Round</div>
-                                        <div class="experience-duration">November 2023</div>
-                                    </div>
-                                </div>
-                                <div class="experience-item" data-icon="fas fa-vial">
-                                    <div class="experience-icon"><i class="fas fa-vial"></i></div>
-                                    <div class="experience-details">
-                                        <div class="experience-title">Beta Testing Phase</div>
-                                        <div class="experience-duration">September 2023</div>
-                                    </div>
-                                </div>
+                                <p class="text-muted" style="padding: 10px;">No milestones added yet.</p>
                             </div>
                         </div>
 
-                        <!-- Team Panel -->
                         <div id="tab-team" class="profile-tab-panel">
                             <div class="section-title">Core Team</div>
                             <div class="team-list" id="page-team-list">
-                                <div class="team-member" data-initials="JK">
-                                    <div class="member-avatar">JK</div>
-                                    <div class="member-details">
-                                        <h4>John K. Doe</h4>
-                                        <p>CEO, Co-founder</p>
-                                        <p>Experienced entrepreneur with a background in business development and strategy. Previously founded a successful fintech startup.</p>
-                                    </div>
-                                </div>
-                                <div class="team-member" data-initials="AS">
-                                    <div class="member-avatar">AS</div>
-                                    <div class="member-details">
-                                        <h4>Alice Smith</h4>
-                                        <p>CTO, Co-founder</p>
-                                        <p>An AI specialist and software architect with over 10 years of experience building scalable tech solutions for Fortune 500 companies.</p>
-                                    </div>
-                                </div>
+                                <p class="text-muted" style="padding: 10px;">No team members listed.</p>
                             </div>
                         </div>
 
-                        <!-- Posts Panel (Updated to match post feed) -->
                         <div id="tab-posts" class="profile-tab-panel">
                             <div class="section-title">Recent Posts</div>
-                            <article class="card post-card startup-post">
-                                <div class="post-header">
-                                    <div class="post-avatar">SA</div>
-                                    <div>
-                                        <div class="company-name"><span class="link">Synapse AI</span></div>
-                                        <div class="post-meta">5h ago</div>
-                                    </div>
-                                </div>
-                                <div class="post-body">
-                                    <div>Don't miss our upcoming webinar: "Navigating Seed Rounds - What Investors Look For." Join industry experts as they share insights and tips for early-stage startups. Register now!</div>
-                                </div>
-                                <div class="post-media">
-                                    <img src="https://images.unsplash.com/photo-1620325696245-0960538a7985?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Webinar Announcement" class="post-image">
-                                </div>
-                                <div class="post-footer">
-                                    <div class="post-action like-btn" data-likes="56"><i class="fas fa-thumbs-up"></i> <span class="like-count">56</span></div>
-                                    <div class="post-action comment-btn"><i class="fas fa-comment"></i> Comment</div>
-                                    <div class="post-action share-btn"><i class="fas fa-share"></i> Share</div>
-                                </div>
-                                <div class="comment-section">
-                                    <div class="comment-input-box">
-                                        <div class="my-avatar-small">SA</div>
-                                        <input type="text" placeholder="Add a comment...">
-                                    </div>
-                                    <div class="comment-list">
-                                        <div class="comment-item">
-                                            <div class="comment-avatar">FP</div>
-                                            <div class="comment-content">
-                                                <span class="comment-name">Future Partners</span>
-                                                <p>Registered! Looking forward to it.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
+                            <div id="page-posts-list">
+                                <p class="text-muted" style="padding: 10px;">No posts yet.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </main>
 
-            <!-- Sidebar Column -->
             <aside class="sidebar-column">
 
-                <!-- Contact Info Card -->
                 <div class="card">
                     <div class="section-title">Contact Info</div>
                     <div class="contact-list">
-                        <div class="contact-item" id="page-website">
+                        <div class="contact-item">
                             <i class="fas fa-globe"></i>
-                            <span><a href="#" class="link">synapseai.com</a></span>
+                            <span><a href="#" class="link" id="page-website">--</a></span>
                         </div>
-                        <div class="contact-item" id="page-email">
+                        <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>contact@synapseai.com</span>
+                            <span id="page-email"></span>
                         </div>
-                        <div class="contact-item" id="page-phone">
+                        <div class="contact-item">
                             <i class="fas fa-phone"></i>
-                            <span>+91 98765 43210</span>
+                            <span id="page-phone"></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Areas of Focus Card -->
                 <div class="card">
                     <div class="section-title">Areas of Focus</div>
                     <div class="skills-list" id="page-skills-list">
-                        <span class="skill-tag">Startup Ecosystem</span>
-                        <span class="skill-tag">Venture Capital</span>
-                        <span class="skill-tag">Pitch Deck Analysis</span>
-                        <span class="skill-tag">Seed Funding</span>
-                        <span class="skill-tag">AI-powered Matching</span>
-                        <span class="skill-tag">Networking</span>
-                        <span class="skill-tag">Business Strategy</span>
+                        <span class="text-muted" style="font-size: 0.9em;">No skills added.</span>
                     </div>
                 </div>
 
-                <!-- Media & Pitch Card -->
                 <div class="card">
-                    <div class="section-title">Media & Pitch</div>
-                    <div class="media-grid-new">
-                        <div class="media-item-new" id="page-growth-metrics">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Latest Growth Metrics</span>
-                        </div>
-                        <div class="media-item-new" id="page-pitch-video" data-url="https://youtube.com/watch?v=12345">
-                            <i class="fas fa-file-video"></i>
-                            <span>Watch Our Pitch Deck</span>
+                    <div class="section-title">Pitch Deck Video</div>
+                    <div id="pitch-video-container">
+                        <div id="no-video-msg" class="text-muted" style="text-align: center; padding: 20px; font-size: 0.9em;">
+                            No pitch video uploaded yet.
                         </div>
                     </div>
                 </div>
@@ -248,7 +142,6 @@
         </div>
     </section>
 
-    <!-- Footer remains consistent -->
     <footer>
         <div class="footer-content">
             <div class="footer-links">
@@ -261,9 +154,6 @@
     </footer>
 </div>
 
-<!-- MODALS -->
-
-<!-- !!! NEW ADVANCED EDIT PROFILE MODAL !!! -->
 <div id="edit-profile-modal" class="modal" style="display: none;">
     <div class="modal-content modal-content-large">
 
@@ -273,7 +163,6 @@
         </div>
 
         <div class="modal-body-tabs">
-            <!-- Tab Navigation Sidebar -->
             <aside class="modal-tab-nav">
                 <button class="modal-tab-btn active" onclick="switchEditModalTab(event, 'edit-tab-overview')">
                     <i class="fas fa-user-tie"></i> Overview
@@ -295,75 +184,100 @@
                 </button>
             </aside>
 
-            <!-- Tab Content Panels -->
             <main class="modal-tab-content">
 
-                <!-- Panel 1: Overview -->
                 <div id="edit-tab-overview" class="modal-tab-panel active-tab">
                     <h4>Overview</h4>
-                    <!-- Profile Pic -->
                     <div class="form-group-horizontal">
-                        <img src="https://placehold.co/100x100/edb96f/2b3446?text=SA" alt="Profile Avatar" class="edit-profile-pic-preview" id="profile-pic-preview">
+                        <img src="" alt="Profile Avatar" class="edit-profile-pic-preview" id="profile-pic-preview" style="background-color: #eee;">
                         <div>
                             <label for="edit-profile-pic">Profile Picture</label>
-                            <input type="file" id="edit-profile-pic" class="form-input" accept="image/*" onchange="previewProfilePic(event)">
+                            <input type="file" id="edit-profile-pic" class="form-input" accept="image/*">
                             <p class="form-hint">Upload a JPG or PNG. 1:1 aspect ratio recommended.</p>
                         </div>
                     </div>
-                    <!-- Other fields -->
                     <div class="form-group"><label for="edit-name">Company Name</label><input type="text" id="edit-name" class="form-input"></div>
-                    <div class="form-group"><label for="edit-title">Title / Tagline</label><input type="text" id="edit-title" class="form-input"></div>
-                    <div class="form-group"><label for="edit-location">Location (e.g., 📍 Bengaluru, India)</label><input type="text" id="edit-location" class="form-input"></div>
+                    <div class="form-group"><label for="edit-industry">Industry</label><input type="text" id="edit-industry" class="form-input"></div>
+                    <div class="form-group"><label for="edit-stage">Stage</label><input type="text" id="edit-stage" class="form-input"></div>
+                    <div class="form-group"><label for="edit-location">Location/Address</label><input type="text" id="edit-location" class="form-input"></div>
                     <div class="form-group"><label for="edit-about">About</label><textarea id="edit-about" class="form-input"></textarea></div>
                 </div>
 
-                <!-- Panel 2: Contact -->
                 <div id="edit-tab-contact" class="modal-tab-panel">
                     <h4>Contact Info</h4>
-                    <div class="form-group"><label for="edit-contact-website">Website URL (e.g., synapseai.com)</label><input type="text" id="edit-contact-website" class="form-input"></div>
+                    <div class="form-group"><label for="edit-contact-website">Website URL</label><input type="text" id="edit-contact-website" class="form-input"></div>
                     <div class="form-group"><label for="edit-contact-email">Email</label><input type="email" id="edit-contact-email" class="form-input"></div>
                     <div class="form-group"><label for="edit-contact-phone">Phone</label><input type="tel" id="edit-contact-phone" class="form-input"></div>
                 </div>
 
-                <!-- Panel 3: Media -->
                 <div id="edit-tab-media" class="modal-tab-panel">
                     <h4>Media & Content</h4>
-                    <div class="form-group"><label for="edit-growth-metrics">Growth Metrics (Text or URL)</label><input type="text" id="edit-growth-metrics" class="form-input"></div>
-                    <div class="form-group"><label for="edit-pitch-video">Pitch Deck Video URL</label><input type="text" id="edit-pitch-video" class="form-input"></div>
+
+                    <div class="form-group">
+                        <label for="edit-pitch-video-file">Pitch Deck Video</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="file"
+                                   id="edit-pitch-video-file"
+                                   class="form-input"
+                                   accept="video/*"
+                                   onchange="handleVideoFileSelect(event)">
+                            <button type="button"
+                                    class="upload-btn"
+                                    id="upload-video-btn"
+                                    onclick="uploadPitchVideo()"
+                                    style="display: none; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                <i class="fas fa-upload"></i> Upload
+                            </button>
+                        </div>
+                        <p class="form-hint">Upload an MP4, MOV, or WebM video (max 100MB)</p>
+
+                        <div id="upload-progress" style="display: none; margin-top: 10px;">
+                            <div style="background: #ecf0f1; border-radius: 10px; overflow: hidden; height: 30px; position: relative;">
+                                <div id="progress-bar" style="background: linear-gradient(90deg, #3498db, #2ecc71); height: 100%; width: 0%; transition: width 0.3s ease; display: flex; align-items: center; justify-content: center;">
+                                    <span id="progress-text" style="color: white; font-weight: 600; font-size: 12px; position: absolute;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="current-video-preview" style="display: none; margin-top: 15px;">
+                            <p style="font-weight: 600; margin-bottom: 10px;">Current Video:</p>
+                            <video id="preview-video" controls style="width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></video>
+                        </div>
+
+                        <input type="hidden" id="edit-pitch-video-url" value="">
+                    </div>
                 </div>
 
-                <!-- Panel 4: Team -->
                 <div id="edit-tab-team" class="modal-tab-panel">
                     <h4>Team Members</h4>
-                    <p class="form-hint">Add your core team members. The description is saved from their "About" summary.</p>
-                    <div class="dynamic-list" id="team-member-list">
-                        <!-- JS will populate this -->
+                    <p class="form-hint">Add your core team members. Fill in at least the name field.</p>
+                    <div class="dynamic-list" id="team-member-list" style="display: grid; gap: 15px;">
                     </div>
-                    <button class="add-new-btn" onclick="addTeamMember()"><i class="fas fa-plus"></i> Add Team Member</button>
+                    <button class="add-new-btn" onclick="addTeamMember()" type="button">
+                        <i class="fas fa-plus"></i> Add Team Member
+                    </button>
                 </div>
 
-                <!-- Panel 5: Milestones -->
                 <div id="edit-tab-milestones" class="modal-tab-panel">
                     <h4>Key Milestones</h4>
-                    <p class="form-hint">List your company's biggest achievements. Find icons at Font Awesome (e.g., "fas fa-rocket").</p>
-                    <div class="dynamic-list" id="milestone-list">
-                        <!-- JS will populate this -->
+                    <p class="form-hint">List your company's achievements. Fill in at least the title field.</p>
+                    <div class="dynamic-list" id="milestone-list" style="display: grid; gap: 15px;">
                     </div>
-                    <button class="add-new-btn" onclick="addMilestone()"><i class="fas fa-plus"></i> Add Milestone</button>
+                    <button class="add-new-btn" onclick="addMilestone()" type="button">
+                        <i class="fas fa-plus"></i> Add Milestone
+                    </button>
                 </div>
 
-                <!-- Panel 6: Skills -->
                 <div id="edit-tab-skills" class="modal-tab-panel">
                     <h4>Areas of Focus (Skills)</h4>
                     <div class="form-group">
                         <label for="edit-skills">Skills (comma separated)</label>
-                        <textarea id="edit-skills" class="form-input"></textarea>
+                        <textarea id="edit-skills" class="form-input" placeholder="e.g. Finance, API, SaaS"></textarea>
                     </div>
                 </div>
             </main>
         </div>
 
-        <!-- Modal Footer -->
         <div class="modal-footer">
             <button class="cancel-btn" onclick="toggleEditProfileModal(false)">Cancel</button>
             <button class="save-btn" onclick="saveProfileChanges()">Save Changes</button>
@@ -371,18 +285,6 @@
     </div>
 </div>
 
-
-<!-- Logout Modal (unchanged) -->
-<div id="logout-confirm-modal" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 400px; text-align: center;">
-        <h3 style="margin-top: 10px;">Log Out</h3>
-        <p>Are you sure you want to log out?</p>
-        <div class="modal-buttons" style="justify-content: center;">
-            <button class="cancel-btn" onclick="toggleLogoutModal()">Cancel</button>
-            <button class="save-btn" onclick="confirmLogout()" style="background-color: #e74c3c;">Log Out</button>
-        </div>
-    </div>
-</div>
 <div id="make-bid-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 550px;">
         <div class="modal-header">
@@ -426,6 +328,29 @@
         </div>
     </div>
 </div>
+
+<div id="logout-confirm-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <h3 style="margin-top: 10px;">Log Out</h3>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons" style="justify-content: center;">
+            <button class="cancel-btn" onclick="toggleLogoutModal()">Cancel</button>
+            <button class="save-btn" onclick="confirmLogout()" style="background-color: #e74c3c;">Log Out</button>
+        </div>
+    </div>
+</div>
+
 <script src="js/startup_shared_scripts.js"></script>
+<script src="js/startup_api_service.js"></script>
+<script>
+    // Initialize profile page when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Call existing initialization
+        // ... existing code runs first ...
+
+        // Then load profile data from backend
+        initializeProfilePage();
+    });
+</script>
 </body>
 </html>

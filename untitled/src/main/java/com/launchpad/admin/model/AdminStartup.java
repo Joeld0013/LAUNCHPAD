@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Document(collection = "startups")
-public class Startup {
+public class AdminStartup {
 
     @Id
     private String id;
@@ -53,7 +53,7 @@ public class Startup {
     private String className = "com.launchpad.registration.model.Startup";
 
     // Constructors
-    public Startup() {
+    public AdminStartup() {
         this.createdAt = new Date();
         this.registrationStatus = "PENDING";
         this.isVerified = false;

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface InvestorRepository extends MongoRepository<InvestorReg, String> {
+public interface InvestorRegistrationRepository extends MongoRepository<InvestorReg, String> {
     Optional<InvestorReg> findByEmail(String email);
     List<InvestorReg> findByRegistrationStatus(String status);
     long countByRegistrationStatus(String status);

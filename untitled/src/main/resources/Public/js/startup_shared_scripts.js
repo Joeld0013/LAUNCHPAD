@@ -5,20 +5,17 @@
  * @param {Event} event - The click event.
  */
 function toggleNotifications(event) {
-    // This stops the click from bubbling up to the 'document' listener,
-    // which would otherwise immediately close the popup.
     if (event) event.stopPropagation();
-
     const popup = document.getElementById('notification-popup');
-    const bellIcon = document.getElementById('bell-icon'); // Get the icon
+    const bellIcon = document.getElementById('bell-icon');
 
     if (popup && bellIcon) {
         if (popup.style.display === 'block') {
             popup.style.display = 'none';
-            bellIcon.classList.remove('active'); // Remove active class
+            bellIcon.classList.remove('active');
         } else {
             popup.style.display = 'block';
-            bellIcon.classList.add('active'); // Add active class
+            bellIcon.classList.add('active');
         }
     }
 }
@@ -29,7 +26,6 @@ function toggleNotifications(event) {
  * @param {string} type - The category to filter by ('all', 'investor', 'startup').
  */
 function filterPosts(event, type) {
-    // Check if filter buttons exist on this page
     const filterButtons = document.querySelectorAll('.feed-filter-bar .filter-btn');
     if (!filterButtons.length) return;
 
@@ -39,14 +35,9 @@ function filterPosts(event, type) {
     }
 
     const allPosts = document.querySelectorAll('.post-feed .post-card');
-
     allPosts.forEach(post => {
-        // This logic uses style.display to show/hide posts based on filter
-        post.style.display = 'block'; // Show all by default
-
-        if (type === 'all') {
-            // do nothing, already visible
-        } else if (type === 'investor' && !post.classList.contains('investor-post')) {
+        post.style.display = 'block';
+        if (type === 'investor' && !post.classList.contains('investor-post')) {
             post.style.display = 'none';
         } else if (type === 'startup' && !post.classList.contains('startup-post')) {
             post.style.display = 'none';
@@ -66,23 +57,10 @@ function toggleEditProfileModal(open) {
     if (!modal) return;
 
     if (open) {
-        // --- LOAD DATA FROM PAGE INTO MODAL ---
-        document.getElementById('edit-name').value = document.getElementById('page-name')?.textContent || '';
-        document.getElementById('edit-title').value = document.getElementById('page-title')?.textContent || '';
-        document.getElementById('edit-location').value = document.getElementById('page-location')?.textContent || '';
-        document.getElementById('edit-about').value = document.getElementById('page-about')?.textContent || '';
-
-        document.getElementById('edit-contact-website').value = document.querySelector('#page-website .link')?.textContent || '';
-        document.getElementById('edit-contact-email').value = document.querySelector('#page-email span:last-child')?.textContent || '';
-        document.getElementById('edit-contact-phone').value = document.querySelector('#page-phone span:last-child')?.textContent || '';
-
-        document.getElementById('edit-growth-metrics').value = document.querySelector('#page-growth-metrics span')?.textContent || '';
-        document.getElementById('edit-pitch-video').value = document.getElementById('page-pitch-video')?.dataset.url || '';
-
-        // Load dynamic lists
-        loadTeamMembersToModal();
-        loadMilestonesToModal();
-        loadSkillsToModal();
+        // Call the robust loader from startup_api_service.js if it exists
+        if (window.loadProfileDataIntoModal) {
+            window.loadProfileDataIntoModal();
+        }
 
         // Reset to the first tab
         switchEditModalTab(null, 'edit-tab-overview');

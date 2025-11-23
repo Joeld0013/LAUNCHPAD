@@ -71,27 +71,9 @@ function toggleEditProfileModal(open) {
     if (!modal) return;
 
     if (open) {
-        // --- LOAD DATA FROM PAGE INTO MODAL ---
-        try {
-            document.getElementById('edit-name').value = document.getElementById('page-name')?.textContent || '';
-            document.getElementById('edit-title').value = document.getElementById('page-title')?.textContent || '';
-            document.getElementById('edit-location').value = document.getElementById('page-location')?.textContent || '';
-            document.getElementById('edit-about').value = document.getElementById('page-about')?.textContent || '';
-
-            document.getElementById('edit-contact-website').value = document.querySelector('#page-website .link')?.textContent || '';
-            document.getElementById('edit-contact-email').value = document.querySelector('#page-email span:last-child')?.textContent || '';
-            document.getElementById('edit-contact-phone').value = document.querySelector('#page-phone span:last-child')?.textContent || '';
-
-            // Load dynamic lists
-            loadThesisToModal();
-            loadTeamMembersToModal();
-            loadMilestonesToModal();
-            loadSkillsToModal();
-        } catch (e) {
-            console.error("Error loading profile data into modal:", e);
+        if (window.loadInvestorDataIntoModal) {
+            window.loadInvestorDataIntoModal();
         }
-
-        // Reset to the first tab
         switchEditModalTab(null, 'edit-tab-overview');
         modal.style.display = 'flex';
     } else {

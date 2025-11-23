@@ -6,7 +6,7 @@ import com.launchpad.registration.model.DocType;
 import com.launchpad.registration.model.DocumentStatus;
 import com.launchpad.registration.model.InvestorReg;
 import com.launchpad.registration.repository.DocumentRepository;
-import com.launchpad.registration.repository.InvestorRepository;
+import com.launchpad.registration.repository.InvestorRegistrationRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class InvestorService {
 
     @Autowired
-    private InvestorRepository investorRepository;
+    private InvestorRegistrationRepository investorRepository;
 
     @Autowired
     private DocumentRepository documentRepository;

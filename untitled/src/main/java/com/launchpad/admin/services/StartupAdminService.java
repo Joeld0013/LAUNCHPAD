@@ -1,5 +1,6 @@
 package com.launchpad.admin.services;
 
+import com.launchpad.admin.model.AdminStartup;
 import org.springframework.data.mongodb.core.query.Query;
 import com.launchpad.admin.dto.*;
 import com.launchpad.registration.model.StartupReg;
@@ -300,8 +301,8 @@ public class StartupAdminService {
     /**
      * Helper method to convert registration.model.Startup to admin.model.Startup for emails
      */
-    private com.launchpad.admin.model.Startup convertForEmail(StartupReg regStartup) {
-        com.launchpad.admin.model.Startup adminStartup = new com.launchpad.admin.model.Startup();
+    private AdminStartup convertForEmail(StartupReg regStartup) {
+        AdminStartup adminStartup = new AdminStartup();
         adminStartup.setId(regStartup.getId());
         adminStartup.setName(regStartup.getName());
         adminStartup.setEmail(regStartup.getEmail());

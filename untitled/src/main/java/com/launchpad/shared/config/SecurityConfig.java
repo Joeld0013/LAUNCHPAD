@@ -15,7 +15,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.multipart.support.MultipartFilter;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -35,6 +34,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+
                 // Static resources
                 .antMatchers("/", "/*.html", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
 
@@ -56,6 +56,13 @@ public class SecurityConfig {
                 // Public endpoints
                 .antMatchers("/api/public/**").permitAll()
 
+                // *** NEW: Profile endpoints - Allow access for viewing profiles ***
+                .antMatchers("/api/startups/**").permitAll()
+                .antMatchers("/api/investors/**").permitAll()
+
+                // *** NEW: File upload and access endpoints ***
+                .antMatchers("/api/files/**").permitAll()
+
                 // All other requests require authentication
                 .anyRequest().authenticated();
 
@@ -65,7 +72,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:5500"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

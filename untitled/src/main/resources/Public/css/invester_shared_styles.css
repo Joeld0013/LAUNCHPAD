@@ -2455,3 +2455,117 @@ footer::before {
 #tab-posts .post-card {
     box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
+
+/* --- Dynamic List Items (Core Team & Portfolio) --- */
+.dynamic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.dynamic-list-item {
+    display: grid;
+    /* Columns: Initials (Small) | Name (Flexible) | Title (Flexible) | Delete (Fixed) */
+    grid-template-columns: 70px 1fr 1fr 40px;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f8f9fa; /* Light grey background */
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    align-items: center;
+}
+
+/* Specific styling for the inputs inside the grid */
+.dynamic-input-small {
+    width: 100%;
+    text-align: center;
+}
+
+.dynamic-input-main {
+    width: 100%;
+}
+
+/* Force the description textarea/input to drop to the next line and span full width */
+.team-description,
+.portfolio-description {
+    grid-column: 1 / -1; /* Span from column 1 to the end */
+    width: 100%;
+    margin-top: 5px;
+    resize: vertical;
+}
+
+.dynamic-remove-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.dynamic-remove-btn:hover {
+    color: #c0392b;
+}
+
+/* --- Modal Footer Buttons (Save & Cancel) --- */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Push buttons to the right */
+    gap: 15px;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.cancel-btn {
+    padding: 10px 24px;
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+    background-color: #7f8c8d;
+}
+
+.save-btn {
+    padding: 10px 24px;
+    background-color: #007bff; /* Use your brand color here */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+.save-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* --- Investment Focus (Textarea Fix) --- */
+textarea.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    resize: vertical; /* Allow user to drag height */
+}
