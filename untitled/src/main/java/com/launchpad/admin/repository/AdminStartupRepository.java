@@ -1,6 +1,6 @@
 package com.launchpad.admin.repository;
 
-import com.launchpad.registration.model.Startup;  // Use registration model
+import com.launchpad.registration.model.StartupReg;  // Use registration model
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AdminStartupRepository extends MongoRepository<Startup, String> {
+public interface AdminStartupRepository extends MongoRepository<StartupReg, String> {
 
-    List<Startup> findByRegistrationStatus(String status);
+    List<StartupReg> findByRegistrationStatus(String status);
 
-    List<Startup> findByIndustry(String industry);
+    List<StartupReg> findByIndustry(String industry);
 
-    List<Startup> findByStage(String stage);
+    List<StartupReg> findByStage(String stage);
 
-    List<Startup> findByCountry(String country);
+    List<StartupReg> findByCountry(String country);
 
-    Optional<Startup> findByEmail(String email);
+    Optional<StartupReg> findByEmail(String email);
 
     @Query("{ 'name': { $regex: ?0, $options: 'i' } }")
-    List<Startup> searchByName(String searchTerm);
+    List<StartupReg> searchByName(String searchTerm);
 
     @Query("{ $or: [ { 'name': { $regex: ?0, $options: 'i' } }, { 'description': { $regex: ?0, $options: 'i' } }, { 'industry': { $regex: ?0, $options: 'i' } } ] }")
-    List<Startup> searchStartups(String searchTerm);
+    List<StartupReg> searchStartups(String searchTerm);
 
     long countByRegistrationStatus(String status);
 }

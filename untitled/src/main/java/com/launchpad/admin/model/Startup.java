@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,11 +29,15 @@ public class Startup {
     private String passwordHash;
 
     @Field("createdAt")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date updatedAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date approvedAt;
+
     private String approvedBy;
 
     private List<String> documentIds;
@@ -57,72 +60,204 @@ public class Startup {
     }
 
     // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getName() {
+        return name;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getCountry() { return country; }
-    public void setCountry(String country) { this.country = country; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getIndustry() { return industry; }
-    public void setIndustry(String industry) { this.industry = industry; }
+    public String getPhone() {
+        return phone;
+    }
 
-    public String getStage() { return stage; }
-    public void setStage(String stage) { this.stage = stage; }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getCountry() {
+        return country;
+    }
 
-    public String getRegistrationStatus() { return registrationStatus; }
-    public void setRegistrationStatus(String registrationStatus) { this.registrationStatus = registrationStatus; }
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-    public Boolean getIsVerified() { return isVerified; }
-    public void setIsVerified(Boolean isVerified) { this.isVerified = isVerified; }
+    public String getAddress() {
+        return address;
+    }
 
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public String getIndustry() {
+        return industry;
+    }
 
-    public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
 
-    public Date getApprovedAt() { return approvedAt; }
-    public void setApprovedAt(Date approvedAt) { this.approvedAt = approvedAt; }
+    public String getStage() {
+        return stage;
+    }
 
-    public String getApprovedBy() { return approvedBy; }
-    public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
 
-    public List<String> getDocumentIds() { return documentIds; }
-    public void setDocumentIds(List<String> documentIds) { this.documentIds = documentIds; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getWebsite() { return website; }
-    public void setWebsite(String website) { this.website = website; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getBusinessPlan() { return businessPlan; }
-    public void setBusinessPlan(String businessPlan) { this.businessPlan = businessPlan; }
+    public String getRegistrationStatus() {
+        return registrationStatus;
+    }
 
-    public String getFoundedDate() { return foundedDate; }
-    public void setFoundedDate(String foundedDate) { this.foundedDate = foundedDate; }
+    public void setRegistrationStatus(String registrationStatus) {
+        this.registrationStatus = registrationStatus;
+    }
 
-    public Integer getTeamSize() { return teamSize; }
-    public void setTeamSize(Integer teamSize) { this.teamSize = teamSize; }
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
 
-    public String getContactPerson() { return contactPerson; }
-    public void setContactPerson(String contactPerson) { this.contactPerson = contactPerson; }
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
 
-    public String getClassName() { return className; }
-    public void setClassName(String className) { this.className = className; }
+    // Convenience method for backward compatibility
+    public boolean isVerified() {
+        return isVerified != null && isVerified;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getApprovedAt() {
+        return approvedAt;
+    }
+
+    public void setApprovedAt(Date approvedAt) {
+        this.approvedAt = approvedAt;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public List<String> getDocumentIds() {
+        return documentIds;
+    }
+
+    public void setDocumentIds(List<String> documentIds) {
+        this.documentIds = documentIds;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
+
+    public String getFoundedDate() {
+        return foundedDate;
+    }
+
+    public void setFoundedDate(String foundedDate) {
+        this.foundedDate = foundedDate;
+    }
+
+    public Integer getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(Integer teamSize) {
+        this.teamSize = teamSize;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    @Override
+    public String toString() {
+        return "Startup{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", registrationStatus='" + registrationStatus + '\'' +
+                ", isVerified=" + isVerified +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

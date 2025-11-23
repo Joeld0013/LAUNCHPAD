@@ -4,7 +4,7 @@ import com.launchpad.registration.dto.StartupRegistrationRequest;
 import com.launchpad.registration.model.DocumentFile;
 import com.launchpad.registration.model.DocType;
 import com.launchpad.registration.model.DocumentStatus;
-import com.launchpad.registration.model.Startup;
+import com.launchpad.registration.model.StartupReg;
 import com.launchpad.registration.repository.DocumentRepository;
 import com.launchpad.registration.repository.StartupRepository;
 import org.apache.commons.io.FilenameUtils;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,14 +40,14 @@ public class StartupService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Startup registerStartup(StartupRegistrationRequest req, List<MultipartFile> documents) throws Exception {
+    public StartupReg registerStartup(StartupRegistrationRequest req, List<MultipartFile> documents) throws Exception {
         // check duplicate email
-        Optional<Startup> exists = startupRepository.findByEmail(req.getEmail());
+        Optional<StartupReg> exists = startupRepository.findByEmail(req.getEmail());
         if (exists.isPresent()) {
             throw new IllegalArgumentException("Email already registered");
         }
 
-        Startup s = new Startup();
+        StartupReg s = new StartupReg();
         s.setName(req.getName());
         s.setEmail(req.getEmail());
         s.setPhone(req.getPhone());
@@ -66,7 +65,7 @@ public class StartupService {
             s.setPasswordHash(hashedPassword);
         }
 
-        Startup saved = startupRepository.save(s);
+        StartupReg saved = startupRepository.save(s);
 
         List<String> docIds = new ArrayList<>();
         if (documents != null && !documents.isEmpty()) {
@@ -87,9 +86,9 @@ public class StartupService {
 
                 DocumentFile doc = new DocumentFile();
                 doc.setStartupId(saved.getId());
-                doc.setDocType(docTypeEnum);
+                doc.setDocType(String.valueOf(docTypeEnum));
                 doc.setFilePath(target.toString());
-                doc.setStatus(DocumentStatus.PENDING);
+                doc.setStatus(String.valueOf(DocumentStatus.PENDING));
                 DocumentFile savedDoc = documentRepository.save(doc);
                 docIds.add(savedDoc.getId());
             }
@@ -133,8 +132,8 @@ public class StartupService {
     }
 
     // Modified: Don't generate new password if one already exists
-    public Startup approveStartup(String startupId) {
-        Startup s = startupRepository.findById(startupId)
+    public StartupReg approveStartup(String startupId) {
+        StartupReg s = startupRepository.findById(startupId)
                 .orElseThrow(() -> new IllegalArgumentException("Startup not found"));
         if ("APPROVED".equalsIgnoreCase(s.getRegistrationStatus())) {
             return s;
@@ -155,24 +154,24 @@ public class StartupService {
         s.setRegistrationStatus("APPROVED"); // String, not enum
         s.setVerified(true);
 
-        Startup saved = startupRepository.save(s);
+        StartupReg saved = startupRepository.save(s);
 
         // Send credentials via email
         emailService.sendApprovalEmail(saved.getEmail(), rawPassword);
         return saved;
     }
 
-    public Startup rejectStartup(String startupId, String reason) {
-        Startup s = startupRepository.findById(startupId)
+    public StartupReg rejectStartup(String startupId, String reason) {
+        StartupReg s = startupRepository.findById(startupId)
                 .orElseThrow(() -> new IllegalArgumentException("Startup not found"));
         s.setRegistrationStatus("REJECTED"); // String, not enum
-        Startup saved = startupRepository.save(s);
+        StartupReg saved = startupRepository.save(s);
         // optionally send rejection email (omitted here)
         return saved;
     }
 
     // Add method to get all startups for admin
-    public List<Startup> getAllStartups() {
+    public List<StartupReg> getAllStartups() {
         return startupRepository.findAll();
     }
 

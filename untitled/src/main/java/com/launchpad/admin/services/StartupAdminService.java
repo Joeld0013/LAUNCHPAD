@@ -1,7 +1,8 @@
 package com.launchpad.admin.services;
 
+import org.springframework.data.mongodb.core.query.Query;
 import com.launchpad.admin.dto.*;
-import com.launchpad.registration.model.Startup;
+import com.launchpad.registration.model.StartupReg;
 import com.launchpad.registration.model.DocumentFile;
 import com.launchpad.admin.repository.DocumentFileRepository;
 import com.launchpad.admin.repository.AdminStartupRepository;
@@ -11,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +75,7 @@ public class StartupAdminService {
 
         query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        List<Startup> startups = mongoTemplate.find(query, Startup.class);
+        List<StartupReg> startups = mongoTemplate.find(query, StartupReg.class);
         logger.info("Found {} startups", startups.size());
 
         return startups.stream()
@@ -89,7 +88,7 @@ public class StartupAdminService {
      */
     public List<StartupResponseDTO> getStartupsByStatus(String status) {
         logger.info("Fetching startups with status: {}", status);
-        List<Startup> startups = startupRepository.findByRegistrationStatus(status);
+        List<StartupReg> startups = startupRepository.findByRegistrationStatus(status);
         logger.info("Found {} startups with status {}", startups.size(), status);
         return startups.stream()
                 .map(this::convertToDTO)
@@ -101,7 +100,7 @@ public class StartupAdminService {
      */
     public StartupResponseDTO getStartupById(String id) {
         logger.info("Fetching startup with ID: {}", id);
-        Startup startup = startupRepository.findById(id)
+        StartupReg startup = startupRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Startup not found with ID: " + id));
         return convertToDTO(startup);
     }
@@ -113,7 +112,7 @@ public class StartupAdminService {
     public StartupResponseDTO approveStartup(ApprovalRequestDTO request) {
         logger.info("Approving startup with ID: {}", request.getStartupId());
 
-        Startup startup = startupRepository.findById(request.getStartupId())
+        StartupReg startup = startupRepository.findById(request.getStartupId())
                 .orElseThrow(() -> new RuntimeException("Startup not found with ID: " + request.getStartupId()));
 
         if ("APPROVED".equalsIgnoreCase(startup.getRegistrationStatus())) {
@@ -122,14 +121,15 @@ public class StartupAdminService {
 
         startup.setRegistrationStatus("APPROVED");
         startup.setIsVerified(true);
+        startup.setApprovedAt(new Date());
 
-        Startup savedStartup = startupRepository.save(startup);
+        StartupReg savedStartup = startupRepository.save(startup);
         logger.info("Startup approved and saved: {}", savedStartup.getId());
 
         try {
             emailService.sendApprovalEmail(
                     savedStartup.getEmail(),
-                    savedStartup.getName(), // ContactPerson if available
+                    savedStartup.getContactPerson() != null ? savedStartup.getContactPerson() : savedStartup.getName(),
                     savedStartup.getName(),
                     "http://localhost:8080/startup_login.html"
             );
@@ -148,18 +148,18 @@ public class StartupAdminService {
     public StartupResponseDTO rejectStartup(ApprovalRequestDTO request) {
         logger.info("Rejecting startup with ID: {}", request.getStartupId());
 
-        Startup startup = startupRepository.findById(request.getStartupId())
+        StartupReg startup = startupRepository.findById(request.getStartupId())
                 .orElseThrow(() -> new RuntimeException("Startup not found with ID: " + request.getStartupId()));
 
         startup.setRegistrationStatus("REJECTED");
         startup.setIsVerified(false);
 
-        Startup savedStartup = startupRepository.save(startup);
+        StartupReg savedStartup = startupRepository.save(startup);
 
         try {
             emailService.sendRejectionEmail(
                     savedStartup.getEmail(),
-                    savedStartup.getName(), // ContactPerson if available
+                    savedStartup.getContactPerson() != null ? savedStartup.getContactPerson() : savedStartup.getName(),
                     savedStartup.getName(),
                     request.getComments()
             );
@@ -176,7 +176,7 @@ public class StartupAdminService {
      */
     public List<StartupResponseDTO> searchStartups(String searchTerm) {
         logger.info("Searching startups with term: {}", searchTerm);
-        List<Startup> startups = startupRepository.searchStartups(searchTerm);
+        List<StartupReg> startups = startupRepository.searchStartups(searchTerm);
         return startups.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -197,7 +197,7 @@ public class StartupAdminService {
     /**
      * Convert Startup entity to DTO
      */
-    private StartupResponseDTO convertToDTO(Startup startup) {
+    private StartupResponseDTO convertToDTO(StartupReg startup) {
         StartupResponseDTO dto = new StartupResponseDTO();
 
         dto.setId(startup.getId());
@@ -210,25 +210,34 @@ public class StartupAdminService {
         dto.setStage(startup.getStage());
         dto.setDescription(startup.getDescription());
         dto.setRegistrationStatus(startup.getRegistrationStatus());
-        dto.setIsVerified(startup.isVerified());
+        dto.setIsVerified(startup.getIsVerified());
 
         if (startup.getCreatedAt() != null) {
-            dto.setCreatedAt(Date.from(startup.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()));
+            dto.setCreatedAt(startup.getCreatedAt());
+        }
+
+        if (startup.getApprovedAt() != null) {
+            dto.setApprovedAt(startup.getApprovedAt());
         }
 
         dto.setWebsite(startup.getWebsite());
-        dto.setBusinessPlan(null);
-        dto.setFoundedDate(null);
-        dto.setTeamSize(null);
-        dto.setContactPerson(startup.getName());
+        dto.setBusinessPlan(startup.getBusinessPlan());
+        dto.setFoundedDate(startup.getFoundedDate());
+        dto.setTeamSize(startup.getTeamSize());
+        dto.setContactPerson(startup.getContactPerson());
 
-        // Load documents by startupId directly from documents collection
         List<DocumentDTO> documents = new ArrayList<>();
         try {
             logger.info("🔍 Looking for documents for startup ID: {}", startup.getId());
 
             List<DocumentFile> docFiles = documentRepository.findByStartupId(startup.getId());
-            logger.info("📎 Found {} documents for startup {}", docFiles.size(), startup.getId());
+            logger.info("🔎 Found {} documents for startup {}", docFiles.size(), startup.getId());
+
+            if (docFiles.isEmpty()) {
+                Query docQuery = new Query(Criteria.where("startupId").is(startup.getId()));
+                docFiles = mongoTemplate.find(docQuery, DocumentFile.class, "documents");
+                logger.info("🔎 MongoTemplate found {} documents", docFiles.size());
+            }
 
             for (DocumentFile doc : docFiles) {
                 logger.info("📄 Processing document: {} - {}", doc.getId(), doc.getFilePath());
@@ -246,21 +255,23 @@ public class StartupAdminService {
                 }
                 docDTO.setFileName(fileName != null ? fileName : "Unknown");
 
-                String fileType = doc.getDocType() != null ? doc.getDocType().toString() : "OTHER";
+                String fileType = doc.getDocType() != null ? doc.getDocType() : "OTHER";
                 docDTO.setFileType(fileType);
 
                 try {
-                    File file = new File(doc.getFilePath());
-                    if (file.exists()) {
-                        docDTO.setFileSize(file.length());
-                        logger.info("✅ File exists: {} bytes", file.length());
-                    } else {
-                        docDTO.setFileSize(0L);
-                        logger.warn("⚠️ File not found: {}", doc.getFilePath());
+                    if (doc.getFilePath() != null && !doc.getFilePath().isEmpty()) {
+                        File file = new File(doc.getFilePath());
+                        if (file.exists()) {
+                            docDTO.setFileSize(file.length());
+                            logger.info("✅ File exists: {} bytes", file.length());
+                        } else {
+                            docDTO.setFileSize(0L);
+                            logger.warn("⚠️ File not found at path: {}", doc.getFilePath());
+                        }
                     }
                 } catch (Exception e) {
                     docDTO.setFileSize(0L);
-                    logger.error("❌ Error reading file: {}", e.getMessage());
+                    logger.error("❌ Error reading file size: {}", e.getMessage());
                 }
 
                 if (doc.getUploadedAt() != null) {
@@ -270,15 +281,18 @@ public class StartupAdminService {
                 docDTO.setDownloadUrl("/api/admin/startups/documents/" + doc.getId() + "/download");
                 documents.add(docDTO);
 
-                logger.info("✅ Added document to DTO: {}", docDTO.getFileName());
+                logger.info("✅ Added document to DTO: {} (ID: {})", docDTO.getFileName(), docDTO.getId());
             }
+
+            logger.info("📦 Total documents loaded: {}", documents.size());
+
         } catch (Exception e) {
             logger.error("❌ Error loading documents for startup {}: {}", startup.getId(), e.getMessage(), e);
             e.printStackTrace();
         }
 
         dto.setDocuments(documents);
-        logger.info("📦 Total documents in DTO: {}", documents.size());
+        logger.info("📦 Total documents in final DTO: {}", documents.size());
 
         return dto;
     }
@@ -286,7 +300,7 @@ public class StartupAdminService {
     /**
      * Helper method to convert registration.model.Startup to admin.model.Startup for emails
      */
-    private com.launchpad.admin.model.Startup convertForEmail(Startup regStartup) {
+    private com.launchpad.admin.model.Startup convertForEmail(StartupReg regStartup) {
         com.launchpad.admin.model.Startup adminStartup = new com.launchpad.admin.model.Startup();
         adminStartup.setId(regStartup.getId());
         adminStartup.setName(regStartup.getName());
@@ -298,12 +312,16 @@ public class StartupAdminService {
         adminStartup.setStage(regStartup.getStage());
         adminStartup.setDescription(regStartup.getDescription());
         adminStartup.setRegistrationStatus(regStartup.getRegistrationStatus());
-        adminStartup.setIsVerified(regStartup.isVerified());
+        adminStartup.setIsVerified(regStartup.getIsVerified());
         adminStartup.setWebsite(regStartup.getWebsite());
-        adminStartup.setContactPerson(regStartup.getName());
+        adminStartup.setContactPerson(regStartup.getContactPerson());
 
         if (regStartup.getCreatedAt() != null) {
-            adminStartup.setApprovedAt(Date.from(regStartup.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()));
+            adminStartup.setCreatedAt(regStartup.getCreatedAt());
+        }
+
+        if (regStartup.getApprovedAt() != null) {
+            adminStartup.setApprovedAt(regStartup.getApprovedAt());
         }
 
         return adminStartup;

@@ -1,7 +1,7 @@
 package com.launchpad.registration.controller;
 
 import com.launchpad.registration.dto.StartupRegistrationRequest;
-import com.launchpad.registration.model.Startup;
+import com.launchpad.registration.model.StartupReg;
 import com.launchpad.registration.services.StartupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,7 @@ public class StartupRegistrationController {
             req.setWebsite(website); // ✅ Set website
             req.setDocType(docType); // ✅ Set docType
 
-            Startup saved = startupService.registerStartup(req, documents);
+            StartupReg saved = startupService.registerStartup(req, documents);
             return ResponseEntity.ok("Registration successful! Pending admin approval. Startup ID: " + saved.getId());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
@@ -66,7 +66,7 @@ public class StartupRegistrationController {
     @PostMapping("/admin/{id}/approve")
     public ResponseEntity<?> approve(@PathVariable("id") String startupId) {
         try {
-            Startup s = startupService.approveStartup(startupId);
+            StartupReg s = startupService.approveStartup(startupId);
             return ResponseEntity.ok("Startup approved and credentials emailed to " + s.getEmail());
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Error: " + ex.getMessage());
@@ -77,7 +77,7 @@ public class StartupRegistrationController {
     @PostMapping("/admin/{id}/reject")
     public ResponseEntity<?> reject(@PathVariable("id") String startupId, @RequestParam(required=false) String reason) {
         try {
-            Startup s = startupService.rejectStartup(startupId, reason);
+            StartupReg s = startupService.rejectStartup(startupId, reason);
             return ResponseEntity.ok("Startup rejected: " + s.getId());
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Error: " + ex.getMessage());
@@ -88,7 +88,7 @@ public class StartupRegistrationController {
     @GetMapping("/admin/all")
     public ResponseEntity<?> getAllRegistrations() {
         try {
-            List<Startup> startups = startupService.getAllStartups();
+            List<StartupReg> startups = startupService.getAllStartups();
             return ResponseEntity.ok(startups);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Error: " + ex.getMessage());

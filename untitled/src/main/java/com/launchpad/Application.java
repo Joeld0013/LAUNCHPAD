@@ -14,5 +14,6 @@ public class Application {
 
 System.out.println("front rnd runs in : http://localhost:8080/index.html");
 System.out.println("front rnd runs in : http://localhost:8080/adminlogin.html");
+        System.out.println("GET http://localhost:8080/api/admin/startups/verify/68d2619ad80bef501c93f12f");
     }
 }
