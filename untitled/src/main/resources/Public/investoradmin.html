@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/investoradmin.css">
 </head>
 <body>
+
 <!-- Sidebar Navigation -->
 <div class="sidebar">
     <div class="logo-container">
@@ -45,6 +46,7 @@
 <!-- Main Content -->
 <div class="main-content">
     <div class="content-wrapper">
+
         <!-- Top Bar -->
         <div class="top-bar">
             <div class="search-bar">
@@ -66,6 +68,8 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
+
+            <!-- Page Header -->
             <div class="page-header">
                 <h1 class="page-title">Investor Management</h1>
                 <div class="page-actions">
@@ -81,54 +85,59 @@
             <!-- Stats Section -->
             <div class="stats-section">
                 <div class="stats-cards">
+
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Total Investors</h3>
-                            <div class="stat-value">586</div>
+                            <div class="stat-value">0</div>
                             <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> 8% from last month
+                                <i class="fas fa-arrow-up"></i> 0% from last month
                             </div>
                         </div>
                     </div>
+
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Pending Review</h3>
-                            <div class="stat-value">23</div>
+                            <div class="stat-value">0</div>
                             <div class="stat-change negative">
-                                <i class="fas fa-exclamation-circle"></i> 5 need immediate attention
+                                <i class="fas fa-exclamation-circle"></i> need immediate attention
                             </div>
                         </div>
                     </div>
+
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-check-circle"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Verified Investors</h3>
-                            <div class="stat-value">452</div>
+                            <div class="stat-value">0</div>
                             <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> 12% from last month
+                                <i class="fas fa-arrow-up"></i> 0% from last month
                             </div>
                         </div>
                     </div>
+
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-money-bill-wave"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Total Investments</h3>
-                            <div class="stat-value">$127M</div>
+                            <div class="stat-value">$0M</div>
                             <div class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> 15% from last month
+                                <i class="fas fa-arrow-up"></i> 0% from last month
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -140,7 +149,9 @@
                         <i class="fas fa-sync-alt"></i> Reset Filters
                     </button>
                 </div>
+
                 <div class="filter-controls">
+
                     <div class="filter-group">
                         <label class="filter-label">Investment Size</label>
                         <select class="filter-select">
@@ -151,6 +162,7 @@
                             <option value="growth">Growth ($10M+)</option>
                         </select>
                     </div>
+
                     <div class="filter-group">
                         <label class="filter-label">Sector Preference</label>
                         <select class="filter-select">
@@ -162,6 +174,7 @@
                             <option value="ecommerce">E-commerce</option>
                         </select>
                     </div>
+
                     <div class="filter-group">
                         <label class="filter-label">Country</label>
                         <select class="filter-select">
@@ -173,6 +186,7 @@
                             <option value="in">India</option>
                         </select>
                     </div>
+
                     <div class="filter-group">
                         <label class="filter-label">Investor Type</label>
                         <select class="filter-select">
@@ -183,6 +197,7 @@
                             <option value="private-equity">Private Equity</option>
                         </select>
                     </div>
+
                     <div class="filter-group">
                         <label class="filter-label">Status</label>
                         <select class="filter-select">
@@ -192,23 +207,20 @@
                             <option value="rejected">Rejected</option>
                         </select>
                     </div>
+
                 </div>
             </div>
 
-            <!-- Investor Cards Grid -->
+            <!-- Investor Cards Grid - Pending -->
             <div class="investors-section">
-                <h2 class="section-title">Investor Requests <span class="badge">23</span></h2>
-                <div class="investors-grid">
-                    <!-- Investor cards will be populated by JavaScript -->
-                </div>
+                <h2 class="section-title">Investor Requests <span class="badge">0</span></h2>
+                <div class="investors-grid"></div>
             </div>
 
-            <!-- Approved Investors Section -->
+            <!-- Investor Cards Grid - Approved -->
             <div class="investors-section">
-                <h2 class="section-title">Verified Investors <span class="badge">452</span></h2>
-                <div class="investors-grid">
-                    <!-- Approved investor cards will be populated by JavaScript -->
-                </div>
+                <h2 class="section-title">Verified Investors <span class="badge">0</span></h2>
+                <div class="investors-grid"></div>
             </div>
 
             <!-- Pagination -->
@@ -221,12 +233,14 @@
                     <li class="pagination-item">5</li>
                 </ul>
             </div>
+
         </div>
 
         <!-- Footer -->
         <footer>
-            <p>© 2023 StartupConnect Admin Dashboard. All rights reserved.</p>
+            <p>© 2025 LaunchPad Admin Dashboard. All rights reserved.</p>
         </footer>
+
     </div>
 </div>
 

@@ -68,7 +68,7 @@ document.getElementById('investor-login').addEventListener('submit', async funct
             alert('Login successful! Redirecting to dashboard...');
 
             // Redirect to investor dashboard
-            window.location.href = 'investor_index.html';
+            window.location.href = 'investors_index.html';
         } else {
             // Show error message
             alert(data.message || 'Login failed. Please try again.');
@@ -111,7 +111,7 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => {
             if (response.ok) {
-                window.location.href = 'investor_index.html';
+                window.location.href = 'investors_index.html';
             } else {
                 // Token invalid, clear storage
                 localStorage.clear();
