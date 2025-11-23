@@ -7,17 +7,27 @@ const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8080/api';
  * Gets the current investor ID from localStorage or URL
  */
 function getCurrentInvestorId() {
+    // First check URL parameter (for viewing other profiles)
     const urlParams = new URLSearchParams(window.location.search);
     let investorId = urlParams.get('id');
 
+    // If no URL param, get from logged-in user
+    if (!investorId) {
+        investorId = localStorage.getItem('userId'); // From login
+    }
+
+    // If still no ID, try alternative storage keys
     if (!investorId) {
         investorId = localStorage.getItem('currentInvestorId');
     }
 
+    // Last resort fallback (for testing without login)
     if (!investorId) {
-        investorId = '68f771a0b3689221bc6007dc'; // Default from your MongoDB
+        console.warn('No investor ID found in localStorage or URL. Using default.');
+        investorId = '68f771a0b3689221bc6007dc';
     }
 
+    console.log('Using investor ID:', investorId);
     return investorId;
 }
 
@@ -432,19 +442,13 @@ function addInvestorTeamRow(initials = '', name = '', title = '', description = 
     if (!list) return;
 
     const item = document.createElement('div');
-    item.className = 'dynamic-list-item'; // This triggers the CSS Grid
-
-    // Notice we removed the inline styles because the CSS handles it now
+    item.className = 'dynamic-list-item';
     item.innerHTML = `
-        <input type="text" placeholder="Initials" value="${initials}" class="dynamic-input-small form-input team-initials" maxlength="3">
+        <input type="text" placeholder="Initials (e.g., JD)" value="${initials}" class="dynamic-input-small form-input team-initials">
         <input type="text" placeholder="Full Name" value="${name}" class="dynamic-input-main form-input team-name">
         <input type="text" placeholder="Title/Position" value="${title}" class="dynamic-input-main form-input team-title">
-
-        <button class="dynamic-remove-btn" onclick="this.parentElement.remove()" title="Remove Member">
-            <i class="fas fa-times"></i>
-        </button>
-
-        <input type="text" placeholder="Brief description (optional)" value="${description}" class="form-input team-description">
+        <input type="text" placeholder="Brief description" value="${description}" class="form-input team-description" style="grid-column: span 3; margin-top: 5px;">
+        <button class="dynamic-remove-btn" onclick="this.parentElement.remove()">&times;</button>
     `;
     list.appendChild(item);
 }
@@ -457,18 +461,13 @@ function addPortfolioRow(initials = '', name = '', sector = '', description = ''
     if (!list) return;
 
     const item = document.createElement('div');
-    item.className = 'dynamic-list-item'; // This triggers the CSS Grid
-
+    item.className = 'dynamic-list-item';
     item.innerHTML = `
-        <input type="text" placeholder="Initials" value="${initials}" class="dynamic-input-small form-input portfolio-initials" maxlength="3">
+        <input type="text" placeholder="Initials (e.g., ST)" value="${initials}" class="dynamic-input-small form-input portfolio-initials">
         <input type="text" placeholder="Start-up Name" value="${name}" class="dynamic-input-main form-input portfolio-name">
-        <input type="text" placeholder="Industry Sector" value="${sector}" class="dynamic-input-main form-input portfolio-sector">
-
-        <button class="dynamic-remove-btn" onclick="this.parentElement.remove()" title="Remove Company">
-            <i class="fas fa-times"></i>
-        </button>
-
-        <textarea placeholder="Short description of what the company does" class="form-input portfolio-description" rows="2">${description}</textarea>
+        <input type="text" placeholder="Industry Sector (e.g., FinTech)" value="${sector}" class="dynamic-input-main form-input portfolio-sector">
+        <textarea placeholder="Short description of what the company does" class="form-input portfolio-description" style="grid-column: span 3; margin-top: 5px; min-height: 60px; resize: vertical;">${description}</textarea>
+        <button class="dynamic-remove-btn" onclick="this.parentElement.remove()">&times;</button>
     `;
     list.appendChild(item);
 }

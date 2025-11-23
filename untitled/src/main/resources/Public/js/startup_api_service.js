@@ -556,20 +556,27 @@ const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8080/api';
  * Gets the current startup ID from localStorage or URL
  */
 function getCurrentStartupId() {
-    // First try URL parameter
+    // First check URL parameter (for viewing other profiles)
     const urlParams = new URLSearchParams(window.location.search);
     let startupId = urlParams.get('id');
 
-    // If no URL param, try localStorage (from login session)
+    // If no URL param, get from logged-in user
+    if (!startupId) {
+        startupId = localStorage.getItem('userId'); // From login
+    }
+
+    // If still no ID, try alternative storage keys
     if (!startupId) {
         startupId = localStorage.getItem('currentStartupId');
     }
 
-    // Default fallback
+    // Last resort fallback (for testing without login)
     if (!startupId) {
+        console.warn('No startup ID found in localStorage or URL. Using default.');
         startupId = '68db98e07d40e835d7c8a778';
     }
 
+    console.log('Using startup ID:', startupId);
     return startupId;
 }
 
