@@ -218,7 +218,7 @@ function confirmLogout() {
     console.log("User clicked log out.");
     alert("You have been logged out.");
     // In a real app, you'd redirect:
-    // window.location.href = "login.html";
+    window.location.href = "index.html";
 }
 
 /**

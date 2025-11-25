@@ -70,7 +70,16 @@
             </div>
         </div>
     </footer>
-    
+    <script>
+        // In index.js or at the bottom of index.html in a <script> tag
+window.addEventListener('DOMContentLoaded', function() {
+    // Clear any existing sessions when landing on index page
+    // This ensures users start fresh when they return to home
+    localStorage.clear();
+
+    console.log('Session cleared on index page load');
+});
+    </script>
 
 </body>
 </html>

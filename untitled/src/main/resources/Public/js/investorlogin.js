@@ -5,7 +5,7 @@ document.getElementById('investor-login').addEventListener('submit', async funct
     e.preventDefault();
 
     const email = document.getElementById('investor-email').value;
-    const password = document.getElementById('startup-password').value; // Note: Using startup-password ID from HTML
+    const password = document.getElementById('investor-password').value;
     const rememberMe = document.getElementById('investor-remember').checked;
 
     const loginBtn = document.querySelector('.login-btn');
@@ -54,7 +54,7 @@ document.getElementById('investor-login').addEventListener('submit', async funct
             localStorage.setItem('userId', data.id);
             localStorage.setItem('userEmail', data.email);
             localStorage.setItem('userName', data.name);
-            
+
             // Store user object for chat system
             const currentUser = {
                 id: data.id,
@@ -86,10 +86,10 @@ document.getElementById('investor-login').addEventListener('submit', async funct
 function togglePassword(inputId) {
     const passwordInput = document.getElementById(inputId);
     const toggleButton = passwordInput.nextElementSibling;
-    
+
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleButton.textContent = '🔒';
+        toggleButton.textContent = '🔓';
     } else {
         passwordInput.type = 'password';
         toggleButton.textContent = '👁️';
