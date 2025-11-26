@@ -4,8 +4,9 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>LaunchPad — Home</title>
-    <link rel="stylesheet" href="css/Startup_shared_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/startup_index.css">
 </head>
 <body>
 <div class="site-wrap">
@@ -27,78 +28,167 @@
         </div>
     </header>
 
-    <div class="search-bar-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Search for investors, posts, skills...">
-    </div>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="welcome-section">
+                <h1>Welcome back, Synapse AI</h1>
+                <p>Here's what's happening with your startup today</p>
+            </div>
+            <div class="search-bar-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search for investors, posts, skills...">
+            </div>
+        </div>
 
-    <div id="notification-popup">
-        <div class="section-title">Notifications</div>
-        <div class="notification-item">
-            <div class="notification-avatar">VC</div>
-            <div class="notification-text">Stellar Ventures just commented on your post.</div>
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <div class="stat-icon posts">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>24</h3>
+                    <p>Active Posts</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bids">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>12</h3>
+                    <p>Pending Bids</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon investors">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>47</h3>
+                    <p>Investors Reached</p>
+                </div>
+            </div>
         </div>
-        <div class="notification-item">
-            <div class="notification-avatar">SA</div>
-            <div class="notification-text">Synapse AI announced a new event.</div>
+
+        <div class="create-post-card" onclick="window.location.href='startup_post.html'">
+            <div class="user-avatar">SA</div>
+            <div class="create-post-text">Start a post, share an update...</div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-column">
+                <h2 class="section-title">Featured Opportunities</h2>
+
+                <div class="slider-container">
+                    <div class="slider" id="opportunity-slider">
+                        <div class="slide">
+                            <h3>AI Innovation Challenge 2025</h3>
+                            <p>Join the premier competition for AI startups with $500K in funding and mentorship from industry leaders.</p>
+                            <button class="slide-btn">Apply Now</button>
+                        </div>
+                        <div class="slide">
+                            <h3>TechCrunch Disrupt SF</h3>
+                            <p>Showcase your startup at the biggest tech event of the year. Applications close in 2 weeks.</p>
+                            <button class="slide-btn">Learn More</button>
+                        </div>
+                        <div class="slide">
+                            <h3>Seed Funding Round</h3>
+                            <p>Stellar Ventures is looking for AI startups for their Q3 investment round. Deadline: Oct 15.</p>
+                            <button class="slide-btn">Submit Pitch</button>
+                        </div>
+                    </div>
+                    <div class="slider-controls">
+                        <div class="slider-dot active" onclick="goToSlide(0)"></div>
+                        <div class="slider-dot" onclick="goToSlide(1)"></div>
+                        <div class="slider-dot" onclick="goToSlide(2)"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">Recent Activity</h2>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-avatar">VC</div>
+                            <div class="activity-content">
+                                <p><strong>Stellar Ventures</strong> commented on your funding proposal</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">IC</div>
+                            <div class="activity-content">
+                                <p><strong>Innovate Capital</strong> viewed your profile</p>
+                                <span class="activity-time">5 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">SA</div>
+                            <div class="activity-content">
+                                <p>Your post reached <strong>1,234 investors</strong></p>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card">
+                    <h2 class="section-title">Top Investors</h2>
+                    <div class="investor-list">
+                        <div class="investor-item">
+                            <div class="investor-avatar">VC</div>
+                            <div class="investor-info">
+                                <h4>Stellar Ventures</h4>
+                                <p>Early-stage AI & Tech</p>
+                            </div>
+                        </div>
+                        <div class="investor-item">
+                            <div class="investor-avatar">IC</div>
+                            <div class="investor-info">
+                                <h4>Innovate Capital</h4>
+                                <p>Series A & B rounds</p>
+                            </div>
+                        </div>
+                        <div class="investor-item">
+                            <div class="investor-avatar">FP</div>
+                            <div class="investor-info">
+                                <h4>Future Partners</h4>
+                                <p>Deep Tech Focus</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">Industry News</h2>
+                    <div class="news-list">
+                        <div class="news-item">
+                            <h4>Vibe coding firms raise millions in seed funding</h4>
+                            <div class="news-meta">
+                                <i class="far fa-clock"></i>
+                                <span>2h ago • 1,234 readers</span>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <h4>Ad agencies seek new leadership in digital transformation</h4>
+                            <div class="news-meta">
+                                <i class="far fa-clock"></i>
+                                <span>2d ago • 567 readers</span>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <h4>New partnership announced between AI startups and SpaceTech firm</h4>
+                            <div class="news-meta">
+                                <i class="far fa-clock"></i>
+                                <span>3d ago • 987 readers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <section id="home">
-        <div class="grid home-grid">
-            <aside>
-                <div class="card home-profile-preview">
-                    <div class="home-profile-top">
-                        <div class="home-profile-avatar">SA</div>
-                        <a href="startup_profile.html" class="home-profile-name link">Synapse AI</a>
-                        <div class="home-profile-title">AI Solutions Startup</div>
-                        <div class="meta-row">Synapse AI develops and implements next-generation AI pipelines.</div>
-                        <div class="meta-row">📍 Bengaluru, India</div>
-                    </div>
-                </div>
-            </aside>
-            <main>
-                <div class="card create-post-trigger-card" onclick="window.location.href='startup_post.html'" style="cursor: pointer;">
-                    <div class="start-post-top">
-                        <div class="my-avatar">SA</div>
-                        <div class="start-post-trigger-text">Start a post, share an update...</div>
-                    </div>
-                    <div class="start-post-actions">
-                        <button class="post-btn">Post</button>
-                    </div>
-                </div>
-                <div class="home-grid-cards">
-                    <div class="card">
-                        <div class="section-title">Company Updates</div>
-                        <p>See the <a href="startup_post.html" class="link">Posts</a> for announcements.</p>
-                    </div>
-                    <div class="card">
-                        <div class="section-title">Top Investors</div>
-                        <div class="investor"><div class="inv-avatar">VC</div><a href="startup_profile.html" class="link">Stellar Ventures</a></div>
-                        <div class="investor"><div class="inv-avatar">IC</div><a href="startup_profile.html" class="link">Innovate Capital</a></div>
-                        <div class="investor"><div class="inv-avatar">FP</div><a href="startup_profile.html" class="link">Future Partners</a></div>
-                    </div>
-                </div>
-            </main>
-            <aside>
-                <div class="card news-card">
-                    <div class="section-title">Latest News</div>
-                    <div class="news-item">
-                        <strong>Vibe coding firms raise millions</strong>
-                        <div class="meta-row">2h ago &bull; 1,234 readers</div>
-                    </div>
-                    <div class="news-item">
-                        <strong>Ad agencies seek new leaders</strong>
-                        <div class="meta-row">2d ago &bull; 567 readers</div>
-                    </div>
-                    <div class="news-item">
-                        <strong>New partnership with SpaceTech firm</strong>
-                        <div class="meta-row">3d ago &bull; 987 readers</div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </section>
 
     <footer>
         <div class="footer-content">
@@ -111,7 +201,9 @@
         </div>
     </footer>
 </div>
-<script src="js/startup_shared_scripts.js"></script>
+
+
+<!-- Logout Modal -->
 <div id="logout-confirm-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
         <h3 style="margin-top: 10px;">Log Out</h3>
@@ -122,5 +214,65 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Slider functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    const slider = document.getElementById('opportunity-slider');
+
+    function goToSlide(n) {
+        currentSlide = n;
+        updateSlider();
+    }
+
+    function updateSlider() {
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    // Auto slide every 5 seconds
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlider();
+    }, 5000);
+
+    // Notification functionality
+    function toggleNotifications(event) {
+        event.preventDefault();
+        const popup = document.getElementById('notification-popup');
+        popup.classList.toggle('show');
+    }
+
+    // Close notifications when clicking outside
+    document.addEventListener('click', function(event) {
+        const popup = document.getElementById('notification-popup');
+        const bellIcon = document.getElementById('bell-icon');
+
+        if (!popup.contains(event.target) && event.target !== bellIcon && !bellIcon.contains(event.target)) {
+            popup.classList.remove('show');
+        }
+    });
+
+    // Logout modal functionality
+    function toggleLogoutModal() {
+        const modal = document.getElementById('logout-confirm-modal');
+        modal.classList.toggle('show');
+    }
+
+    function confirmLogout() {
+        // In a real app, this would log the user out
+        alert('Logging out...');
+        toggleLogoutModal();
+    }
+</script>
 </body>
 </html>
