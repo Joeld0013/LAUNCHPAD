@@ -185,4 +185,7 @@ public class JwtUtil {
             return false;
         }
     }
+    public String getUserTypeFromToken(String jwtToken) {
+        return null;
+    }
 }
