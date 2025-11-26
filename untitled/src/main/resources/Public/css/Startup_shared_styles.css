@@ -862,81 +862,7 @@ footer::before {
 }
 
 /* Enhanced Filter Buttons */
-.filter-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(237, 185, 111, 0.2);
-    padding-bottom: 15px;
-}
 
-.filter-btn {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid rgba(43, 52, 70, 0.2);
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    color: var(--light-text);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    position: relative;
-    overflow: hidden;
-}
-
-.filter-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--navy) 0%, #2c3e50 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-}
-
-.filter-btn span {
-    position: relative;
-    z-index: 2;
-}
-
-.filter-btn.active, .filter-btn:hover {
-    color: #fff;
-    border-color: var(--navy);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(43, 52, 70, 0.3);
-}
-
-.filter-btn.active::before, .filter-btn:hover::before {
-    opacity: 1;
-}
-
-/* Specific filter button colors */
-.filter-btn:nth-child(1):hover, .filter-btn:nth-child(1).active {
-    border-color: var(--gold);
-}
-.filter-btn:nth-child(2):hover, .filter-btn:nth-child(2).active {
-    border-color: #3498db;
-}
-.filter-btn:nth-child(3):hover, .filter-btn:nth-child(3).active {
-    border-color: #2ecc71;
-}
-.filter-btn:nth-child(4):hover, .filter-btn:nth-child(4).active {
-    border-color: #9b59b6;
-}
-
-/* Add subtle animation to filter buttons */
-@keyframes filterPulse {
-    0% { transform: translateY(-2px) scale(1); }
-    50% { transform: translateY(-2px) scale(1.02); }
-    100% { transform: translateY(-2px) scale(1); }
-}
-
-.filter-btn.active {
-    animation: filterPulse 2s ease-in-out infinite;
-}
 
 
 .home-profile-preview {
@@ -1666,51 +1592,6 @@ footer::before {
 }
 
 /* Enhanced Feed Filter Bar */
-.feed-filter-bar {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(237, 185, 111, 0.2);
-}
-.filter-btn {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid rgba(43, 52, 70, 0.2);
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    color: var(--light-text);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    position: relative;
-    overflow: hidden;
-}
-.filter-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--navy) 0%, #2c3e50 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-}
-.filter-btn span {
-    position: relative;
-    z-index: 2;
-}
-.filter-btn.active, .filter-btn:hover {
-    color: #fff;
-    border-color: var(--navy);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(43, 52, 70, 0.3);
-}
-.filter-btn.active::before, .filter-btn:hover::before {
-    opacity: 1;
-}
 
 /* Enhanced Post Cards */
 .post-card {

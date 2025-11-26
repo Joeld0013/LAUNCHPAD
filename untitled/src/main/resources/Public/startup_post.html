@@ -441,53 +441,29 @@
             display: flex;
             gap: 12px;
             margin-bottom: 24px;
-            padding: 12px;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border: 1px solid rgba(237, 185, 111, 0.1);
+            padding: 8px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         .filter-btn {
             flex: 1;
             padding: 12px 24px;
             border: none;
             background: transparent;
-            color: var(--light-text);
+            color: #666;
             font-weight: 500;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .filter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--navy) 0%, #2c3e50 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-        .filter-btn span {
-            position: relative;
-            z-index: 2;
         }
         .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(43, 52, 70, 0.3);
         }
-        .filter-btn.active::before {
-            opacity: 1;
-        }
-        .filter-btn:hover:not(.active) {
-            background: rgba(237, 185, 111, 0.1);
-            color: var(--navy);
-            transform: translateY(-1px);
+        .empty-state, .error-state {
+            text-align: center;
+            padding: 60px;
+            color: #999;
         }
 
         /* Enhanced Sidebar Specifics */
