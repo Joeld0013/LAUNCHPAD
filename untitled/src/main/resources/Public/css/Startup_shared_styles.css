@@ -3300,3 +3300,34 @@ input[type="file"]:hover {
     border-color: #3498db;
     background: #e8f4f8;
 }
+
+/* === NEW CHAT BUTTON STYLES === */
+.post-header-chat-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    margin-right: 8px; /* Spacing if delete button is also present */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.post-header-chat-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    opacity: 0.95;
+}
+
+/* Ensure actions container aligns buttons properly */
+.post-header-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Pushes buttons to the far right */
+}

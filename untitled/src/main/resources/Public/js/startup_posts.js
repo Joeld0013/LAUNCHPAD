@@ -121,9 +121,7 @@ function createPostCard(post) {
     const timeAgo = getTimeAgo(post.createdAt);
     const isLiked = post.isLikedByCurrentUser;
 
-    console.log(`Creating card: ${post.userName} | Owner: ${post.isOwner} | Liked: ${isLiked}`);
-
-    // Media
+    // Media Content Logic
     let mediaContent = '';
     if (post.mediaUrls && post.mediaUrls.length > 0) {
         mediaContent = '<div class="post-media-grid">';
@@ -137,7 +135,7 @@ function createPostCard(post) {
         mediaContent += '</div>';
     }
 
-    // Link
+    // Link Logic
     let linkContent = '';
     if (post.linkUrl) {
         linkContent = `<a href="${post.linkUrl}" target="_blank" class="post-link-card">
@@ -145,7 +143,7 @@ function createPostCard(post) {
         </a>`;
     }
 
-    // Tags
+    // Tags Logic
     let tagsContent = '';
     if (post.tags && post.tags.length > 0) {
         tagsContent = '<div class="post-tags">';
@@ -155,13 +153,20 @@ function createPostCard(post) {
         tagsContent += '</div>';
     }
 
-    // DELETE BUTTON - CRITICAL: Only show if isOwner is TRUE
+    // === NEW: CHAT BUTTON LOGIC ===
+    // Show Chat button ONLY if I am NOT the owner
+    const chatButton = !post.isOwner ?
+        `<button class="post-header-chat-btn" onclick="openChat('${post.userId}', '${escapeHtml(post.userName)}')" title="Message User">
+            <i class="fas fa-comment-dots"></i> Chat
+        </button>` : '';
+
+    // Delete Button (Only if owner)
     const deleteButton = post.isOwner ?
         `<button class="post-delete-btn" onclick="deletePost('${post.id}')" title="Delete post">
             <i class="fas fa-trash-alt"></i> Delete
         </button>` : '';
 
-    // Avatar - show profile pic if available
+    // Avatar Logic
     const avatarContent = post.userProfilePic ?
         `<img src="${post.userProfilePic}" alt="${post.userName}" class="post-avatar-img">` :
         `<div class="post-avatar-initials">${userInitials}</div>`;
@@ -178,6 +183,7 @@ function createPostCard(post) {
                     </div>
                 </div>
                 <div class="post-header-actions">
+                    ${chatButton}
                     ${deleteButton}
                 </div>
             </div>
@@ -476,4 +482,11 @@ function sharePost(postId) {
     navigator.clipboard.writeText(shareLink).then(() => {
         showToast('Link copied!', 'success');
     });
+}
+
+// Placeholder for future backend integration
+function openChat(userId, userName) {
+    console.log(`Initiating chat with User ID: ${userId}, Name: ${userName}`);
+    // For now, just a visual confirmation
+    showToast(`Opening chat with ${userName}...`, 'info');
 }

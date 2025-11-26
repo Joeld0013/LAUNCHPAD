@@ -116,13 +116,6 @@ function displayPosts(posts) {
 }
 
 function createPostCard(post) {
-    console.log('Creating card for post:', post);
-    console.log('- UserName:', post.userName);
-    console.log('- UserType:', post.userType);
-    console.log('- ProfilePic:', post.userProfilePic ? 'Yes' : 'No');
-    console.log('- IsOwner:', post.isOwner);
-    console.log('- CommentsCount:', post.commentsCount);
-
     const userInitials = post.userName ? post.userName.substring(0, 2).toUpperCase() : 'U';
     const timeAgo = getTimeAgo(post.createdAt);
     const isLiked = post.isLikedByCurrentUser;
@@ -159,13 +152,20 @@ function createPostCard(post) {
         tagsContent += '</div>';
     }
 
+    // === NEW: CHAT BUTTON LOGIC ===
+    // Show Chat button ONLY if I am NOT the owner
+    const chatButton = !post.isOwner ?
+        `<button class="post-header-chat-btn" onclick="openChat('${post.userId}', '${escapeHtml(post.userName)}')" title="Message User">
+            <i class="fas fa-comment-dots"></i> Chat
+        </button>` : '';
+
     // Delete button - ONLY show if isOwner is true
     const deleteButton = post.isOwner ?
         `<button class="post-header-action" onclick="deletePost('${post.id}')" title="Delete post">
             <i class="fas fa-trash"></i>
         </button>` : '';
 
-    // Avatar content - show profile pic if available
+    // Avatar content
     const avatarContent = post.userProfilePic ?
         `<img src="${post.userProfilePic}" alt="${post.userName}" class="post-avatar-img">` :
         `<div class="post-avatar-initials">${userInitials}</div>`;
@@ -182,6 +182,7 @@ function createPostCard(post) {
                     </div>
                 </div>
                 <div class="post-header-actions">
+                    ${chatButton}
                     ${deleteButton}
                 </div>
             </div>
@@ -469,3 +470,11 @@ function sharePost(postId) {
         showToast('Link copied!', 'success');
     });
 }
+
+// Placeholder for future backend integration
+function openChat(userId, userName) {
+    console.log(`Initiating chat with User ID: ${userId}, Name: ${userName}`);
+    // For now, just a visual confirmation
+    showToast(`Opening chat with ${userName}...`, 'info');
+}
+
