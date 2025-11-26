@@ -202,8 +202,6 @@
     </footer>
 </div>
 
-
-<!-- Logout Modal -->
 <div id="logout-confirm-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
         <h3 style="margin-top: 10px;">Log Out</h3>
@@ -215,6 +213,8 @@
     </div>
 </div>
 
+<script src="js/startup_shared_scripts.js"></script>
+<script src="js/startup_api_service.js"></script>
 <script>
     // Slider functionality
     let currentSlide = 0;
@@ -261,18 +261,6 @@
             popup.classList.remove('show');
         }
     });
-
-    // Logout modal functionality
-    function toggleLogoutModal() {
-        const modal = document.getElementById('logout-confirm-modal');
-        modal.classList.toggle('show');
-    }
-
-    function confirmLogout() {
-        // In a real app, this would log the user out
-        alert('Logging out...');
-        toggleLogoutModal();
-    }
 </script>
 </body>
 </html>

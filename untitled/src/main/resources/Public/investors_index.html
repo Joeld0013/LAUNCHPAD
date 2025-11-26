@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>LaunchPad — Investor Home</title>
-    <link rel="stylesheet" href="css/invester_shared_styles.css">
+    <title>LaunchPad — Investor Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/investor_index.css">
 </head>
 <body>
 <div class="site-wrap">
@@ -16,140 +17,300 @@
                 <div class="logo-text">LaunchPad</div>
             </div>
             <div class="nav-links">
-                <a href="investors_index.html">Home</a>
+                <a href="investors_index.html" class="active">Home</a>
                 <a href="investors_posts.html">Posts</a>
                 <a href="investors_profile.html">Profile</a>
                 <a href="investors_bids.html">My Bids</a>
                 <a href="investors_chat.html">Chat</a>
-                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
-                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
+                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                </a>
+                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out">
+                    <i class="fas fa-right-from-bracket"></i>
+                </a>
             </div>
         </div>
     </header>
 
-    <div id="notification-popup">
-        <div class="section-title">Notifications</div>
-        <div class="notification-item">
-            <div class="notification-avatar">SA</div>
-            <div class="notification-text">Synapse AI just sent you a new message.</div>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="welcome-section">
+                <h1>Investor Dashboard</h1>
+                <p>Welcome back, Stellar Ventures. Here's your investment overview for today.</p>
+            </div>
+            <div class="dashboard-actions">
+                <button class="action-btn secondary">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+                <button class="action-btn glow-effect">
+                    <i class="fas fa-plus"></i> New Investment
+                </button>
+            </div>
         </div>
-        <div class="notification-item">
-            <div class="notification-avatar">QL</div>
-            <div class="notification-text">QuantumLeap accepted your bid!</div>
+
+        <div class="dashboard-grid">
+            <div class="stat-card holographic">
+                <div class="stat-header">
+                    <div class="stat-title">Portfolio Value</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="stat-value">$42.8M</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 12.4% this quarter
+                </div>
+            </div>
+
+            <div class="stat-card holographic">
+                <div class="stat-header">
+                    <div class="stat-title">Active Investments</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                </div>
+                <div class="stat-value">18</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-plus"></i> 3 new this month
+                </div>
+            </div>
+
+            <div class="stat-card holographic">
+                <div class="stat-header">
+                    <div class="stat-title">ROI (YTD)</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                </div>
+                <div class="stat-value">24.7%</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 5.2% vs last year
+                </div>
+            </div>
+
+            <div class="stat-card holographic">
+                <div class="stat-header">
+                    <div class="stat-title">Pending Deals</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                </div>
+                <div class="stat-value">7</div>
+                <div class="stat-change">
+                    <i class="fas fa-clock"></i> 2 require attention
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-column">
+                <div class="card holographic">
+                    <div class="section-title">Portfolio Performance</div>
+                    <div class="portfolio-performance">
+                        <div class="performance-chart">
+                            <div class="chart-line"></div>
+                        </div>
+                        <div class="performance-stats">
+                            <div class="performance-stat">
+                                <span>Best Performer</span>
+                                <strong>Synapse AI (+142%)</strong>
+                            </div>
+                            <div class="performance-stat">
+                                <span>Sector Allocation</span>
+                                <strong>Tech: 68%</strong>
+                            </div>
+                            <div class="performance-stat">
+                                <span>Risk Profile</span>
+                                <strong>Balanced</strong>
+                            </div>
+                            <div class="performance-stat">
+                                <span>Next Review</span>
+                                <strong>Nov 15, 2025</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card holographic">
+                    <div class="section-title">Investment Opportunities</div>
+                    <div class="opportunities-grid">
+                        <div class="opportunity-card">
+                            <div class="opportunity-header">
+                                <div class="opportunity-avatar">QL</div>
+                                <div class="opportunity-info">
+                                    <h4>QuantumLeap Computing</h4>
+                                    <p>Quantum Computing • Series B</p>
+                                </div>
+                            </div>
+                            <div class="opportunity-metrics">
+                                <div class="metric">
+                                    <div class="metric-value">$15M</div>
+                                    <div class="metric-label">Round Size</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">18 days</div>
+                                    <div class="metric-label">Left</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">24</div>
+                                    <div class="metric-label">Investors</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-card">
+                            <div class="opportunity-header">
+                                <div class="opportunity-avatar">NT</div>
+                                <div class="opportunity-info">
+                                    <h4>NovaTech Energy</h4>
+                                    <p>Clean Tech • Series A</p>
+                                </div>
+                            </div>
+                            <div class="opportunity-metrics">
+                                <div class="metric">
+                                    <div class="metric-value">$8M</div>
+                                    <div class="metric-label">Round Size</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">12 days</div>
+                                    <div class="metric-label">Left</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">16</div>
+                                    <div class="metric-label">Investors</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-card">
+                            <div class="opportunity-header">
+                                <div class="opportunity-avatar">BC</div>
+                                <div class="opportunity-info">
+                                    <h4>BioCure Therapeutics</h4>
+                                    <p>Biotech • Series C</p>
+                                </div>
+                            </div>
+                            <div class="opportunity-metrics">
+                                <div class="metric">
+                                    <div class="metric-value">$25M</div>
+                                    <div class="metric-label">Round Size</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">5 days</div>
+                                    <div class="metric-label">Left</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">32</div>
+                                    <div class="metric-label">Investors</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-card">
+                            <div class="opportunity-header">
+                                <div class="opportunity-avatar">FS</div>
+                                <div class="opportunity-info">
+                                    <h4>FinSecure</h4>
+                                    <p>Fintech • Growth Stage</p>
+                                </div>
+                            </div>
+                            <div class="opportunity-metrics">
+                                <div class="metric">
+                                    <div class="metric-value">$12M</div>
+                                    <div class="metric-label">Round Size</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">22 days</div>
+                                    <div class="metric-label">Left</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">19</div>
+                                    <div class="metric-label">Investors</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card holographic">
+                    <div class="section-title">Recent Activity</div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-avatar">SA</div>
+                            <div class="activity-content">
+                                <p><strong>Synapse AI</strong> submitted Q3 report</p>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">QL</div>
+                            <div class="activity-content">
+                                <p><strong>QuantumLeap</strong> accepted your bid</p>
+                                <div class="activity-time">5 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">NT</div>
+                            <div class="activity-content">
+                                <p><strong>NovaTech</strong> milestone achieved</p>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">BC</div>
+                            <div class="activity-content">
+                                <p><strong>BioCure</strong> FDA approval update</p>
+                                <div class="activity-time">2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">FS</div>
+                            <div class="activity-content">
+                                <p><strong>FinSecure</strong> partnership announced</p>
+                                <div class="activity-time">3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card holographic">
+                    <div class="section-title">Market Insights</div>
+                    <div class="insights-list">
+                        <div class="insight-item">
+                            <h4>AI Sector Shows Strong Growth in Q3 2025</h4>
+                            <div class="insight-meta">
+                                <i class="far fa-clock"></i>
+                                <span>October 15, 2025 • 3 min read</span>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <h4>Emerging Trends in Quantum Computing Investments</h4>
+                            <div class="insight-meta">
+                                <i class="far fa-clock"></i>
+                                <span>October 12, 2025 • 5 min read</span>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <h4>Biotech Funding Reaches Record Highs</h4>
+                            <div class="insight-meta">
+                                <i class="far fa-clock"></i>
+                                <span>October 10, 2025 • 4 min read</span>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <h4>Sustainable Tech: The Next Investment Frontier</h4>
+                            <div class="insight-meta">
+                                <i class="far fa-clock"></i>
+                                <span>October 8, 2025 • 6 min read</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="search-bar-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Search for startups, sectors, founders...">
-    </div>
-
-    <section id="investor-home">
-        <div class="grid home-grid">
-            <aside>
-                <div class="card investor-profile-preview">
-                    <div class="investor-profile-header"></div>
-                    <div class="investor-profile-avatar">VC</div>
-                    <a href="investors_profile.html" class="home-profile-name link">Stellar Ventures</a>
-                    <div class="home-profile-title">Venture Capital Firm</div>
-                    <div class="investor-stat">
-                        <span>Portfolio Companies</span>
-                        <strong>15</strong>
-                    </div>
-                    <a href="investors_profile.html" class="view-profile-btn">View Full Profile</a>
-                </div>
-
-                <div class="card">
-                    <div class="section-title">Investor Relations</div>
-                    <div class="investor-relations-info" style="margin-top: 0; padding-top: 0; border-top: none;">
-                        <p><i class="fas fa-envelope"></i> ir@launchpad.com</p>
-                        <p><i class="fas fa-phone"></i> +91 22 4000 5000</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="section-title">Newsletter</div>
-                    <form class="newsletter-form" style="flex-direction: column;">
-                        <input type="email" placeholder="Enter your email" required style="margin-bottom: 10px;">
-                        <button type="submit" class="post-btn">Subscribe</button>
-                    </form>
-                </div>
-            </aside>
-
-            <main>
-                <div class="card value-prop-card">
-                    <div class="section-title">Our Unique Value Proposition</div>
-                    <div class="value-prop-grid">
-                        <div class="value-prop-item">
-                            <i class="fas fa-chart-line"></i>
-                            <h3>Curated Deal Flow</h3>
-                            <p>Access a pre-vetted pipeline of high-growth startups.</p>
-                        </div>
-                        <div class="value-prop-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <h3>Transparent Reporting</h3>
-                            <p>Gain full visibility into company performance with real-time data.</p>
-                        </div>
-                        <div class="value-prop-item">
-                            <i class="fas fa-users"></i>
-                            <h3>Expert Network</h3>
-                            <p>Leverage our network of industry experts for due diligence.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="section-title">Financial Highlights (Q3 2025)</div>
-                    <div class="financials-grid">
-                        <div class="financial-metrics">
-                            <div class="metric-item">
-                                <span>Revenue Growth (QoQ)</span>
-                                <span class="metric-value positive">+18%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span>Net Profit Margin</span>
-                                <span class="metric-value">22%</span>
-                            </div>
-                        </div>
-                        <div class="financial-chart">
-                            <div class="chart-container">
-                                <div class="chart-bar" style="height: 50%;" data-label="Q1">$1.2M</div>
-                                <div class="chart-bar" style="height: 70%;" data-label="Q2">$1.8M</div>
-                                <div class="chart-bar" style="height: 85%;" data-label="Q3">$2.1M</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="section-title">Top Companies in Portfolio</div>
-                    <div class="investor"><div class="inv-avatar">SA</div><span class="link">Synapse AI</span> &bull; AI Solutions</div>
-                    <div class="investor"><div class="inv-avatar">QL</div><span class="link">QuantumLeap</span> &bull; Quantum Computing</div>
-                    <div class="investor"><div class="inv-avatar">NT</div><span class="link">NovaTech</span> &bull; Renewable Energy</div>
-                </div>
-            </main>
-
-            <aside>
-                <div class="card">
-                    <div class="section-title">Recent Announcements</div>
-                    <div class="news-feed">
-                        <div class="news-item">
-                            <h4>LaunchPad Announces Partnership with QuantumLeap AI</h4>
-                            <p class="meta-row">October 14, 2025 &bull; We are thrilled to partner with a leader in quantum computing.</p>
-                        </div>
-                        <div class="news-item">
-                            <h4>Synapse AI Closes $15M Series A Round</h4>
-                            <p class="meta-row">October 10, 2025 &bull; The new funding will be used to expand their team and enter new markets.</p>
-                        </div>
-                        <div class="news-item">
-                            <h4>Quarterly Investor Report Now Available</h4>
-                            <p class="meta-row">October 1, 2025 &bull; Log in to your portal to view the full Q3 2025 performance report.</p>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </section>
 
     <footer>
         <div class="footer-content">
@@ -157,12 +318,77 @@
                 <a href="#">About</a>
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
+                <a href="#">Contact</a>
+                <a href="#">Careers</a>
             </div>
-            <div class="copyright">© 2025 LaunchPad</div>
+            <div class="copyright">© 2025 LaunchPad Investors. All rights reserved.</div>
         </div>
     </footer>
 </div>
+
 <script src="js/invester_shared_scripts.js"></script>
+<script src="js/investor_api_service.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeInvestorProfilePage();
+    });
+</script>
+<script>
+    // Simple animations for dashboard elements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stat cards on load
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.classList.add('fade-in');
+        });
+
+        // Add hover effect to opportunity cards
+        const opportunityCards = document.querySelectorAll('.opportunity-card');
+        opportunityCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Create floating particles
+        createParticles();
+    });
+
+    // Create floating particles effect
+    function createParticles() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles';
+        document.body.appendChild(particlesContainer);
+
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            // Random size and position
+            const size = Math.random() * 10 + 5;
+            const left = Math.random() * 100;
+            const animationDelay = Math.random() * 15;
+
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}%`;
+            particle.style.animationDelay = `${animationDelay}s`;
+
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Notification functionality
+    function toggleNotifications(event) {
+        event.preventDefault();
+        alert('Notifications panel would open here');
+    }
+</script>
 
 <div id="logout-confirm-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
