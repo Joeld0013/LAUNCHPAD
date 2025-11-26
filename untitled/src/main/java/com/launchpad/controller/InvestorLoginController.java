@@ -35,10 +35,11 @@ public class InvestorLoginController {
 
             // Generate JWT token using data from the authResponse DTO
             String token = jwtUtil.generateToken(
-                    authResponse.getId(),      // userId from DTO
-                    "INVESTOR",                // userType
-                    authResponse.getEmail()    // email from DTO
+                    authResponse.getId(),          // userId
+                    authResponse.getEmail(),       // email
+                    "INVESTOR"                     // userType
             );
+
 
             // Set the generated token into the response object
             authResponse.setToken(token);

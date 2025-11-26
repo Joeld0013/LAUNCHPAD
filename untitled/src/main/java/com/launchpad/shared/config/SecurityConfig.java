@@ -64,6 +64,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/startups/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/investors/**").permitAll()
                 // --- CHANGED SECTION END ---
+// Bids endpoints – let controller handle token via JwtUtil
+                .antMatchers("/api/bids/**").permitAll()
 
                 // All other requests require authentication
                 .anyRequest().authenticated();

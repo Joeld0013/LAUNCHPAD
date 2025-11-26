@@ -462,6 +462,81 @@
             padding: 60px;
             color: #999;
         }
+         /* Toast Styles */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(237, 185, 111, 0.2);
+            border-left: 4px solid var(--gold);
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast-success {
+            border-left: 4px solid #2ecc71;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9f0 100%);
+        }
+        .toast-error {
+            border-left: 4px solid #e74c3c;
+            background: linear-gradient(135deg, #ffffff 0%, #fadbd8 100%);
+        }
+        .toast-info {
+            border-left: 4px solid var(--gold);
+        }
+        .post-header-bid-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+            margin-left: 8px;
+        }
+        .post-header-bid-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .post-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .post-header-action {
+            background: transparent;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .post-header-action:hover {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -534,6 +609,7 @@
     </footer>
 </div>
 
+<!-- Create Post Modal -->
 <div id="create-post-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 700px;">
         <h3>Create a Post</h3>
@@ -541,10 +617,14 @@
             <div class="my-avatar">VC</div>
             <span id="modal-user-name">Investor Name</span>
         </div>
-        <textarea id="create-post-textarea" placeholder="What's on your mind?" style="width: 100%; min-height: 120px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px;"></textarea>
+        <textarea id="create-post-textarea"
+                  placeholder="What's on your mind?"
+                  style="width: 100%; min-height: 120px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px;">
+        </textarea>
         <div class="modal-buttons" style="justify-content: space-between;">
             <div>
-                <label for="post-attachment-modal" style="background: #f0f0f0; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                <label for="post-attachment-modal"
+                       style="background: #f0f0f0; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
                     <i class="fas fa-paperclip"></i> Attach File
                 </label>
                 <input type="file" id="post-attachment-modal" multiple accept="image/*,video/*" style="display: none;">
@@ -557,6 +637,59 @@
     </div>
 </div>
 
+<!-- ✅ Make a Bid Modal (moved OUTSIDE create-post-modal) -->
+<div id="make-bid-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 550px;">
+        <div class="modal-header">
+            <h3>Make an Investment Bid</h3>
+            <button class="modal-close-btn" onclick="toggleBidModal(false)">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <p style="margin-top: 0;">
+                You are making a bid for:
+                <strong class="bid-for-startup">Startup Name</strong>
+            </p>
+
+            <div class="form-group-horizontal" style="gap: 15px; display: flex;">
+                <div class="form-group" style="flex: 2; width: 100%;">
+                    <label for="bid-amount">Investment Amount ($)</label>
+                    <input type="number" id="bid-amount" class="form-input"
+                           placeholder="e.g., 500000" min="1" step="1">
+                </div>
+                <div class="form-group" style="flex: 1; width: 100%;">
+                    <label for="bid-equity">Equity (%)</label>
+                    <input type="number" id="bid-equity" class="form-input"
+                           placeholder="e.g., 10" min="0.1" max="100" step="0.1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="bid-type">Investment Type</label>
+                <select id="bid-type" class="form-input">
+                    <option value="SEED">Seed Round (Equity)</option>
+                    <option value="SAFE">SAFE Note</option>
+                    <option value="CONVERTIBLE">Convertible Note</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bid-message">Message (Terms & Conditions)</label>
+                <textarea id="bid-message" class="form-input"
+                          placeholder="Share a brief message or key terms..."
+                          style="min-height: 100px;"></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="cancel-btn" onclick="toggleBidModal(false)">Cancel</button>
+            <button class="save-btn" onclick="submitBid()">Submit Bid</button>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Modal (unchanged) -->
 <div id="logout-confirm-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
         <h3>Log Out</h3>
@@ -568,8 +701,10 @@
     </div>
 </div>
 
+
 <script src="js/invester_shared_scripts.js"></script>
 <script src="js/profile-popup.js"></script>
 <script src="js/investor_posts.js"></script>
+<script src="js/investor_bidding_system.js"></script>
 </body>
 </html>

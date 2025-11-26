@@ -1,36 +1,38 @@
-package com.launchpad.model;
+package com.launchpad.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Document(collection = "bids")
-public class Bid {
-    @Id
+public class BidDTO {
     private String id;
     private String startupId;
+    private String startupName;
     private String investorId;
+    private String investorName;
     private Double amount;
     private Double equity;
-    private String bidType; // SEED, SAFE, CONVERTIBLE, OTHER
+    private String bidType;
     private String message;
-    private String status; // PENDING, NEGOTIATING, ACCEPTED, REJECTED, WITHDRAWN
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     // Constructors
-    public Bid() {}
+    public BidDTO() {}
 
-    public Bid(String startupId, String investorId, Double amount, Double equity, String bidType, String message) {
+    public BidDTO(String startupId, String startupName, String investorId, String investorName,
+                  Double amount, Double equity, String bidType, String message, String status,
+                  LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.startupId = startupId;
+        this.startupName = startupName;
         this.investorId = investorId;
+        this.investorName = investorName;
         this.amount = amount;
         this.equity = equity;
         this.bidType = bidType;
         this.message = message;
-        this.status = "PENDING";
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     // Getters and Setters
@@ -40,8 +42,14 @@ public class Bid {
     public String getStartupId() { return startupId; }
     public void setStartupId(String startupId) { this.startupId = startupId; }
 
+    public String getStartupName() { return startupName; }
+    public void setStartupName(String startupName) { this.startupName = startupName; }
+
     public String getInvestorId() { return investorId; }
     public void setInvestorId(String investorId) { this.investorId = investorId; }
+
+    public String getInvestorName() { return investorName; }
+    public void setInvestorName(String investorName) { this.investorName = investorName; }
 
     public Double getAmount() { return amount; }
     public void setAmount(Double amount) { this.amount = amount; }

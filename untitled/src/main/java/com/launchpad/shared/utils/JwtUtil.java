@@ -186,6 +186,21 @@ public class JwtUtil {
         }
     }
     public String getUserTypeFromToken(String jwtToken) {
-        return null;
+        try {
+            return extractUserType(jwtToken);
+        } catch (Exception e) {
+            logger.warn("⚠️ Failed to extract userType from token: {}", e.getMessage());
+            return null;
+        }
     }
+
+    public String getUserIdFromToken(String jwtToken) {
+        try {
+            return extractUserId(jwtToken);
+        } catch (Exception e) {
+            logger.warn("⚠️ Failed to extract userId from token: {}", e.getMessage());
+            return null;
+        }
+    }
+
 }

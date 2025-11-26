@@ -1,151 +1,170 @@
 package com.launchpad.controller;
 
-import com.launchpad.model.Bid;
+import com.launchpad.dto.BidDTO;
+import com.launchpad.dto.CreateBidRequest;
 import com.launchpad.services.BidService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import com.launchpad.shared.utils.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bids")
-@RequiredArgsConstructor
-@Slf4j
-@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500"})
+@CrossOrigin(origins = "*")
 public class BidController {
+    @Autowired
+    private BidService bidService;
 
-    private final BidService bidService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    // -----------------------------
-    // ACCEPT BID
-    // -----------------------------
-    @PostMapping("/{bidId}/accept")
+    // Create a new bid
+    @PostMapping("/create")
+    public ResponseEntity<?> createBid(
+            @RequestHeader("Authorization") String token,
+            @RequestBody CreateBidRequest request) {
+        try {
+            String investorId = jwtUtil.getUserIdFromToken(token.replace("Bearer ", ""));
+
+            BidDTO bid = bidService.createBid(
+                    investorId,
+                    request.getStartupId(),
+                    request.getAmount(),
+                    request.getEquity(),
+                    request.getBidType(),
+                    request.getMessage()
+            );
+
+            return ResponseEntity.ok(bid);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    // Get all bids for investor
+    @GetMapping("/investor")
+    public ResponseEntity<?> getInvestorBids(
+            @RequestHeader("Authorization") String token) {
+        try {
+            String investorId = jwtUtil.getUserIdFromToken(token.replace("Bearer ", ""));
+            List<BidDTO> bids = bidService.getInvestorBids(investorId);
+            return ResponseEntity.ok(bids);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    // Get all bids for startup (received bids)
+    @GetMapping("/startup")
+    public ResponseEntity<?> getStartupBids(
+            @RequestHeader("Authorization") String token) {
+        try {
+            String startupId = jwtUtil.getUserIdFromToken(token.replace("Bearer ", ""));
+            List<BidDTO> bids = bidService.getStartupBids(startupId);
+            return ResponseEntity.ok(bids);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    // Get bids by status for investor
+    @GetMapping("/investor/status/{status}")
+    public ResponseEntity<?> getInvestorBidsByStatus(
+            @RequestHeader("Authorization") String token,
+            @PathVariable String status) {
+        try {
+            String investorId = jwtUtil.getUserIdFromToken(token.replace("Bearer ", ""));
+            List<BidDTO> bids = bidService.getInvestorBidsByStatus(investorId, status.toUpperCase());
+            return ResponseEntity.ok(bids);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    // Get bids by status for startup
+    @GetMapping("/startup/status/{status}")
+    public ResponseEntity<?> getStartupBidsByStatus(
+            @RequestHeader("Authorization") String token,
+            @PathVariable String status) {
+        try {
+            String startupId = jwtUtil.getUserIdFromToken(token.replace("Bearer ", ""));
+            List<BidDTO> bids = bidService.getStartupBidsByStatus(startupId, status.toUpperCase());
+            return ResponseEntity.ok(bids);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    // Accept a bid (startup)
+    @PutMapping("/{bidId}/accept")
     public ResponseEntity<?> acceptBid(
-            @PathVariable Long bidId,
-            Authentication authentication) {
-
+            @RequestHeader("Authorization") String token,
+            @PathVariable String bidId) {
         try {
-            String startupId = authentication.getName();
-            log.info("Accepting bid {} by startup {}", bidId, startupId);
-
-            Bid bid = bidService.acceptBid(String.valueOf(bidId), startupId);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Bid accepted successfully. A conversation has been created.");
-            response.put("bid", bid);
-
-            return ResponseEntity.ok(response);
-
-        } catch (RuntimeException e) {
-            log.error("Error accepting bid: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
-
+            BidDTO bid = bidService.acceptBid(bidId);
+            return ResponseEntity.ok(bid);
         } catch (Exception e) {
-            log.error("Unexpected error accepting bid", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error accepting bid"));
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
 
-    // -----------------------------
-    // NEGOTIATE BID
-    // -----------------------------
-    @PostMapping("/{bidId}/negotiate")
-    public ResponseEntity<?> negotiateBid(
-            @PathVariable Long bidId,
-            Authentication authentication) {
-
-        try {
-            String startupId = authentication.getName();
-            log.info("Starting negotiation for bid {} by startup {}", bidId, startupId);
-
-            Bid bid = bidService.negotiateBid(String.valueOf(bidId), startupId);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Negotiation started. A conversation has been created.");
-            response.put("bid", bid);
-
-            return ResponseEntity.ok(response);
-
-        } catch (RuntimeException e) {
-            log.error("Error starting negotiation: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
-
-        } catch (Exception e) {
-            log.error("Unexpected error starting negotiation", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error starting negotiation"));
-        }
-    }
-
-    // -----------------------------
-    // REJECT BID
-    // -----------------------------
-    @PostMapping("/{bidId}/reject")
+    // Reject a bid (startup)
+    @PutMapping("/{bidId}/reject")
     public ResponseEntity<?> rejectBid(
-            @PathVariable Long bidId,
-            Authentication authentication) {
-
+            @RequestHeader("Authorization") String token,
+            @PathVariable String bidId) {
         try {
-            String startupId = authentication.getName();
-            log.info("Rejecting bid {} by startup {}", bidId, startupId);
-
-            Bid bid = bidService.rejectBid(String.valueOf(bidId), startupId);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Bid rejected successfully.");
-            response.put("bid", bid);
-
-            return ResponseEntity.ok(response);
-
-        } catch (RuntimeException e) {
-            log.error("Error rejecting bid: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
-
+            BidDTO bid = bidService.rejectBid(bidId);
+            return ResponseEntity.ok(bid);
         } catch (Exception e) {
-            log.error("Unexpected error rejecting bid", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error rejecting bid"));
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
 
-    // -----------------------------
-    // WITHDRAW BID (Investor)
-    // -----------------------------
-    @PostMapping("/{bidId}/withdraw")
+    // Withdraw a bid (investor)
+    @PutMapping("/{bidId}/withdraw")
     public ResponseEntity<?> withdrawBid(
-            @PathVariable Long bidId,
-            Authentication authentication) {
-
+            @RequestHeader("Authorization") String token,
+            @PathVariable String bidId) {
         try {
-            String investorId = authentication.getName();
-            log.info("Withdrawing bid {} by investor {}", bidId, investorId);
-
-            Bid bid = bidService.withdrawBid(String.valueOf(bidId), investorId);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Bid withdrawn successfully.");
-            response.put("bid", bid);
-
-            return ResponseEntity.ok(response);
-
-        } catch (RuntimeException e) {
-            log.error("Error withdrawing bid: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
-
+            BidDTO bid = bidService.withdrawBid(bidId);
+            return ResponseEntity.ok(bid);
         } catch (Exception e) {
-            log.error("Unexpected error withdrawing bid", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error withdrawing bid"));
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    // Start negotiation
+    @PutMapping("/{bidId}/negotiate")
+    public ResponseEntity<?> startNegotiation(
+            @RequestHeader("Authorization") String token,
+            @PathVariable String bidId) {
+        try {
+            BidDTO bid = bidService.startNegotiation(bidId);
+            return ResponseEntity.ok(bid);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
 }

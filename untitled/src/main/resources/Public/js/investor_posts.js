@@ -1,4 +1,4 @@
-// investor_posts.js - Final Fixed Version (Same as startup but for INVESTOR)
+// investor_posts.js - Posts with bid functionality
 const API_BASE_URL = '/api';
 let currentFilter = 'all';
 let uploadedMediaFiles = [];
@@ -15,7 +15,6 @@ function checkAuth() {
     const token = localStorage.getItem('token');
     const userType = localStorage.getItem('userType');
 
-    // Changed to INVESTOR
     if (!token || userType !== 'INVESTOR') {
         window.location.href = 'investor_login.html';
         return;
@@ -64,11 +63,11 @@ async function handleFileUpload(event) {
             uploadedMediaFiles = data.urls || [];
             showToast('Files uploaded successfully!', 'success');
         } else {
-            alert('Failed to upload files');
+            showToast('Failed to upload files', 'error');
         }
     } catch (error) {
         console.error('Error uploading files:', error);
-        alert('Error uploading files');
+        showToast('Error uploading files', 'error');
     }
 }
 
@@ -93,7 +92,6 @@ async function loadPosts(filter = 'all') {
         if (response.ok) {
             const posts = await response.json();
             console.log(`✓ Loaded ${posts.length} posts`);
-            console.log('Posts:', posts);
             displayPosts(posts);
         } else {
             feedContainer.innerHTML = '<div class="error-state"><p>Failed to load posts</p></div>';
@@ -152,18 +150,24 @@ function createPostCard(post) {
         tagsContent += '</div>';
     }
 
-    // === NEW: CHAT BUTTON LOGIC ===
-    // Show Chat button ONLY if I am NOT the owner
-    const chatButton = !post.isOwner ?
-        `<button class="post-header-chat-btn" onclick="openChat('${post.userId}', '${escapeHtml(post.userName)}')" title="Message User">
-            <i class="fas fa-comment-dots"></i> Chat
-        </button>` : '';
-
-    // Delete button - ONLY show if isOwner is true
-    const deleteButton = post.isOwner ?
-        `<button class="post-header-action" onclick="deletePost('${post.id}')" title="Delete post">
-            <i class="fas fa-trash"></i>
-        </button>` : '';
+    // Chat and Bid buttons for startup posts
+    let actionButtons = '';
+    if (post.userType === 'STARTUP' && !post.isOwner) {
+        actionButtons = `
+            <button class="post-header-chat-btn" onclick="openChat('${post.userId}', '${escapeHtml(post.userName)}')" title="Message Startup">
+                <i class="fas fa-comment-dots"></i> Chat
+            </button>
+            <button class="post-header-bid-btn" onclick="toggleBidModal(true, '${post.userId}', '${escapeHtml(post.userName)}')" title="Make a Bid">
+                <i class="fas fa-handshake"></i> Bid
+            </button>
+        `;
+    } else if (post.isOwner) {
+        actionButtons = `
+            <button class="post-header-action" onclick="deletePost('${post.id}')" title="Delete post">
+                <i class="fas fa-trash"></i>
+            </button>
+        `;
+    }
 
     // Avatar content
     const avatarContent = post.userProfilePic ?
@@ -182,8 +186,7 @@ function createPostCard(post) {
                     </div>
                 </div>
                 <div class="post-header-actions">
-                    ${chatButton}
-                    ${deleteButton}
+                    ${actionButtons}
                 </div>
             </div>
 
@@ -230,7 +233,7 @@ async function createPost() {
     const content = document.getElementById('create-post-textarea').value.trim();
 
     if (!content) {
-        alert('Please enter some content');
+        showToast('Please enter some content', 'error');
         return;
     }
 
@@ -262,11 +265,11 @@ async function createPost() {
             await loadPosts(currentFilter);
             showToast('Post created successfully!', 'success');
         } else {
-            alert('Failed to create post');
+            showToast('Failed to create post', 'error');
         }
     } catch (error) {
         console.error('Error creating post:', error);
-        alert('Error creating post');
+        showToast('Error creating post', 'error');
     }
 }
 
@@ -285,11 +288,11 @@ async function deletePost(postId) {
             await loadPosts(currentFilter);
             showToast('Post deleted', 'success');
         } else {
-            alert('Failed to delete post');
+            showToast('Failed to delete post', 'error');
         }
     } catch (error) {
         console.error('Error deleting post:', error);
-        alert('Error deleting post');
+        showToast('Error deleting post', 'error');
     }
 }
 
@@ -399,6 +402,7 @@ async function postComment(postId) {
         }
     } catch (error) {
         console.error('Error posting comment:', error);
+        showToast('Error posting comment', 'error');
     }
 }
 
@@ -454,7 +458,12 @@ function extractHashtags(text) {
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+
+    let icon = 'fa-info-circle';
+    if (type === 'success') icon = 'fa-check-circle';
+    if (type === 'error') icon = 'fa-exclamation-circle';
+
+    toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
     document.body.appendChild(toast);
 
     setTimeout(() => toast.classList.add('show'), 100);
@@ -471,10 +480,7 @@ function sharePost(postId) {
     });
 }
 
-// Placeholder for future backend integration
 function openChat(userId, userName) {
     console.log(`Initiating chat with User ID: ${userId}, Name: ${userName}`);
-    // For now, just a visual confirmation
     showToast(`Opening chat with ${userName}...`, 'info');
 }
-
