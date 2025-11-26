@@ -3,6 +3,7 @@ package com.launchpad.shared.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod; // Imported HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors().and()
-                .csrf().disable()  // CSRF disabled for stateless API
+                .csrf().disable() // CSRF disabled for stateless API
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -38,30 +39,31 @@ public class SecurityConfig {
                 // Static resources
                 .antMatchers("/", "/*.html", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
 
-                // Auth endpoints - MUST come before wildcard patterns
+                // Auth endpoints
                 .antMatchers("/api/startup/auth/**").permitAll()
                 .antMatchers("/api/investor/auth/**").permitAll()
                 .antMatchers("/api/admin/auth/**").permitAll()
 
-                // CRITICAL: Startup registration endpoint
+                // Registration endpoints
                 .antMatchers("/api/startup/register").permitAll()
-                .antMatchers("/api/startup/documents/**").permitAll()
-
-                // Investor registration endpoint
                 .antMatchers("/api/investor/register").permitAll()
 
-                // Admin endpoints
+                // Documents and File Uploads
+                .antMatchers("/api/files/**").permitAll()
+                .antMatchers("/uploads/**").permitAll()
+                .antMatchers("/api/startup/documents/**").permitAll()
+
+                // Public Data (Posts, Profiles, Admin Public)
+                .antMatchers("/api/posts/**").permitAll()
+                .antMatchers("/api/public/**").permitAll()
                 .antMatchers("/api/admin/**").permitAll()
 
-                // Public endpoints
-                .antMatchers("/api/public/**").permitAll()
-
-                // *** NEW: Profile endpoints - Allow access for viewing profiles ***
-                .antMatchers("/api/startups/**").permitAll()
-                .antMatchers("/api/investors/**").permitAll()
-
-                // *** NEW: File upload and access endpoints ***
-                .antMatchers("/api/files/**").permitAll()
+                // --- CHANGED SECTION START ---
+                // Profile viewing: Only GET is permitted publicly.
+                // PUT/POST/DELETE will require authentication via .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET, "/api/startups/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/investors/**").permitAll()
+                // --- CHANGED SECTION END ---
 
                 // All other requests require authentication
                 .anyRequest().authenticated();
@@ -72,9 +74,19 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:5500"));
+
+        // Allowed Origins: Add your frontend URLs here
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:8080",
+                "http://127.0.0.1:5500"
+        ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
+        // Allow credentials (cookies/headers)
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 

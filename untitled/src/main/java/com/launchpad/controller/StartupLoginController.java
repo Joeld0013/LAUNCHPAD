@@ -3,6 +3,7 @@ package com.launchpad.controller;
 import com.launchpad.dto.StartupLoginRequest;
 import com.launchpad.dto.StartupLoginResponse;
 import com.launchpad.services.StartupLoginAuthService;
+import com.launchpad.shared.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,33 @@ public class StartupLoginController {
     @Autowired
     private StartupLoginAuthService startupAuthService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody StartupLoginRequest loginRequest) {
         try {
+            // FIX: Changed type from 'Startup' to 'StartupLoginResponse' to match Service return type
+            StartupLoginResponse authResponse = startupAuthService.authenticateStartup(loginRequest);
 
-            StartupLoginResponse response = startupAuthService.authenticateStartup(loginRequest);
-            return ResponseEntity.ok(response);
+            if (authResponse == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ErrorResponse("Invalid credentials or startup not found"));
+            }
+
+            // Generate JWT token using data from the authResponse DTO
+            String token = jwtUtil.generateToken(
+                    authResponse.getId(),       // userId from DTO
+                    "STARTUP",                  // userType
+                    authResponse.getEmail()     // email from DTO
+            );
+
+            // Set the token
+            authResponse.setToken(token);
+
+            // Return the updated response
+            return ResponseEntity.ok(authResponse);
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ErrorResponse(e.getMessage()));
@@ -32,11 +54,10 @@ public class StartupLoginController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
-        // Implement token blacklisting if needed
         return ResponseEntity.ok(new MessageResponse("Logged out successfully"));
     }
 
-    // Helper classes
+    // Helper response classes
     static class ErrorResponse {
         private String message;
         private long timestamp;
@@ -45,25 +66,13 @@ public class StartupLoginController {
             this.message = message;
             this.timestamp = System.currentTimeMillis();
         }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
+        public String getMessage() { return message; }
+        public long getTimestamp() { return timestamp; }
     }
 
     static class MessageResponse {
         private String message;
-
-        public MessageResponse(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
+        public MessageResponse(String message) { this.message = message; }
+        public String getMessage() { return message; }
     }
 }

@@ -2,75 +2,95 @@ package com.launchpad.services;
 
 import com.launchpad.dto.InvestorLoginRequest;
 import com.launchpad.dto.InvestorLoginResponse;
-import com.launchpad.model.InvestorLogin;
-import com.launchpad.repository.InvestorLoginRepository;
+import com.launchpad.model.Investor;
+import com.launchpad.repository.InvestorRepository;
 import com.launchpad.shared.utils.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class InvestorLoginAuthService {
 
-    @Autowired
-    private InvestorLoginRepository investorLoginRepository;
+    private static final Logger logger = LoggerFactory.getLogger(InvestorLoginAuthService.class);
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private InvestorRepository investorRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    public InvestorLoginResponse authenticateInvestor(InvestorLoginRequest loginRequest) {
-        // Find investor by email
-        InvestorLogin investor = investorLoginRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-        // Check if password matches
-        if (!passwordEncoder.matches(loginRequest.getPassword(), investor.getPasswordHash())) {
-            throw new RuntimeException("Invalid email or password");
+    // Renamed from 'login' to 'authenticateInvestor' to match your Controller calls
+    public InvestorLoginResponse authenticateInvestor(InvestorLoginRequest request) {
+        logger.info("═══════════════════════════════════");
+        logger.info("INVESTOR LOGIN ATTEMPT");
+        logger.info("═══════════════════════════════════");
+        logger.info("Email: {}", request.getEmail());
+
+        Optional<Investor> investorOpt = investorRepository.findByEmail(request.getEmail());
+
+        if (investorOpt.isEmpty()) {
+            logger.warn("✗ Investor not found with email: {}", request.getEmail());
+            throw new RuntimeException("Invalid credentials");
         }
 
-        // Check if registration is approved
-        if (investor.getRegistrationStatus() != InvestorLogin.RegistrationStatus.APPROVED) {
-            String statusMessage;
-            switch (investor.getRegistrationStatus()) {
-                case PENDING:
-                    statusMessage = "Your registration is pending admin approval. Please wait for verification.";
-                    break;
-                case REJECTED:
-                    statusMessage = "Your registration has been rejected. Please contact support for more information.";
-                    break;
-                default:
-                    statusMessage = "Your account is not approved for login.";
-            }
-            throw new RuntimeException(statusMessage);
+        Investor investor = investorOpt.get();
+        logger.info("✓ Investor found: {}", investor.getName());
+        logger.info("  → ID: {}", investor.getId());
+        logger.info("  → Registration Status: {}", investor.getRegistrationStatus());
+
+        if (!"APPROVED".equalsIgnoreCase(investor.getRegistrationStatus())) {
+            logger.warn("✗ Investor not approved. Status: {}", investor.getRegistrationStatus());
+            throw new RuntimeException("Account not approved yet");
         }
 
-        // Generate JWT token
-        long expirationTime = loginRequest.getRememberMe() != null && loginRequest.getRememberMe()
-                ? 30 * 24 * 60 * 60 * 1000L  // 30 days
-                : 24 * 60 * 60 * 1000L;       // 24 hours
+        if (!passwordEncoder.matches(request.getPassword(), investor.getPasswordHash())) {
+            logger.warn("✗ Invalid password");
+            throw new RuntimeException("Invalid credentials");
+        }
 
-        String token = jwtUtil.generateToken(investor.getId(), investor.getEmail(), "INVESTOR", expirationTime);
+        logger.info("✓ Password verified");
 
-        // Create and return response
+        // ═══════════════════════════════════════════════════════════════
+        // CRITICAL: ONLY CALL generateToken ONCE with CORRECT PARAMETERS
+        // Method signature: generateToken(userId, email, userType)
+        // ═══════════════════════════════════════════════════════════════
+
+        String token = jwtUtil.generateToken(
+                investor.getId(),      // 1st parameter: userId (the MongoDB _id)
+                investor.getEmail(),   // 2nd parameter: email
+                "INVESTOR"             // 3rd parameter: userType (MUST be "INVESTOR")
+        );
+
+        logger.info("═══════════════════════════════════");
+        logger.info("✓ LOGIN SUCCESSFUL");
+        logger.info("═══════════════════════════════════");
+        logger.info("  → Token generated for ID: {}", investor.getId());
+
         return new InvestorLoginResponse(
                 token,
                 investor.getId(),
-                investor.getEmail(),
                 investor.getName(),
-                "Login successful"
+                investor.getEmail(),
+                "INVESTOR"
         );
     }
 
-    public InvestorLogin getInvestorById(String id) {
-        return investorLoginRepository.findById(id)
+    // Preserved Helper Methods from Original File (Restored)
+    public Investor getInvestorById(String id) {
+        return investorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Investor not found"));
     }
 
-    public InvestorLogin getInvestorByEmail(String email) {
-        return investorLoginRepository.findByEmail(email)
+    public Investor getInvestorByEmail(String email) {
+        return investorRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Investor not found"));
     }
 }

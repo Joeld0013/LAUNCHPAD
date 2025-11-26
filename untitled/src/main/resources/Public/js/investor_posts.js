@@ -1,0 +1,471 @@
+// investor_posts.js - Final Fixed Version (Same as startup but for INVESTOR)
+const API_BASE_URL = '/api';
+let currentFilter = 'all';
+let uploadedMediaFiles = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== Initializing Investor Posts ===');
+    checkAuth();
+    loadPosts();
+    setupEventListeners();
+    updateUserDisplayName();
+});
+
+function checkAuth() {
+    const token = localStorage.getItem('token');
+    const userType = localStorage.getItem('userType');
+
+    // Changed to INVESTOR
+    if (!token || userType !== 'INVESTOR') {
+        window.location.href = 'investor_login.html';
+        return;
+    }
+}
+
+function updateUserDisplayName() {
+    const userName = localStorage.getItem('userName') || 'Investor';
+    const modalUserName = document.getElementById('modal-user-name');
+    if (modalUserName) {
+        modalUserName.textContent = userName;
+    }
+
+    const avatars = document.querySelectorAll('.my-avatar');
+    avatars.forEach(avatar => {
+        avatar.textContent = userName.substring(0, 2).toUpperCase();
+    });
+}
+
+function setupEventListeners() {
+    const fileInput = document.getElementById('post-attachment-modal');
+    if (fileInput) {
+        fileInput.addEventListener('change', handleFileUpload);
+    }
+}
+
+async function handleFileUpload(event) {
+    const files = event.target.files;
+    if (!files.length) return;
+
+    const formData = new FormData();
+    for (let file of files) {
+        formData.append('files', file);
+    }
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/files/upload`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            uploadedMediaFiles = data.urls || [];
+            showToast('Files uploaded successfully!', 'success');
+        } else {
+            alert('Failed to upload files');
+        }
+    } catch (error) {
+        console.error('Error uploading files:', error);
+        alert('Error uploading files');
+    }
+}
+
+async function loadPosts(filter = 'all') {
+    const token = localStorage.getItem('token');
+    currentFilter = filter;
+
+    console.log(`=== Loading posts with filter: ${filter} ===`);
+
+    const feedContainer = document.getElementById('post-feed');
+    feedContainer.innerHTML = '<div class="loading-posts"><div class="loader"></div><p>Loading posts...</p></div>';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts?filter=${filter}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const posts = await response.json();
+            console.log(`✓ Loaded ${posts.length} posts`);
+            console.log('Posts:', posts);
+            displayPosts(posts);
+        } else {
+            feedContainer.innerHTML = '<div class="error-state"><p>Failed to load posts</p></div>';
+        }
+    } catch (error) {
+        console.error('Error loading posts:', error);
+        feedContainer.innerHTML = '<div class="error-state"><p>Error loading posts</p></div>';
+    }
+}
+
+function displayPosts(posts) {
+    const feedContainer = document.getElementById('post-feed');
+
+    if (!posts || posts.length === 0) {
+        feedContainer.innerHTML = '<div class="empty-state"><p>No posts yet. Be the first to share!</p></div>';
+        return;
+    }
+
+    feedContainer.innerHTML = posts.map(post => createPostCard(post)).join('');
+}
+
+function createPostCard(post) {
+    console.log('Creating card for post:', post);
+    console.log('- UserName:', post.userName);
+    console.log('- UserType:', post.userType);
+    console.log('- ProfilePic:', post.userProfilePic ? 'Yes' : 'No');
+    console.log('- IsOwner:', post.isOwner);
+    console.log('- CommentsCount:', post.commentsCount);
+
+    const userInitials = post.userName ? post.userName.substring(0, 2).toUpperCase() : 'U';
+    const timeAgo = getTimeAgo(post.createdAt);
+    const isLiked = post.isLikedByCurrentUser;
+
+    // Media content
+    let mediaContent = '';
+    if (post.mediaUrls && post.mediaUrls.length > 0) {
+        mediaContent = '<div class="post-media-grid">';
+        post.mediaUrls.forEach(url => {
+            if (url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                mediaContent += `<img src="${url}" alt="Post image" class="post-image">`;
+            } else if (url.match(/\.(mp4|webm|ogg)$/i)) {
+                mediaContent += `<video controls class="post-video"><source src="${url}"></video>`;
+            }
+        });
+        mediaContent += '</div>';
+    }
+
+    // Link content
+    let linkContent = '';
+    if (post.linkUrl) {
+        linkContent = `<a href="${post.linkUrl}" target="_blank" class="post-link-card">
+            <i class="fas fa-link"></i><span>${post.linkUrl}</span>
+        </a>`;
+    }
+
+    // Tags content
+    let tagsContent = '';
+    if (post.tags && post.tags.length > 0) {
+        tagsContent = '<div class="post-tags">';
+        post.tags.forEach(tag => {
+            tagsContent += `<span class="post-tag">#${tag}</span>`;
+        });
+        tagsContent += '</div>';
+    }
+
+    // Delete button - ONLY show if isOwner is true
+    const deleteButton = post.isOwner ?
+        `<button class="post-header-action" onclick="deletePost('${post.id}')" title="Delete post">
+            <i class="fas fa-trash"></i>
+        </button>` : '';
+
+    // Avatar content - show profile pic if available
+    const avatarContent = post.userProfilePic ?
+        `<img src="${post.userProfilePic}" alt="${post.userName}" class="post-avatar-img">` :
+        `<div class="post-avatar-initials">${userInitials}</div>`;
+
+    return `
+        <article class="post-card" data-post-id="${post.id}">
+            <div class="post-header">
+                <div class="post-avatar" onclick="ProfilePopup.open('${post.userId}', '${post.userType}')">${avatarContent}</div>
+                <div class="post-header-info">
+                    <div class="post-author" onclick="ProfilePopup.open('${post.userId}', '${post.userType}')">${escapeHtml(post.userName)}</div>
+                    <div class="post-email" onclick="ProfilePopup.open('${post.userId}', '${post.userType}')">${escapeHtml(post.userEmail)}</div>
+                    <div class="post-meta">
+                        <span class="post-time"><i class="far fa-clock"></i> ${timeAgo}</span>
+                    </div>
+                </div>
+                <div class="post-header-actions">
+                    ${deleteButton}
+                </div>
+            </div>
+
+            <div class="post-content">
+                <p class="post-text">${escapeHtml(post.content)}</p>
+                ${mediaContent}
+                ${linkContent}
+                ${tagsContent}
+            </div>
+
+            <div class="post-stats">
+                <span class="post-stat"><i class="fas fa-heart"></i> ${post.likesCount || 0} likes</span>
+                <span class="post-stat"><i class="fas fa-comment"></i> ${post.commentsCount || 0} comments</span>
+            </div>
+
+            <div class="post-actions">
+                <button class="post-action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', ${isLiked})">
+                    <i class="fas fa-heart"></i><span>Like</span>
+                </button>
+                <button class="post-action-btn" onclick="toggleComments('${post.id}')">
+                    <i class="fas fa-comment"></i><span>Comment</span>
+                </button>
+                <button class="post-action-btn" onclick="sharePost('${post.id}')">
+                    <i class="fas fa-share"></i><span>Share</span>
+                </button>
+            </div>
+
+            <div class="comments-section" id="comments-${post.id}" style="display: none;">
+                <div class="comment-input-area">
+                    <input type="text" class="comment-input" id="comment-input-${post.id}" placeholder="Write a comment...">
+                    <button class="comment-submit-btn" onclick="postComment('${post.id}')">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="comments-list" id="comments-list-${post.id}">
+                    <div class="loading-comments">Loading comments...</div>
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+async function createPost() {
+    const content = document.getElementById('create-post-textarea').value.trim();
+
+    if (!content) {
+        alert('Please enter some content');
+        return;
+    }
+
+    const token = localStorage.getItem('token');
+    const postData = {
+        content: content,
+        mediaUrls: uploadedMediaFiles,
+        linkUrl: extractUrl(content),
+        tags: extractHashtags(content)
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        });
+
+        if (response.ok) {
+            document.getElementById('create-post-textarea').value = '';
+            uploadedMediaFiles = [];
+            const fileInput = document.getElementById('post-attachment-modal');
+            if (fileInput) fileInput.value = '';
+
+            toggleCreatePostModal();
+            await loadPosts(currentFilter);
+            showToast('Post created successfully!', 'success');
+        } else {
+            alert('Failed to create post');
+        }
+    } catch (error) {
+        console.error('Error creating post:', error);
+        alert('Error creating post');
+    }
+}
+
+async function deletePost(postId) {
+    if (!confirm('Delete this post?')) return;
+
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            await loadPosts(currentFilter);
+            showToast('Post deleted', 'success');
+        } else {
+            alert('Failed to delete post');
+        }
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        alert('Error deleting post');
+    }
+}
+
+async function toggleLike(postId, isCurrentlyLiked) {
+    const token = localStorage.getItem('token');
+    const endpoint = isCurrentlyLiked ? 'unlike' : 'like';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/${endpoint}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            await loadPosts(currentFilter);
+        }
+    } catch (error) {
+        console.error('Error toggling like:', error);
+    }
+}
+
+async function toggleComments(postId) {
+    const commentsSection = document.getElementById(`comments-${postId}`);
+
+    if (commentsSection.style.display === 'none') {
+        commentsSection.style.display = 'block';
+        await loadComments(postId);
+    } else {
+        commentsSection.style.display = 'none';
+    }
+}
+
+async function loadComments(postId) {
+    const token = localStorage.getItem('token');
+    const commentsList = document.getElementById(`comments-list-${postId}`);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const comments = await response.json();
+            displayComments(comments, postId);
+        }
+    } catch (error) {
+        console.error('Error loading comments:', error);
+        commentsList.innerHTML = '<p>Failed to load comments</p>';
+    }
+}
+
+function displayComments(comments, postId) {
+    const commentsList = document.getElementById(`comments-list-${postId}`);
+
+    if (comments.length === 0) {
+        commentsList.innerHTML = '<p class="no-comments">No comments yet</p>';
+        return;
+    }
+
+    commentsList.innerHTML = comments.map(comment => {
+        const initials = comment.userName ? comment.userName.substring(0, 2).toUpperCase() : 'U';
+        const timeAgo = getTimeAgo(comment.createdAt);
+
+        const avatarContent = comment.userProfilePic ?
+            `<img src="${comment.userProfilePic}" alt="${comment.userName}">` :
+            `<div class="comment-avatar-initials">${initials}</div>`;
+
+        return `
+            <div class="comment-item">
+                <div class="comment-avatar">${avatarContent}</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(comment.userName)}</span>
+                        <span class="comment-time">${timeAgo}</span>
+                    </div>
+                    <p class="comment-text">${escapeHtml(comment.content)}</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+async function postComment(postId) {
+    const input = document.getElementById(`comment-input-${postId}`);
+    const content = input.value.trim();
+
+    if (!content) return;
+
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/comment`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content })
+        });
+
+        if (response.ok) {
+            input.value = '';
+            await loadComments(postId);
+            await loadPosts(currentFilter);
+            showToast('Comment added!', 'success');
+        }
+    } catch (error) {
+        console.error('Error posting comment:', error);
+    }
+}
+
+function filterPosts(event, filter) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    loadPosts(filter);
+}
+
+function getTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    const intervals = {
+        year: 31536000,
+        month: 2592000,
+        week: 604800,
+        day: 86400,
+        hour: 3600,
+        minute: 60
+    };
+
+    for (let [unit, secondsInUnit] of Object.entries(intervals)) {
+        const interval = Math.floor(seconds / secondsInUnit);
+        if (interval >= 1) {
+            return `${interval} ${unit}${interval > 1 ? 's' : ''} ago`;
+        }
+    }
+    return 'Just now';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function extractUrl(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const matches = text.match(urlRegex);
+    return matches ? matches[0] : null;
+}
+
+function extractHashtags(text) {
+    const hashtagRegex = /#(\w+)/g;
+    const matches = text.match(hashtagRegex);
+    return matches ? matches.map(tag => tag.substring(1)) : [];
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function sharePost(postId) {
+    const shareLink = `${window.location.origin}/post/${postId}`;
+    navigator.clipboard.writeText(shareLink).then(() => {
+        showToast('Link copied!', 'success');
+    });
+}
