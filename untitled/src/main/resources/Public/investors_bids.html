@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="site-wrap">
+
     <header>
         <div class="header-content">
             <div class="logo">
@@ -21,8 +22,12 @@
                 <a href="investors_profile.html">Profile</a>
                 <a href="investors_bids.html">My Bids</a>
                 <a href="investors_chat.html">Chat</a>
-                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications"><i class="fas fa-bell"></i></a>
-                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out"><i class="fas fa-right-from-bracket"></i></a>
+                <a href="#" id="bell-icon" class="nav-icon nav-icon-bell" onclick="toggleNotifications(event)" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                </a>
+                <a href="#" class="nav-icon nav-icon-logout" onclick="toggleLogoutModal()" title="Log Out">
+                    <i class="fas fa-right-from-bracket"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -41,6 +46,7 @@
 
     <section id="bids-dashboard">
         <div class="card bids-container">
+
             <div class="bids-header">
                 <h2>My Outgoing Bids</h2>
                 <p>Track the status of your investment offers</p>
@@ -48,10 +54,10 @@
 
             <nav class="profile-tab-nav">
                 <button class="profile-tab-btn active" onclick="switchBidTab(event, 'bids-pending')">
-                    <i class="fas fa-hourglass-half"></i> Pending <span class="bid-count-badge">1</span>
+                    <i class="fas fa-hourglass-half"></i> Pending <span class="bid-count-badge">0</span>
                 </button>
                 <button class="profile-tab-btn" onclick="switchBidTab(event, 'bids-negotiating')">
-                    <i class="fas fa-comments-dollar"></i> Negotiating <span class="bid-count-badge">1</span>
+                    <i class="fas fa-comments-dollar"></i> Negotiating <span class="bid-count-badge">0</span>
                 </button>
                 <button class="profile-tab-btn" onclick="switchBidTab(event, 'bids-accepted')">
                     <i class="fas fa-check-circle"></i> Accepted
@@ -63,66 +69,22 @@
 
             <div class="bids-tab-content">
 
+                <!-- PENDING BIDS -->
                 <div id="bids-pending" class="bids-tab-panel active-tab">
-
-                    <div class="bid-card bid-status-pending">
-                        <div class="bid-card-header">
-                            <div class="bid-investor-info">
-                                <div class="bid-avatar" style="background-color: #e67e22;">NT</div>
-                                <div class="bid-investor-details">
-                                    <span class="bid-investor-name link">NovaTech</span>
-                                    <span class="bid-timestamp">Sent 2 hours ago</span>
-                                </div>
-                            </div>
-                            <div class="bid-amount-total">
-                                $250,000
-                            </div>
-                        </div>
-                        <div class="bid-card-body">
-                            <div class="bid-terms">
-                                <span class="bid-term-item"><i class="fas fa-briefcase"></i> <strong>Type:</strong> Convertible Note</span>
-                                <span class="bid-term-item"><i class="fas fa-chart-pie"></i> <strong>Cap:</strong> $6M</span>
-                            </div>
-                            <div class="bid-status-message">
-                                <i class="fas fa-info-circle"></i> <strong>Status:</strong> Pending. The startup has not responded yet.
-                            </div>
-                        </div>
-                        <div class="bid-card-actions">
-                            <button class="bid-btn bid-btn-reject" onclick="handleBidAction(event, 'withdraw')"><i class="fas fa-times"></i> Withdraw Bid</button>
-                        </div>
-                    </div>
+                    <p class="empty-tab-message">Loading bids...</p>
                 </div>
 
+                <!-- NEGOTIATING BIDS -->
                 <div id="bids-negotiating" class="bids-tab-panel">
-                    <div class="bid-card bid-status-negotiating">
-                        <div class="bid-card-header">
-                            <div class="bid-investor-info">
-                                <div class="bid-avatar" style="background-color: #3498db;">SA</div>
-                                <div class="bid-investor-details">
-                                    <span class="bid-investor-name link">Synapse AI</span>
-                                    <span class="bid-timestamp">In negotiation for 3 days</span>
-                                </div>
-                            </div>
-                            <div class="bid-amount-total">
-                                $500,000
-                            </div>
-                        </div>
-                        <div class="bid-card-body">
-                            <div class="bid-status-message">
-                                <i class="fas fa-info-circle"></i> <strong>Status:</strong> Awaiting your response. (Last message: "We'd like to discuss the valuation cap...")
-                            </div>
-                        </div>
-                        <div class="bid-card-actions">
-                            <button class="bid-btn bid-btn-chat" onclick="window.location.href='investors_chat.html'"><i class="fas fa-paper-plane"></i> Continue Chat</button>
-                            <button class="bid-btn bid-btn-reject" onclick="handleBidAction(event, 'withdraw')"><i class="fas fa-times"></i> Withdraw Bid</button>
-                        </div>
-                    </div>
+                    <p class="empty-tab-message">Loading bids...</p>
                 </div>
 
+                <!-- ACCEPTED BIDS -->
                 <div id="bids-accepted" class="bids-tab-panel">
                     <p class="empty-tab-message">No bids have been accepted yet.</p>
                 </div>
 
+                <!-- REJECTED/WITHDRAWN BIDS -->
                 <div id="bids-rejected" class="bids-tab-panel">
                     <p class="empty-tab-message">No bids have been rejected or withdrawn.</p>
                 </div>
@@ -130,6 +92,7 @@
             </div>
         </div>
     </section>
+
     <footer>
         <div class="footer-content">
             <div class="footer-links">
@@ -140,8 +103,10 @@
             <div class="copyright">© 2025 LaunchPad</div>
         </div>
     </footer>
+
 </div>
-<script src="js/invester_shared_scripts.js"></script>
+
+<!-- Logout Confirmation Modal -->
 <div id="logout-confirm-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
         <h3 style="margin-top: 10px;">Log Out</h3>
@@ -152,5 +117,16 @@
         </div>
     </div>
 </div>
+
+<!-- Scripts -->
+<script src="js/invester_shared_scripts.js"></script>
+<script src="js/investor_bid_api.js"></script>
+<script>
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeInvestorBidDashboard();
+    });
+</script>
+
 </body>
 </html>
