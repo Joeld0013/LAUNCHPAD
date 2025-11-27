@@ -60,9 +60,10 @@ public class SecurityConfig {
 
                 // --- CHANGED SECTION START ---
                 // Profile viewing: Only GET is permitted publicly.
-                // PUT/POST/DELETE will require authentication via .anyRequest().authenticated()
-                .antMatchers(HttpMethod.GET, "/api/startups/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/investors/**").permitAll()
+                // TEMP: allow full access to profiles (GET + PUT etc.)
+                .antMatchers("/api/startups/**").permitAll()
+                .antMatchers("/api/investors/**").permitAll()
+
                 // --- CHANGED SECTION END ---
 // Bids endpoints – let controller handle token via JwtUtil
                 .antMatchers("/api/bids/**").permitAll()
