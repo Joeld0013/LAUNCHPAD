@@ -76,24 +76,18 @@ The primary configuration file is located at `src/main/resources/application.pro
 
 ## 📸 Screenshots & Walkthrough
 
-*(Note: Please add your actual project screenshots to a `screenshots` folder in the repository to replace the placeholder links below.)*
+Here is a look at the various features and interfaces of the Launchpad platform:
 
-### 1. Landing Page
-The main entry point for the platform, offering clear calls-to-action for both Startups and Investors to either log in or register.
-![Landing Page](screenshots/landing_page.png)
+### Platform Overviews & Dashboards
+![Platform View 1](screenshots/Screenshot%202026-06-08%20165538.png)
+![Platform View 2](screenshots/Screenshot%202026-06-08%20165629.png)
+![Platform View 3](screenshots/Screenshot%202026-06-08%20165747.png)
 
-### 2. Startup Dashboard
-A centralized hub for startups to manage their profile, post new projects or pitch decks, and view incoming bids from interested investors.
-![Startup Dashboard](screenshots/startup_dashboard.png)
-
-### 3. Investor Portal
-A curated feed where investors can browse through available startup pitches, evaluate funding requirements, and submit investment bids.
-![Investor Portal](screenshots/investor_portal.png)
-
-### 4. Real-Time Chat Interface
-Integrated messaging system allowing seamless, live communication between startups and potential investors to discuss project details.
-![Chat Interface](screenshots/chat_interface.png)
-
-### 5. Admin Panel
-A secure administrative interface for monitoring platform statistics, managing user accounts, and overseeing active projects and bids.
-![Admin Panel](screenshots/admin_panel.png)
+### Additional Interfaces
+![View 1](screenshots/download.jpg)
+![View 2](screenshots/download1.jpg)
+![View 3](screenshots/download2.jpg)
+![View 4](screenshots/download3.jpg)
+![View 5](screenshots/download4.jpg)
+![View 6](screenshots/download5.jpg)
+![View 7](screenshots/download6.jpg)
