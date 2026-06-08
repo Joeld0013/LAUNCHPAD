@@ -78,6 +78,11 @@ The primary configuration file is located at `src/main/resources/application.pro
 
 Here is a look at the various features and interfaces of the Launchpad platform:
 
+### Landing Page & Authentication
+![Main Landing Page](screenshots/main_page.png)
+![Login Interface](screenshots/login.png)
+![Admin Login](screenshots/adminlogin.png)
+
 ### Platform Overviews & Dashboards
 ![Platform View 1](screenshots/Screenshot%202026-06-08%20165538.png)
 ![Platform View 2](screenshots/Screenshot%202026-06-08%20165629.png)
